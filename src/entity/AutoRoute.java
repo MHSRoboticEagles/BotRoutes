@@ -122,4 +122,34 @@ public class AutoRoute {
     public void setLastRunTime(long lastRunTime) {
         this.lastRunTime = lastRunTime;
     }
+
+    public AutoDot findLocationPointer(AutoStep step){
+        AutoDot locationPointer = new AutoDot();
+        locationPointer.setX(this.getStartX());
+        locationPointer.setY(this.getStartY());
+
+        int stepIndex = -1;
+        for (int i = 0; i < this.getSteps().size(); i++){
+            AutoStep s = this.getSteps().get(i);
+            if (s == step){
+                stepIndex = i;
+                break;
+            }
+        }
+
+        if (stepIndex > 0){
+            AutoStep previous = this.getSteps().get(stepIndex - 1);
+            if (previous.isSameTarget(step)){
+                locationPointer.setX(step.getTargetX());
+                locationPointer.setY(step.getTargetY());
+            }
+            else{
+                locationPointer.setX(previous.getTargetX());
+                locationPointer.setY(previous.getTargetY());
+            }
+
+        }
+
+        return locationPointer;
+    }
 }

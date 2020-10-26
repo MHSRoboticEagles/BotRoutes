@@ -46,6 +46,7 @@
                 <HBox alignment="CENTER_RIGHT">
                     <children>
                         <Button mnemonicParsing="false" onAction="#btnSaveClicked" text="Save" />
+                        <Button mnemonicParsing="false" onAction="#btnCloseClicked" text="Cancel" />
                     </children>
                     <opaqueInsets>
                         <Insets />

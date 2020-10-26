@@ -40,6 +40,7 @@ public class AutoStep {
         return description;
     }
 
+
     public int getWaitMS() {
         return waitMS;
     }
@@ -154,6 +155,11 @@ public class AutoStep {
 
     public void setTargetReference(String targetReference) {
         this.targetReference = targetReference;
+    }
+
+    public boolean isSameTarget(AutoStep s){
+        return this.getTargetX() == s.getTargetX() &&
+                this.getTargetY() == s.getTargetY();
     }
 
 }

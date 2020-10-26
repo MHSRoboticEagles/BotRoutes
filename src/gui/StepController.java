@@ -51,6 +51,10 @@ public class StepController {
             System.out.println(ex.getMessage());
         }
     }
+    @FXML
+    protected void btnCloseClicked(ActionEvent event){
+        closeStage(event);
+    }
 
     private void closeStage(ActionEvent event) {
         Node  source = (Node)  event.getSource();
