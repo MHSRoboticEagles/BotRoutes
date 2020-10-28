@@ -1,10 +1,5 @@
 package entity;
 
-import javafx.beans.Observable;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.util.Callback;
-
 public class AutoStep {
     public static final String NO_ACTION = "";
     private int waitMS = 0;
@@ -16,8 +11,6 @@ public class AutoStep {
     private double desiredHead = -1;
     private boolean continuous = false;
     private String targetReference = "";
-
-    private IntegerProperty wait;
 
     @Override
     public String toString() {
@@ -161,5 +154,4 @@ public class AutoStep {
         return this.getTargetX() == s.getTargetX() &&
                 this.getTargetY() == s.getTargetY();
     }
-
 }

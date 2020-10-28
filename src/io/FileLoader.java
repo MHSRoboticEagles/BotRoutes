@@ -1,10 +1,15 @@
 package io;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import entity.AutoDot;
 import entity.AutoRoute;
+import entity.BotActionObj;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +24,7 @@ public class FileLoader {
     private static final String ROOT_FOLDER = "botroutes";
     private static final String ROUTE_FOLDER = "routes";
     private static final String DOT_FOLDER = "dots";
+    public static final String BOT_ACTIONS_FILENAME = "bot-actions.json";
     private static final String HOME_FOLDER = System.getProperty(HOME_FOLDER_PATH);
     public static void ensureAppDirectories() throws Exception {
         try {
@@ -70,6 +76,14 @@ public class FileLoader {
         return null;
     }
 
+    public static File getDotsFolder(){
+        Path folder = getDotFolder();
+        if (Files.exists(folder)){
+            return new File(folder.toString());
+        }
+        return null;
+    }
+
     public static ArrayList<AutoRoute> listRoutes() throws IOException {
         File folder = getRoutesFolder();
         ArrayList<AutoRoute> resutls = new ArrayList<>();
@@ -107,6 +121,37 @@ public class FileLoader {
     public static String getRouteFilePath(String routeName){
         Path folder = getRouteFolder();
         return String.format("%s/%s.json", folder.toString(), routeName);
+    }
+
+    public static ArrayList<AutoDot> listDots() throws IOException {
+        File folder = getDotsFolder();
+        ArrayList<AutoDot> resutls = new ArrayList<>();
+        if (folder != null){
+            File [] list = folder.listFiles();
+            for (int i = 0; i < list.length; i++){
+                File f = list[i];
+                try {
+                    String content = Files.readString(Path.of(f.toURI()), StandardCharsets.US_ASCII);
+                    AutoDot dot = AutoDot.deserialize(content);
+                    resutls.add(dot);
+                }
+                catch (Exception ex){
+                    System.out.println(String.format("Cannot read file %s. %s", f.getName(), ex.getMessage()));
+                }
+            }
+        }
+        return resutls;
+    }
+
+    public static ArrayList<BotActionObj> listBotActions() throws Exception{
+        Path homePath = getHomeFolder();
+        File actionsFile = new File(homePath.toString(), BOT_ACTIONS_FILENAME);
+        String content = Files.readString(Path.of(actionsFile.toURI()), StandardCharsets.US_ASCII);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<BotActionObj>>() {}.getType();
+        ArrayList<BotActionObj> actions = gson.fromJson(content, listType);
+
+        return actions;
     }
 
 }

@@ -1,6 +1,8 @@
 package entity;
 
 import java.awt.*;
+import java.util.Objects;
+
 import com.google.gson.Gson;
 
 public class AutoDot {
@@ -10,6 +12,29 @@ public class AutoDot {
     private int y;
     private double heading = -1;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AutoDot autoDot = (AutoDot) o;
+        return Objects.equals(dotName, autoDot.dotName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dotName);
+    }
+
+    @Override
+    public AutoDot clone() {
+        AutoDot dot = new AutoDot();
+        dot.setDotName(this.getDotName());
+        dot.setX(this.getX());
+        dot.setY(this.getY());
+        dot.setHeading(this.getHeading());
+        dot.setSelected(this.isSelected());
+        return dot;
+    }
 
     public String serialize() {
         Gson gson = new Gson();

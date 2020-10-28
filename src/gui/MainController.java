@@ -5,7 +5,6 @@ import entity.AutoRoute;
 import entity.AutoStep;
 import entity.CoordinateChangeListener;
 import io.BotConnector;
-import io.FileLoader;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,19 +14,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.RouteController;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static io.BotConnector.pullRoutes;
-
 public class MainController {
+    RouteController routeController = new RouteController();
     private FieldMap fieldMap;
     private AutoRoute currentRoute;
     boolean connected = false;
@@ -56,7 +54,7 @@ public class MainController {
         try {
             btnSync.setDisable(true);
             btnPush.setDisable(true);
-            FileLoader.ensureAppDirectories();
+            routeController.init();
             initFieldMap();
             initRouteList();
         }
@@ -80,7 +78,7 @@ public class MainController {
             if (leftNav.getPanes().size() > 0) {
                 leftNav.getPanes().removeAll(leftNav.getPanes());
             }
-            ArrayList<AutoRoute> routes = FileLoader.listRoutes();
+            ArrayList<AutoRoute> routes = routeController.getRoutes();
             for(AutoRoute route : routes){
                 TitledPane pane = new TitledPane(route.getRouteName() , new Label(route.getRouteName()));
                 leftNav.getPanes().add(pane);
@@ -139,6 +137,7 @@ public class MainController {
             e.printStackTrace();
         }
         StepController dialogController = fxmlLoader.<StepController>getController();
+        dialogController.setRouteController(this.routeController);
         dialogController.setSelectedStep(selectedStep);
         dialogController.setSelectedRoute(selectedRoute);
         dialogController.setLstSteps(lstSteps);
