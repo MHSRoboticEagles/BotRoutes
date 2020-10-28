@@ -4,6 +4,7 @@ import entity.AutoDot;
 import entity.AutoRoute;
 import entity.AutoStep;
 import entity.CoordinateChangeListener;
+import io.BotConnector;
 import io.FileLoader;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,8 +25,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Controller {
+import static io.BotConnector.pullRoutes;
+
+public class MainController {
     private FieldMap fieldMap;
+    private AutoRoute currentRoute;
+    boolean connected = false;
+
+    @FXML
+    private Button btnConnect;
+    @FXML
+    private Button btnSync;
+    @FXML
+    private Button btnPush;
 
     @FXML
     private Accordion leftNav;
@@ -42,12 +54,14 @@ public class Controller {
     @FXML
     public void initialize() {
         try {
+            btnSync.setDisable(true);
+            btnPush.setDisable(true);
             FileLoader.ensureAppDirectories();
             initFieldMap();
             initRouteList();
         }
         catch (Exception ex){
-            showMessage(ex.getMessage());
+            showMessage(ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -63,6 +77,9 @@ public class Controller {
     }
     protected void initRouteList(){
         try {
+            if (leftNav.getPanes().size() > 0) {
+                leftNav.getPanes().removeAll(leftNav.getPanes());
+            }
             ArrayList<AutoRoute> routes = FileLoader.listRoutes();
             for(AutoRoute route : routes){
                 TitledPane pane = new TitledPane(route.getRouteName() , new Label(route.getRouteName()));
@@ -73,6 +90,7 @@ public class Controller {
                             if (newVal){
                                 lblName.setText(route.getRouteName());
                                 fieldMap.displaySelectedRoute(route);
+                                currentRoute = route;
                             }
                     }
                 });
@@ -104,10 +122,11 @@ public class Controller {
                 leftNav.setExpandedPane(leftNav.getPanes().get(0));
                 lblName.setText(routes.get(0).getRouteName());
                 fieldMap.displaySelectedRoute(routes.get(0));
+                currentRoute = routes.get(0);
             }
         }
         catch (Exception ex){
-            showMessage(ex.getMessage());
+            showMessage(ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -124,23 +143,74 @@ public class Controller {
         dialogController.setSelectedRoute(selectedRoute);
         dialogController.setLstSteps(lstSteps);
 
-        Scene scene = new Scene(parent, 300, 200);
+        Scene scene = new Scene(parent, 500, 400);
         Stage stage = new Stage();
+        stage.initOwner(leftNav.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
+        stage.setTitle("Step Info");
         stage.showAndWait();
     }
 
 
     @FXML
     protected void connect() {
-        System.out.println("The button was clicked!");
+        try {
+            if (!connected) {
+                BotConnector.runConnect();
+                connected = true;
+                btnConnect.setText("Disconnect");
+                btnSync.setDisable(false);
+                btnPush.setDisable(false);
+            }
+            else{
+                BotConnector.runDisconnect();
+                connected = false;
+                btnConnect.setText("Connect");
+                btnSync.setDisable(true);
+                btnPush.setDisable(true);
+            }
+        }
+        catch (Exception ex){
+            showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
-    protected void showMessage(String msg){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
+    @FXML
+    protected void pullConfigs(){
+        try{
+            BotConnector.pullRoutes();
+            BotConnector.pullDots();
+            BotConnector.pullBotActions();
+            BotConnector.pullBotConfig();
+            initRouteList();
+        }
+        catch (Exception ex){
+            showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    protected void pushConfigs(){
+        try{
+            BotConnector.publishRoute(currentRoute);
+        }
+        catch (Exception ex){
+            showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+
+    protected void showMessage(String msg, Alert.AlertType type){
+        String title = "Info";
+        if (type == Alert.AlertType.ERROR){
+            title = "Error";
+        }
+        Alert alert = new Alert(type);
+        if (leftNav != null && leftNav.getScene() != null) {
+          alert.initOwner(leftNav.getScene().getWindow());
+        }
+        alert.setTitle(title);
         alert.setContentText(msg);
         alert.show();
     }

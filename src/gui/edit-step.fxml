@@ -9,12 +9,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
 <AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StepController">
     <children>
-        <VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+        <VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="500.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Step Info" />
-                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Wait  (ms)" />
                         <TextField fx:id="tfWait" HBox.hgrow="ALWAYS" />
@@ -23,7 +24,16 @@
                         <Insets right="30.0" />
                     </padding>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Bot Action" />
+                        <ComboBox fx:id="boxAction" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Speed" />
                         <TextField fx:id="tfSpeed" HBox.hgrow="ALWAYS" />
@@ -32,7 +42,26 @@
                         <Insets right="30.0" />
                     </padding>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Move Strategy" />
+                        <ComboBox fx:id="boxStrategy" HBox.hgrow="ALWAYS" />
+                        <CheckBox alignment="CENTER_RIGHT" fx:id="boxContinuous" HBox.hgrow="ALWAYS" text="Continuous" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Named Target" />
+                        <ComboBox fx:id="boxTargets" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Target X" />
                         <TextField fx:id="tfX" HBox.hgrow="ALWAYS" />
@@ -43,7 +72,7 @@
                         <Insets right="30.0" />
                     </padding>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT">
+                <HBox alignment="CENTER_RIGHT" spacing="10">
                     <children>
                         <Button mnemonicParsing="false" onAction="#btnSaveClicked" text="Save" />
                         <Button mnemonicParsing="false" onAction="#btnCloseClicked" text="Cancel" />
@@ -55,6 +84,7 @@
                         <Insets right="30.0" />
                     </padding>
                 </HBox>
+
             </children>
         </VBox>
     </children>

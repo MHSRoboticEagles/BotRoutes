@@ -5,11 +5,13 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import java.net.URL?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="gui.Controller">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="gui.MainController">
    <children>
       <ToolBar prefHeight="40.0">
          <items>
-            <Button mnemonicParsing="false" text="Connect" onMouseClicked="#connect" />
+            <Button fx:id="btnConnect" mnemonicParsing="false" text="Connect" onMouseClicked="#connect" />
+            <Button fx:id="btnSync" mnemonicParsing="false" text="Sync" onMouseClicked="#pullConfigs" />
+            <Button fx:id="btnPush" mnemonicParsing="false" text="Push" onMouseClicked="#pushConfigs" />
          </items>
       </ToolBar>
       <HBox>
