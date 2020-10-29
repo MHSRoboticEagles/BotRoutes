@@ -115,8 +115,6 @@ public class FieldMap {
             for(AutoStep step: selectedRoute.getSteps()){
                 double x = step.getTargetX()*MAP_SCALE;
                 double y = height - step.getTargetY()*MAP_SCALE;
-                System.out.println("x = " + x);
-                System.out.println("y = " + y);
                 gc.lineTo(x, y);
                 gc.fillOval(x - diam/2, y - diam/2, diam, diam);
             }

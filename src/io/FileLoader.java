@@ -123,6 +123,16 @@ public class FileLoader {
         return String.format("%s/%s.json", folder.toString(), routeName);
     }
 
+    public static void deleteRouteFile(String routeName) throws Exception{
+        Path path = Paths.get(getRouteFilePath(routeName));
+        try {
+            Files.delete(path);
+        }
+        catch (Exception ex){
+            throw new Exception(String.format("Cannot delete file %s. %s", path.toString(), ex.getMessage()));
+        }
+    }
+
     public static ArrayList<AutoDot> listDots() throws IOException {
         File folder = getDotsFolder();
         ArrayList<AutoDot> resutls = new ArrayList<>();

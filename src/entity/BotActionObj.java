@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Objects;
 
-public class BotActionObj {
+public class BotActionObj implements Comparable<BotActionObj> {
     private String methodName;
     private String description;
     private boolean isGeo;
@@ -57,5 +57,10 @@ public class BotActionObj {
 
     public void setReturnRef(String returnRef) {
         this.returnRef = returnRef;
+    }
+
+    @Override
+    public int compareTo(BotActionObj o) {
+        return this.getDescription().compareTo(o.getDescription());
     }
 }

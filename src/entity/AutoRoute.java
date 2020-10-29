@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class AutoRoute {
+public class AutoRoute implements Comparable<AutoRoute> {
     public static String NAME_BLUE = "Blue";
     public static String NAME_RED = "Red";
     public static String NAME_NEW = "New";
@@ -151,5 +151,10 @@ public class AutoRoute {
         }
 
         return locationPointer;
+    }
+
+    @Override
+    public int compareTo(AutoRoute o) {
+        return this.getRouteName().compareTo(o.getRouteName());
     }
 }

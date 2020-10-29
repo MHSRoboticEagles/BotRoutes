@@ -1,12 +1,10 @@
 package logic;
 
-import entity.AutoDot;
-import entity.AutoRoute;
-import entity.AutoStep;
-import entity.BotActionObj;
+import entity.*;
 import io.FileLoader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RouteController {
     private ArrayList<AutoDot> namedDots = new ArrayList<>();
@@ -22,6 +20,8 @@ public class RouteController {
         this.namedDots = FileLoader.listDots();
         this.routes = FileLoader.listRoutes();
         this.botActions = FileLoader.listBotActions();
+        Collections.sort(this.routes);
+        Collections.sort(this.botActions);
         reconcileData();
     }
 
@@ -77,22 +77,25 @@ public class RouteController {
         return namedDots;
     }
 
-    public ArrayList<AutoDot> getTargetReferences() {
-        ArrayList<AutoDot> refs = new ArrayList<>();
+    public ArrayList<TargetReference> getTargetReferences() {
+        ArrayList<TargetReference> refs = new ArrayList<>();
         for (AutoDot d : this.namedDots){
-            refs.add(d.clone());
+            TargetReference tr = new TargetReference(d);
+            refs.add(tr);
         }
         for(BotActionObj actionObj : this.botActions){
             if (actionObj.isGeo() && !actionObj.getReturnRef().isEmpty()){
                 AutoDot dot = findNamedDot(actionObj.getReturnRef());
                 if (dot != null){
-                    AutoDot clone = dot.clone();
-                    clone.setDotName(actionObj.getMethodName());
-                    refs.add(clone);
+                    TargetReference tr = new TargetReference(dot);
+                    tr.setDotName(actionObj.getMethodName());
+                    tr.setDescription(String.format("Result of %s (%s)", actionObj.getDescription(), dot.toString()));
+                    refs.add(tr);
                 }
             }
         }
-        return namedDots;
+        Collections.sort(refs);
+        return refs;
     }
 
     public void setNamedDots(ArrayList<AutoDot> namedDots) {
@@ -113,5 +116,15 @@ public class RouteController {
 
     public void setBotActions(ArrayList<BotActionObj> botActions) {
         this.botActions = botActions;
+    }
+
+    public void deleteRoute(AutoRoute route) throws Exception{
+        for(AutoRoute r : routes){
+            if(r.getRouteName().equals(route.getRouteName())){
+                routes.remove(r);
+                FileLoader.deleteRouteFile(route.getRouteName());
+                break;
+            }
+        }
     }
 }

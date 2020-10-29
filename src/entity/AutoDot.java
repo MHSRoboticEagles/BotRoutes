@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import com.google.gson.Gson;
 
-public class AutoDot {
+public class AutoDot implements Comparable<AutoDot>{
     private String dotName = "A";
     private boolean selected;
     private int x;
@@ -15,9 +15,13 @@ public class AutoDot {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AutoDot autoDot = (AutoDot) o;
-        return Objects.equals(dotName, autoDot.dotName);
+        if (o instanceof String){
+            return Objects.equals(getDotName(), o.toString());
+        }
+        else if (o instanceof AutoDot){
+            return Objects.equals(getDotName(), ((AutoDot) o).getDotName());
+        }
+        return false;
     }
 
     @Override
@@ -95,5 +99,10 @@ public class AutoDot {
 
     public void setHeading(double heading) {
         this.heading = heading;
+    }
+
+    @Override
+    public int compareTo(AutoDot o) {
+        return this.getDotName().compareTo(o.getDotName());
     }
 }

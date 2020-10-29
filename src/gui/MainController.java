@@ -199,6 +199,24 @@ public class MainController {
         }
     }
 
+    @FXML
+    protected void deleteRoute(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + this.currentRoute.getRouteName() + " ?", ButtonType.YES, ButtonType.NO);
+        if (leftNav != null && leftNav.getScene() != null) {
+            alert.initOwner(leftNav.getScene().getWindow());
+        }
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            try {
+                this.routeController.deleteRoute(this.currentRoute);
+            }
+            catch (Exception ex){
+                showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
 
     protected void showMessage(String msg, Alert.AlertType type){
         String title = "Info";
