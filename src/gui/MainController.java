@@ -200,6 +200,50 @@ public class MainController {
     }
 
     @FXML
+    protected void addRoute() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-route.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        EditRouteController editRouteController = fxmlLoader.<EditRouteController>getController();
+        editRouteController.setRouteController(this.routeController, null);
+
+
+        Scene scene = new Scene(parent, 400, 250);
+        Stage stage = new Stage();
+        stage.initOwner(leftNav.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setTitle("New Route");
+        stage.showAndWait();
+    }
+
+    @FXML
+    protected void editRoute() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-route.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        EditRouteController editRouteController = fxmlLoader.<EditRouteController>getController();
+        editRouteController.setRouteController(this.routeController, this.currentRoute);
+
+
+        Scene scene = new Scene(parent, 400, 250);
+        Stage stage = new Stage();
+        stage.initOwner(leftNav.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setTitle("New Route");
+        stage.showAndWait();
+    }
+
+    @FXML
     protected void deleteRoute(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + this.currentRoute.getRouteName() + " ?", ButtonType.YES, ButtonType.NO);
         if (leftNav != null && leftNav.getScene() != null) {

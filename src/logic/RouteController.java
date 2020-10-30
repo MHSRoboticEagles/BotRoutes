@@ -118,6 +118,32 @@ public class RouteController {
         this.botActions = botActions;
     }
 
+    public AutoRoute initRoute(){
+        AutoRoute route = new AutoRoute();
+        route.setName(AutoRoute.NAME_BLUE);
+        route.setNameIndex(getMinAvailableIndex(AutoRoute.NAME_BLUE));
+        return route;
+    }
+
+    public void addRoute(AutoRoute route){
+        this.routes.add(route);
+    }
+
+    public int getMinAvailableIndex(String name){
+        int i = 1;
+        for(int x = 0; x < this.routes.size(); x++){
+            AutoRoute r = this.routes.get(x);
+            if (r.getName().equals(name)
+                    && r.getNameIndex() == i){
+                i++;
+            }
+            else{
+                break;
+            }
+        }
+        return i;
+    }
+
     public void deleteRoute(AutoRoute route) throws Exception{
         for(AutoRoute r : routes){
             if(r.getRouteName().equals(route.getRouteName())){
