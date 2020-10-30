@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AutoRoute implements Comparable<AutoRoute> {
     public static String NAME_BLUE = "Blue";
@@ -44,6 +45,19 @@ public class AutoRoute implements Comparable<AutoRoute> {
             cloned.steps.add(this.steps.get(i));
         }
         return cloned;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AutoRoute autoRoute = (AutoRoute) o;
+        return getRouteName().equals(autoRoute.getRouteName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRouteName());
     }
 
     public String getRouteName()

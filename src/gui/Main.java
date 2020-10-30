@@ -17,7 +17,6 @@ public class Main extends Application {
         primaryStage.setTitle("Bot Routes");
         primaryStage.setWidth(WIDTH);
         primaryStage.setHeight(HEIGHT);
-        primaryStage.setAlwaysOnTop(true);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();

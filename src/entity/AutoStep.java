@@ -1,5 +1,7 @@
 package entity;
 
+import logic.RouteController;
+
 public class AutoStep {
     public static final String NO_ACTION = "";
     private int waitMS = 0;
@@ -14,19 +16,15 @@ public class AutoStep {
 
     @Override
     public String toString() {
-        String description = "";
-        if (waitMS > 0){
-            description = String.format("Wait %d ms\n", waitMS);
-        }
-        else{
-            description = "Run immediately\n";
-        }
+        String description = String.format("Wait %d ms\n", waitMS);
+
         if (action.equals("")){
             action = "None";
         }
+
         description = String.format("%sAction: %s\n", description, action);
         if (moveStrategy == MoveStrategy.Spin){
-            description = String.format("%s%s to %.2f degree mark\n", moveStrategy, description, desiredHead);
+            description = String.format("%s%s to %.2f degree mark\n", description, moveStrategy, desiredHead);
         }else {
             description = String.format("%s%s to %s\n", description, moveStrategy, getDestination());
         }

@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.RouteController;
+import logic.RoutesChangeListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,7 +57,13 @@ public class MainController {
             btnPush.setDisable(true);
             routeController.init();
             initFieldMap();
-            initRouteList();
+            initRouteList(0);
+            routeController.setRoutesChangeListener(new RoutesChangeListener() {
+                @Override
+                public void onRoutesUpdated(int selectedIndex) {
+                    initRouteList(selectedIndex);
+                }
+            });
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);
@@ -73,7 +80,7 @@ public class MainController {
             }
         });
     }
-    protected void initRouteList(){
+    protected void initRouteList(int selectedIndex){
         try {
             if (leftNav.getPanes().size() > 0) {
                 leftNav.getPanes().removeAll(leftNav.getPanes());
@@ -117,10 +124,10 @@ public class MainController {
 
             }
             if (leftNav.getPanes().size() > 0) {
-                leftNav.setExpandedPane(leftNav.getPanes().get(0));
-                lblName.setText(routes.get(0).getRouteName());
-                fieldMap.displaySelectedRoute(routes.get(0));
-                currentRoute = routes.get(0);
+                leftNav.setExpandedPane(leftNav.getPanes().get(selectedIndex));
+                lblName.setText(routes.get(selectedIndex).getRouteName());
+                fieldMap.displaySelectedRoute(routes.get(selectedIndex));
+                currentRoute = routes.get(selectedIndex);
             }
         }
         catch (Exception ex){
@@ -182,7 +189,7 @@ public class MainController {
             BotConnector.pullDots();
             BotConnector.pullBotActions();
             BotConnector.pullBotConfig();
-            initRouteList();
+            initRouteList(0);
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);

@@ -11,6 +11,8 @@ public class RouteController {
     private ArrayList<AutoRoute> routes = new ArrayList<>();
     private ArrayList<BotActionObj> botActions = new ArrayList<>();
 
+    private RoutesChangeListener routesChangeListener = null;
+
     public RouteController(){
 
     }
@@ -127,6 +129,24 @@ public class RouteController {
 
     public void addRoute(AutoRoute route){
         this.routes.add(route);
+        Collections.sort(this.routes);
+        fireUpdateEvent(route);
+    }
+
+    private void fireUpdateEvent(AutoRoute route){
+        if (routesChangeListener != null){
+            int index = 0;
+            if (route != null) {
+                for (int i = 0; i < this.routes.size(); i++) {
+                    AutoRoute r = this.routes.get(i);
+                    if (route.equals(r)) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            routesChangeListener.onRoutesUpdated(index);
+        }
     }
 
     public int getMinAvailableIndex(String name){
@@ -149,8 +169,13 @@ public class RouteController {
             if(r.getRouteName().equals(route.getRouteName())){
                 routes.remove(r);
                 FileLoader.deleteRouteFile(route.getRouteName());
+                fireUpdateEvent(null);
                 break;
             }
         }
+    }
+
+    public void setRoutesChangeListener(RoutesChangeListener routesChangeListener) {
+        this.routesChangeListener = routesChangeListener;
     }
 }
