@@ -17,6 +17,8 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class FieldMap {
@@ -97,6 +99,7 @@ public class FieldMap {
             }
         }
         gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
+        drawFieldElements(gc);
         if (selectedRoute != null){
             drawRoute(selectedRoute, gc);
         }
@@ -120,6 +123,106 @@ public class FieldMap {
             }
             gc.stroke();
         }
+    }
+
+    private void drawFieldElements(GraphicsContext gc){
+        //line 2
+        AutoDot startDot = new AutoDot(72, 24);
+        AutoDot startPixels = inchesToPixels(startDot);
+        Rectangle line = new Rectangle(startPixels.getX(), startPixels.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, line);
+
+        //line 1
+        AutoDot startDot2 = new AutoDot(48, 24);
+        AutoDot startPixel2s = inchesToPixels(startDot2);
+        Rectangle line2 = new Rectangle(startPixel2s.getX(), startPixel2s.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, line2);
+
+        //rings
+        AutoDot startDotRings = new AutoDot(59, 52);
+        AutoDot startPixelRings = inchesToPixels(startDotRings);
+        Rectangle rings = new Rectangle(startPixelRings.getX(), startPixelRings.getY(), inchesToPixels(2), inchesToPixels(4));
+        drawRectangle(gc, rings);
+
+        //Zone A
+        AutoDot startDotA = new AutoDot(72, 96);
+        AutoDot startPixelA = inchesToPixels(startDotA);
+        Rectangle lineA = new Rectangle(startPixelA.getX(), startPixelA.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, lineA);
+        Rectangle lineAU = new Rectangle(startPixelA.getX(), startPixelA.getY(), inchesToPixels(24), inchesToPixels(2));
+        drawRectangle(gc, lineAU);
+
+        AutoDot startDotAL = new AutoDot(72, 74);
+        AutoDot startPixelAL = inchesToPixels(startDotAL);
+        Rectangle lineAL = new Rectangle(startPixelAL.getX(), startPixelAL.getY(), inchesToPixels(24), inchesToPixels(2));
+        drawRectangle(gc, lineAL);
+
+        AutoDot startDotAR = new AutoDot(94, 96);
+        AutoDot startPixelAR = inchesToPixels(startDotAR);
+        Rectangle lineAR = new Rectangle(startPixelAR.getX(), startPixelAR.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, lineAR);
+
+        //Zone B
+        AutoDot startDotB = new AutoDot(48, 120);
+        AutoDot startPixelB = inchesToPixels(startDotB);
+        Rectangle lineB = new Rectangle(startPixelB.getX(), startPixelB.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, lineB);
+        Rectangle lineBU = new Rectangle(startPixelB.getX(), startPixelB.getY(), inchesToPixels(24), inchesToPixels(2));
+        drawRectangle(gc, lineBU);
+
+        AutoDot startDotBL = new AutoDot(48, 98);
+        AutoDot startPixelBL = inchesToPixels(startDotBL);
+        Rectangle lineBL = new Rectangle(startPixelBL.getX(), startPixelBL.getY(), inchesToPixels(24), inchesToPixels(2));
+        drawRectangle(gc, lineBL);
+
+        AutoDot startDotBR = new AutoDot(70, 120);
+        AutoDot startPixelBR = inchesToPixels(startDotBR);
+        Rectangle lineBR = new Rectangle(startPixelBR.getX(), startPixelBR.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, lineBR);
+
+        //Zone C
+        AutoDot startDotC = new AutoDot(72, 144);
+        AutoDot startPixelC = inchesToPixels(startDotC);
+        Rectangle lineC = new Rectangle(startPixelC.getX(), startPixelC.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, lineC);
+        Rectangle lineCU = new Rectangle(startPixelC.getX(), startPixelC.getY(), inchesToPixels(24), inchesToPixels(2));
+        drawRectangle(gc, lineCU);
+
+        AutoDot startDotCL = new AutoDot(72, 122);
+        AutoDot startPixelCL = inchesToPixels(startDotCL);
+        Rectangle lineCL = new Rectangle(startPixelCL.getX(), startPixelCL.getY(), inchesToPixels(24), inchesToPixels(2));
+        drawRectangle(gc, lineCL);
+
+        AutoDot startDotCR = new AutoDot(94, 144);
+        AutoDot startPixelCR = inchesToPixels(startDotCR);
+        Rectangle lineCR = new Rectangle(startPixelCR.getX(), startPixelCR.getY(), inchesToPixels(2), inchesToPixels(24));
+        drawRectangle(gc, lineCR);
+
+        // wobble left
+        AutoDot centerWL = new AutoDot(45, 29);
+        AutoDot centerWLPix = inchesToPixels(centerWL);
+        Circle wobbleLeft = new Circle(centerWLPix.getX(), centerWLPix.getY(), inchesToPixels(4));
+        drawCircle(gc, wobbleLeft);
+
+        // wobble right
+        AutoDot centerWR = new AutoDot(69, 29);
+        AutoDot centerWRPix = inchesToPixels(centerWR);
+        Circle wobbleRight = new Circle(centerWRPix.getX(), centerWRPix.getY(), inchesToPixels(4));
+        drawCircle(gc, wobbleRight);
+    }
+
+    private void drawRectangle(GraphicsContext gc, Rectangle rect){
+        gc.setFill(Color.DARKRED);
+//        gc.setStroke(Color.DARKRED);
+        gc.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+//        gc.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
+
+    private void drawCircle(GraphicsContext gc, Circle circle){
+        gc.setFill(Color.DARKRED);
+//        gc.setStroke(Color.DARKRED);
+        gc.fillOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius() * 2, circle.getRadius() * 2);
+//        gc.strokeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
     public void animateSelectedStep(AutoRoute selectedRoute, AutoStep selectedStep){
@@ -161,6 +264,10 @@ public class FieldMap {
         pixelDot.setX(inches.getX()*MAP_SCALE);
         pixelDot.setY((int)Math.round(height - inches.getY()*MAP_SCALE));
         return pixelDot;
+    }
+
+    private int inchesToPixels(int inches){
+        return inches * MAP_SCALE;
     }
 
     public void setCoordinateChangeListener(CoordinateChangeListener coordinateChangeListener) {

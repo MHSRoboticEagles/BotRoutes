@@ -12,6 +12,15 @@ public class AutoDot implements Comparable<AutoDot>{
     private int y;
     private double heading = -1;
 
+    public AutoDot(){
+
+    }
+
+    public AutoDot(int x, int y){
+        this.setX(x);
+        this.setY(y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
