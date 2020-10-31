@@ -83,6 +83,12 @@ public class MainController {
             public void onCoordinateChanged(AutoDot dot, String description) {
                 lblCoordinate.setText(description);
             }
+
+            @Override
+            public void onCoordinatePicked(AutoDot selected) {
+                ListView listView = (ListView) leftNav.getExpandedPane().getContent();
+                addStep(listView, selected);
+            }
         });
     }
     protected void initRouteList(int selectedIndex){
@@ -155,7 +161,7 @@ public class MainController {
         });
 
         menuAdd.setOnAction((event) -> {
-            addStep(lstSteps);
+            addStep(lstSteps, null);
         });
 
 
@@ -171,7 +177,7 @@ public class MainController {
         ContextMenu routeListMenuShort = new ContextMenu();
         MenuItem menuNew = new MenuItem("New");
         menuNew.setOnAction((event) -> {
-            addStep(lstSteps);
+            addStep(lstSteps, null);
         });
         routeListMenuShort.getItems().addAll(menuNew);
 
@@ -185,8 +191,8 @@ public class MainController {
         });
     }
 
-    protected void addStep(ListView lstSteps){
-        openStepEdit(this.routeController.initStep(currentRoute), currentRoute, lstSteps, true);
+    protected void addStep(ListView lstSteps, AutoDot selectedDot){
+        openStepEdit(this.routeController.initStep(currentRoute, selectedDot), currentRoute, lstSteps, true);
     }
 
     protected void openStepEdit(AutoStep selectedStep, AutoRoute selectedRoute, ListView lstSteps, boolean addStep){

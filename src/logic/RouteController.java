@@ -179,14 +179,20 @@ public class RouteController {
         this.routesChangeListener = routesChangeListener;
     }
 
-    public AutoStep initStep (AutoRoute route){
+    public AutoStep initStep (AutoRoute route, AutoDot selectedDot){
         AutoStep step = new AutoStep();
-        step.setTargetX(route.getStartX());
-        step.setTargetY(route.getStartY());
-        if(route.getSteps().size() > 0){
-            AutoStep last = route.getSteps().get(route.getSteps().size() - 1);
-            step.setTargetX(last.getTargetX());
-            step.setTargetY(last.getTargetY());
+        if (selectedDot != null){
+            step.setTargetX(selectedDot.getX());
+            step.setTargetY(selectedDot.getY());
+        }
+        else {
+            step.setTargetX(route.getStartX());
+            step.setTargetY(route.getStartY());
+            if (route.getSteps().size() > 0) {
+                AutoStep last = route.getSteps().get(route.getSteps().size() - 1);
+                step.setTargetX(last.getTargetX());
+                step.setTargetY(last.getTargetY());
+            }
         }
         return step;
     }

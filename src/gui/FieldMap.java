@@ -15,6 +15,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -40,16 +41,10 @@ public class FieldMap {
         mapFlow.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                double pX = mouseEvent.getX();
-                double pY = height - mouseEvent.getY();
-                int x = (int)Math.round(pX/MAP_SCALE);
-                int y = (int)Math.round(pY/MAP_SCALE);
-                String output= String.format("Pixels: %.0f : %.0f. Inches: %d : %d", pX, pY, x, y);
-                AutoDot dot = new AutoDot();
-                dot.setX(x);
-                dot.setY(y);
+                AutoDot selected = mouseClickToDot(mouseEvent);
+                String output= String.format("Inches: %d : %d", selected.getX(), selected.getY());
                 if (coordinateChangeListener != null){
-                    coordinateChangeListener.onCoordinateChanged(dot, output);
+                    coordinateChangeListener.onCoordinateChanged(selected, output);
                 }
             }
         });
@@ -57,9 +52,27 @@ public class FieldMap {
         mapFlow.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
+                if (mouseEvent.getButton() == MouseButton.PRIMARY &&
+                        mouseEvent.getClickCount() == 2){
+                    if (coordinateChangeListener != null){
+                        AutoDot selected = mouseClickToDot(mouseEvent);
+                        coordinateChangeListener.onCoordinatePicked(selected);
+                    }
+                }
             }
         });
+    }
+
+    private AutoDot mouseClickToDot(MouseEvent mouseEvent){
+        double height = mapFlow.getHeight();
+        double pX = mouseEvent.getX();
+        double pY = height - mouseEvent.getY();
+        int x = (int)Math.round(pX/MAP_SCALE);
+        int y = (int)Math.round(pY/MAP_SCALE);
+        AutoDot dot = new AutoDot();
+        dot.setX(x);
+        dot.setY(y);
+        return dot;
     }
 
 
