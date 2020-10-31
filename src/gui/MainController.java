@@ -63,6 +63,11 @@ public class MainController {
                 public void onRoutesUpdated(int selectedIndex) {
                     initRouteList(selectedIndex);
                 }
+
+                @Override
+                public void onStepAdded(AutoRoute route, AutoStep step) {
+                    fieldMap.displaySelectedRoute(route);
+                }
             });
         }
         catch (Exception ex){
@@ -110,7 +115,7 @@ public class MainController {
                         mouseEvent.getClickCount() == 2){
                             AutoStep selectedStep = (AutoStep)lstSteps.getSelectionModel().getSelectedItem();
                             if (selectedStep != null){
-                                openStepEdit(selectedStep, route, lstSteps);
+                                openStepEdit(selectedStep, route, lstSteps, false);
                             }
                         }
                         else if (mouseEvent.getButton() == MouseButton.PRIMARY){
@@ -121,6 +126,7 @@ public class MainController {
                         }
                     }
                 });
+                initRouteListMenu(lstSteps);
 
             }
             if (leftNav.getPanes().size() > 0) {
@@ -135,7 +141,55 @@ public class MainController {
         }
     }
 
-    protected void openStepEdit(AutoStep selectedStep, AutoRoute selectedRoute, ListView lstSteps){
+    protected void initRouteListMenu(ListView lstSteps){
+        ContextMenu routeListMenu = new ContextMenu();
+        MenuItem menuDetail = new MenuItem("Edit");
+        MenuItem menuAdd = new MenuItem("Add");
+        MenuItem menuDelete = new MenuItem("Delete");
+
+        menuDetail.setOnAction((event) -> {
+            if (lstSteps.getSelectionModel().getSelectedItem() != null) {
+                AutoStep selectedStep = (AutoStep)lstSteps.getSelectionModel().getSelectedItem();
+                openStepEdit(selectedStep, currentRoute, lstSteps, false);
+            }
+        });
+
+        menuAdd.setOnAction((event) -> {
+            addStep(lstSteps);
+        });
+
+
+        menuDelete.setOnAction((event) -> {
+            if (lstSteps.getSelectionModel().getSelectedItem() != null) {
+                AutoStep selectedStep = (AutoStep)lstSteps.getSelectionModel().getSelectedItem();
+                deleteStep(selectedStep, lstSteps);
+
+            }
+        });
+        routeListMenu.getItems().addAll(menuDetail, menuAdd, menuDelete);
+
+        ContextMenu routeListMenuShort = new ContextMenu();
+        MenuItem menuNew = new MenuItem("New");
+        menuNew.setOnAction((event) -> {
+            addStep(lstSteps);
+        });
+        routeListMenuShort.getItems().addAll(menuNew);
+
+        lstSteps.setOnContextMenuRequested(event -> {
+            if (lstSteps.getSelectionModel().getSelectedItem() != null) {
+                routeListMenu.show(lstSteps, event.getScreenX(), event.getScreenY());
+            }
+            else{
+                routeListMenuShort.show(lstSteps, event.getScreenX(), event.getScreenY());
+            }
+        });
+    }
+
+    protected void addStep(ListView lstSteps){
+        openStepEdit(this.routeController.initStep(currentRoute), currentRoute, lstSteps, true);
+    }
+
+    protected void openStepEdit(AutoStep selectedStep, AutoRoute selectedRoute, ListView lstSteps, boolean addStep){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-step.fxml"));
         Parent parent = null;
         try {
@@ -145,7 +199,7 @@ public class MainController {
         }
         StepController dialogController = fxmlLoader.<StepController>getController();
         dialogController.setRouteController(this.routeController);
-        dialogController.setSelectedStep(selectedStep);
+        dialogController.setSelectedStep(selectedStep, addStep);
         dialogController.setSelectedRoute(selectedRoute);
         dialogController.setLstSteps(lstSteps);
 
@@ -261,6 +315,24 @@ public class MainController {
         if (alert.getResult() == ButtonType.YES) {
             try {
                 this.routeController.deleteRoute(this.currentRoute);
+            }
+            catch (Exception ex){
+                showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
+    protected void deleteStep(AutoStep step, ListView lstSteps){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + step.toString() + " ?", ButtonType.YES, ButtonType.NO);
+        if (leftNav != null && leftNav.getScene() != null) {
+            alert.initOwner(leftNav.getScene().getWindow());
+        }
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            try {
+                this.routeController.deleteRouteStep(this.currentRoute, step);
+                lstSteps.getItems().remove(step);
             }
             catch (Exception ex){
                 showMessage(ex.getMessage(), Alert.AlertType.ERROR);

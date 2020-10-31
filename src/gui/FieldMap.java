@@ -23,7 +23,9 @@ import javafx.util.Duration;
 
 public class FieldMap {
     private Canvas mapFlow;
-    private static int MAP_SCALE = 4;
+    private static final int MAP_SCALE = 4;
+    private static final int TILES_NUM_Y = 6;
+    private static final int TILES_NUM_X = 4;
     ContextMenu canvasMenu = null;
     private double diam = 20;
     private CoordinateChangeListener coordinateChangeListener = null;
@@ -58,37 +60,8 @@ public class FieldMap {
 
             }
         });
-
-        initCanvasMenu();
     }
 
-    protected void initCanvasMenu(){
-        canvasMenu = new ContextMenu();
-        MenuItem menuDetail = new MenuItem("Details");
-        MenuItem menuInsertAfter = new MenuItem("Insert After");
-        MenuItem menuInsertBefore = new MenuItem("Insert Before");
-        MenuItem menuDelete = new MenuItem("Delete");
-
-        menuDetail.setOnAction((event) -> {
-            System.out.println("Show detail");
-        });
-
-        menuInsertAfter.setOnAction((event) -> {
-            System.out.println(menuInsertAfter.getText());
-        });
-
-        menuInsertBefore.setOnAction((event) -> {
-            System.out.println(menuInsertBefore.getText());
-        });
-
-        menuDelete.setOnAction((event) -> {
-            System.out.println(menuDelete.getText());
-        });
-        canvasMenu.getItems().addAll(menuDetail,menuInsertAfter,menuInsertBefore, menuDelete);
-        mapFlow.setOnContextMenuRequested(event -> {
-            canvasMenu.show(mapFlow, event.getScreenX(), event.getScreenY());
-        });
-    }
 
     public void displaySelectedRoute(AutoRoute selectedRoute){
         GraphicsContext gc = mapFlow.getGraphicsContext2D();
@@ -99,10 +72,40 @@ public class FieldMap {
             }
         }
         gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
+        drawFieldOutline(gc);
         drawFieldElements(gc);
         if (selectedRoute != null){
             drawRoute(selectedRoute, gc);
         }
+    }
+
+    protected void drawFieldOutline(GraphicsContext gc){
+        double height = mapFlow.getHeight();
+        double width = mapFlow.getWidth();
+
+        gc.setStroke(Color.BLACK.brighter());
+        gc.setLineWidth(2);
+        gc.beginPath();
+        double startX = 0;
+        double startY = 0;
+        gc.moveTo(startX, startY);
+        gc.lineTo(0, height);
+        gc.lineTo(width, height);
+        gc.lineTo(width, 0);
+        gc.lineTo(0, 0);
+        //horizontal
+        for (int i = 0; i < TILES_NUM_Y; i++){
+            int y = (i+1) * inchesToPixels(24);
+            gc.moveTo(0, y);
+            gc.lineTo(width, y);
+        }
+        //vertical
+        for (int i = 0; i < TILES_NUM_X; i++){
+            int x = (i+1) * inchesToPixels(24);
+            gc.moveTo(x, 0);
+            gc.lineTo(x, height);
+        }
+        gc.stroke();
     }
 
     protected void drawRoute(AutoRoute selectedRoute, GraphicsContext gc){
@@ -114,6 +117,7 @@ public class FieldMap {
             gc.beginPath();
             double startX = selectedRoute.getStartX() * MAP_SCALE;
             double startY = height - selectedRoute.getStartY() * MAP_SCALE;
+            gc.fillOval(startX - diam/2, startY - diam/2, diam, diam);
             gc.moveTo(startX, startY);
             for(AutoStep step: selectedRoute.getSteps()){
                 double x = step.getTargetX()*MAP_SCALE;

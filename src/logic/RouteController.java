@@ -178,4 +178,29 @@ public class RouteController {
     public void setRoutesChangeListener(RoutesChangeListener routesChangeListener) {
         this.routesChangeListener = routesChangeListener;
     }
+
+    public AutoStep initStep (AutoRoute route){
+        AutoStep step = new AutoStep();
+        step.setTargetX(route.getStartX());
+        step.setTargetY(route.getStartY());
+        if(route.getSteps().size() > 0){
+            AutoStep last = route.getSteps().get(route.getSteps().size() - 1);
+            step.setTargetX(last.getTargetX());
+            step.setTargetY(last.getTargetY());
+        }
+        return step;
+    }
+
+    public void addStep(AutoRoute route, AutoStep newStep){
+        route.getSteps().add(newStep);
+        reconcileRoute(route);
+        if (this.routesChangeListener != null){
+            this.routesChangeListener.onStepAdded(route, newStep);
+        }
+    }
+
+    public void deleteRouteStep(AutoRoute route, AutoStep step) throws Exception{
+        route.getSteps().remove(step);
+        FileLoader.saveRoute(route);
+    }
 }

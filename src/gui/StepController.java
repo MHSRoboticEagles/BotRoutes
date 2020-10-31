@@ -2,6 +2,7 @@ package gui;
 
 import entity.AutoRoute;
 import entity.AutoStep;
+import entity.BotActionObj;
 import entity.MoveStrategy;
 import io.FileLoader;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ public class StepController {
     private AutoStep selectedStep;
     private AutoRoute selectedRoute;
     private ListView lstSteps;
+    private boolean addStep = false;
 
     @FXML
     private TextField tfWait;
@@ -80,6 +82,10 @@ public class StepController {
     protected void btnSaveClicked(ActionEvent event){
         try {
             updateStep();
+            if (addStep){
+                this.routeController.addStep(selectedRoute, selectedStep);
+                this.lstSteps.getItems().add(selectedStep);
+            }
             FileLoader.saveRoute(selectedRoute);
             closeStage(event);
         }
@@ -104,15 +110,24 @@ public class StepController {
         this.selectedStep.setMoveStrategy((MoveStrategy)this.boxStrategy.getSelectionModel().getSelectedItem());
         this.selectedStep.setTargetX(Integer.valueOf(this.tfX.getText()));
         this.selectedStep.setTargetY(Integer.valueOf(this.tfY.getText()));
-        this.selectedStep.setAction((String)this.boxAction.getSelectionModel().getSelectedItem());
+        if (this.boxAction.getSelectionModel().getSelectedItem() != null) {
+            String actionName = "";
+            if (this.boxAction.getSelectionModel().getSelectedItem() instanceof BotActionObj) {
+                BotActionObj selAction = (BotActionObj) this.boxAction.getSelectionModel().getSelectedItem();
+                actionName = selAction.getMethodName();
+            }
+            this.selectedStep.setAction(actionName);
+        }
+
         this.selectedStep.setTargetReference((String) this.boxTargets.getSelectionModel().getSelectedItem());
 
         this.lstSteps.setItems(null);
         this.lstSteps.setItems(FXCollections.observableArrayList(this.selectedRoute.getSteps()));
     }
 
-    public void setSelectedStep(AutoStep selectedStep) {
+    public void setSelectedStep(AutoStep selectedStep, boolean addStep) {
         this.selectedStep = selectedStep;
+        this.addStep = addStep;
         this.tfSpeed.setText(String.format("%.2f", this.selectedStep.getTopSpeed()));
         this.tfWait.setText(Integer.toString(this.selectedStep.getWaitMS()));
         this.boxStrategy.getSelectionModel().select(selectedStep.getMoveStrategy());
