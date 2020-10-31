@@ -54,6 +54,15 @@
                 </HBox>
                 <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Heading" />
+                        <TextField fx:id="tfHead" HBox.hgrow="ALWAYS" maxWidth="100" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Named Target" />
                         <ComboBox fx:id="boxTargets" HBox.hgrow="ALWAYS" />
                     </children>

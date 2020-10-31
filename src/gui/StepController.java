@@ -48,6 +48,9 @@ public class StepController {
     @FXML
     private ComboBox boxTargets;
 
+    @FXML
+    private TextField tfHead;
+
 
     @FXML
     public void initialize() {
@@ -120,6 +123,7 @@ public class StepController {
         }
 
         this.selectedStep.setTargetReference((String) this.boxTargets.getSelectionModel().getSelectedItem());
+        this.selectedStep.setDesiredHead(Double.valueOf(this.tfHead.getText()));
 
         this.lstSteps.setItems(null);
         this.lstSteps.setItems(FXCollections.observableArrayList(this.selectedRoute.getSteps()));
@@ -135,6 +139,7 @@ public class StepController {
         this.boxTargets.getSelectionModel().select(selectedStep.getTargetReference());
         this.tfX.setText(Integer.toString(selectedStep.getTargetX()));
         this.tfY.setText(Integer.toString(selectedStep.getTargetY()));
+        this.tfHead.setText(selectedStep.getDesiredHeadString());
     }
 
     public void setSelectedRoute(AutoRoute selectedRoute) {
