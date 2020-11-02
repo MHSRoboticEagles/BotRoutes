@@ -8,6 +8,7 @@ import io.BotConnector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,7 +88,7 @@ public class MainController {
             @Override
             public void onCoordinatePicked(AutoDot selected) {
                 ListView listView = (ListView) leftNav.getExpandedPane().getContent();
-                addStep(listView, selected);
+                addStep(listView, selected, currentRoute.getSteps().size());
             }
         });
     }
@@ -121,7 +122,7 @@ public class MainController {
                         mouseEvent.getClickCount() == 2){
                             AutoStep selectedStep = (AutoStep)lstSteps.getSelectionModel().getSelectedItem();
                             if (selectedStep != null){
-                                openStepEdit(selectedStep, route, lstSteps, false);
+                                openStepEdit(selectedStep, route, lstSteps, -1);
                             }
                         }
                         else if (mouseEvent.getButton() == MouseButton.PRIMARY){
@@ -153,15 +154,26 @@ public class MainController {
         MenuItem menuAdd = new MenuItem("Add");
         MenuItem menuDelete = new MenuItem("Delete");
 
+        MenuItem menuInsert = new MenuItem("Insert Before");
+
+        menuInsert.setOnAction((event) ->{
+            addStep(lstSteps, null, lstSteps.getSelectionModel().getSelectedIndex());
+        });
+
         menuDetail.setOnAction((event) -> {
             if (lstSteps.getSelectionModel().getSelectedItem() != null) {
                 AutoStep selectedStep = (AutoStep)lstSteps.getSelectionModel().getSelectedItem();
-                openStepEdit(selectedStep, currentRoute, lstSteps, false);
+                openStepEdit(selectedStep, currentRoute, lstSteps, -1);
             }
         });
 
         menuAdd.setOnAction((event) -> {
-            addStep(lstSteps, null);
+            int selectedIndex = lstSteps.getSelectionModel().getSelectedIndex() + 1;
+            if (selectedIndex == 0){
+                selectedIndex = currentRoute.getSteps().size();
+            }
+
+            addStep(lstSteps, null, selectedIndex);
         });
 
 
@@ -172,12 +184,12 @@ public class MainController {
 
             }
         });
-        routeListMenu.getItems().addAll(menuDetail, menuAdd, menuDelete);
+        routeListMenu.getItems().addAll(menuDetail, menuInsert, menuAdd, menuDelete);
 
         ContextMenu routeListMenuShort = new ContextMenu();
         MenuItem menuNew = new MenuItem("New");
         menuNew.setOnAction((event) -> {
-            addStep(lstSteps, null);
+            addStep(lstSteps, null, currentRoute.getSteps().size());
         });
         routeListMenuShort.getItems().addAll(menuNew);
 
@@ -191,11 +203,11 @@ public class MainController {
         });
     }
 
-    protected void addStep(ListView lstSteps, AutoDot selectedDot){
-        openStepEdit(this.routeController.initStep(currentRoute, selectedDot), currentRoute, lstSteps, true);
+    protected void addStep(ListView lstSteps, AutoDot selectedDot, int addIndex){
+        openStepEdit(this.routeController.initStep(currentRoute, selectedDot, addIndex), currentRoute, lstSteps, addIndex);
     }
 
-    protected void openStepEdit(AutoStep selectedStep, AutoRoute selectedRoute, ListView lstSteps, boolean addStep){
+    protected void openStepEdit(AutoStep selectedStep, AutoRoute selectedRoute, ListView lstSteps, int addIndex){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-step.fxml"));
         Parent parent = null;
         try {
@@ -205,7 +217,7 @@ public class MainController {
         }
         StepController dialogController = fxmlLoader.<StepController>getController();
         dialogController.setRouteController(this.routeController);
-        dialogController.setSelectedStep(selectedStep, addStep);
+        dialogController.setSelectedStep(selectedStep, addIndex);
         dialogController.setSelectedRoute(selectedRoute);
         dialogController.setLstSteps(lstSteps);
 

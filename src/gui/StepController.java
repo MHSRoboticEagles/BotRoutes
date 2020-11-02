@@ -25,7 +25,7 @@ public class StepController {
     private AutoStep selectedStep;
     private AutoRoute selectedRoute;
     private ListView lstSteps;
-    private boolean addStep = false;
+    private int addIndex = -1;
 
     @FXML
     private TextField tfWait;
@@ -85,9 +85,15 @@ public class StepController {
     protected void btnSaveClicked(ActionEvent event){
         try {
             updateStep();
-            if (addStep){
-                this.routeController.addStep(selectedRoute, selectedStep);
-                this.lstSteps.getItems().add(selectedStep);
+            if (addIndex >= 0){
+                boolean append = addIndex >= selectedRoute.getSteps().size();
+                this.routeController.addStep(selectedRoute, selectedStep, addIndex);
+                if (append) {
+                    this.lstSteps.getItems().add(selectedStep);
+                }
+                else{
+                    this.lstSteps.getItems().add(addIndex, selectedStep);
+                }
             }
             FileLoader.saveRoute(selectedRoute);
             closeStage(event);
@@ -129,9 +135,9 @@ public class StepController {
         this.lstSteps.setItems(FXCollections.observableArrayList(this.selectedRoute.getSteps()));
     }
 
-    public void setSelectedStep(AutoStep selectedStep, boolean addStep) {
+    public void setSelectedStep(AutoStep selectedStep, int addIndex) {
         this.selectedStep = selectedStep;
-        this.addStep = addStep;
+        this.addIndex = addIndex;
         this.tfSpeed.setText(String.format("%.2f", this.selectedStep.getTopSpeed()));
         this.tfWait.setText(Integer.toString(this.selectedStep.getWaitMS()));
         this.boxStrategy.getSelectionModel().select(selectedStep.getMoveStrategy());

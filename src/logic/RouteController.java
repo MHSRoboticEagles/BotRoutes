@@ -179,7 +179,7 @@ public class RouteController {
         this.routesChangeListener = routesChangeListener;
     }
 
-    public AutoStep initStep (AutoRoute route, AutoDot selectedDot){
+    public AutoStep initStep (AutoRoute route, AutoDot selectedDot, int addIndex){
         AutoStep step = new AutoStep();
         if (selectedDot != null){
             step.setTargetX(selectedDot.getX());
@@ -189,7 +189,10 @@ public class RouteController {
             step.setTargetX(route.getStartX());
             step.setTargetY(route.getStartY());
             if (route.getSteps().size() > 0) {
-                AutoStep last = route.getSteps().get(route.getSteps().size() - 1);
+                if (addIndex < 0 || addIndex >= route.getSteps().size()){
+                    addIndex = route.getSteps().size() - 1;
+                }
+                AutoStep last = route.getSteps().get(addIndex);
                 step.setTargetX(last.getTargetX());
                 step.setTargetY(last.getTargetY());
             }
@@ -197,8 +200,13 @@ public class RouteController {
         return step;
     }
 
-    public void addStep(AutoRoute route, AutoStep newStep){
-        route.getSteps().add(newStep);
+    public void addStep(AutoRoute route, AutoStep newStep, int index){
+        if (index >= route.getSteps().size()){
+            route.getSteps().add(newStep);
+        }
+        else {
+            route.getSteps().add(index, newStep);
+        }
         reconcileRoute(route);
         if (this.routesChangeListener != null){
             this.routesChangeListener.onStepAdded(route, newStep);
