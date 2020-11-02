@@ -152,4 +152,9 @@ public class AutoStep {
         return this.getTargetX() == s.getTargetX() &&
                 this.getTargetY() == s.getTargetY();
     }
+
+    public boolean isSameTarget(AutoDot dot){
+        return this.getTargetX() == dot.getX() &&
+                this.getTargetY() == dot.getY();
+    }
 }

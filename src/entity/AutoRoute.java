@@ -142,14 +142,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
         locationPointer.setX(this.getStartX());
         locationPointer.setY(this.getStartY());
 
-        int stepIndex = -1;
-        for (int i = 0; i < this.getSteps().size(); i++){
-            AutoStep s = this.getSteps().get(i);
-            if (s == step){
-                stepIndex = i;
-                break;
-            }
-        }
+        int stepIndex = findStepIndex(step);
 
         if (stepIndex > 0){
             AutoStep previous = this.getSteps().get(stepIndex - 1);
@@ -165,6 +158,18 @@ public class AutoRoute implements Comparable<AutoRoute> {
         }
 
         return locationPointer;
+    }
+
+    public int findStepIndex(AutoStep step){
+        int stepIndex = -1;
+        for (int i = 0; i < this.getSteps().size(); i++){
+            AutoStep s = this.getSteps().get(i);
+            if (s == step){
+                stepIndex = i;
+                break;
+            }
+        }
+        return stepIndex;
     }
 
     @Override

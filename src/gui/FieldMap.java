@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
@@ -38,15 +39,22 @@ public class FieldMap {
     }
 
     public void init(){
-        double height = mapFlow.getHeight();
         mapFlow.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                mapFlow.getScene().setCursor(Cursor.CROSSHAIR);
                 AutoDot selected = mouseClickToDot(mouseEvent);
                 String output= String.format("Inches: %d : %d", selected.getX(), selected.getY());
                 if (coordinateChangeListener != null){
                     coordinateChangeListener.onCoordinateChanged(selected, output);
                 }
+            }
+        });
+
+        mapFlow.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                mapFlow.getScene().setCursor(Cursor.DEFAULT);
             }
         });
 
@@ -339,6 +347,8 @@ public class FieldMap {
         displaySelectedRoute(selectedRoute);
 
         AutoDot locationPointer = selectedRoute.findLocationPointer(selectedStep);
+        AutoDot destination = inchesToPixels(new AutoDot(selectedStep.getTargetX(), selectedStep.getTargetY()));
+        boolean drawLine = !selectedStep.isSameTarget(locationPointer);
         AutoDot pixels = inchesToPixels(locationPointer);
         GraphicsContext gc = mapFlow.getGraphicsContext2D();
         DoubleProperty opacity  = new SimpleDoubleProperty();
@@ -358,9 +368,14 @@ public class FieldMap {
             public void handle(long now) {
                 gc.setFill(Color.YELLOWGREEN);
                 gc.fillOval(pixels.getX() - diam/2, pixels.getY() - diam/2, diam, diam);
+                if (drawLine){
+                    gc.fillOval(destination.getX() - diam/2, destination.getY() - diam/2, diam, diam);
+                }
                 gc.setFill(Color.DARKRED.deriveColor(0, 1, 1, opacity.get()));
-                gc.fillOval(pixels.getX() - diam/2, pixels.getY() - diam/2, diam, diam
-                );
+                gc.fillOval(pixels.getX() - diam/2, pixels.getY() - diam/2, diam, diam);
+                if (drawLine){
+                    gc.fillOval(destination.getX() - diam/2, destination.getY() - diam/2, diam, diam);
+                }
             }
         };
         timer.start();
