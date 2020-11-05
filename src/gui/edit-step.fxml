@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.CheckBox?>
@@ -36,7 +35,8 @@
                 <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Speed" />
-                        <TextField fx:id="tfSpeed" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="tfSpeed" HBox.hgrow="ALWAYS" maxWidth="100" />
+                        <CheckBox alignment="CENTER_RIGHT" fx:id="boxContinuous" HBox.hgrow="ALWAYS" text="Continuous" />
                     </children>
                     <padding>
                         <Insets right="30.0" />
@@ -46,7 +46,8 @@
                     <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Move Strategy" />
                         <ComboBox fx:id="boxStrategy" HBox.hgrow="ALWAYS" />
-                        <CheckBox alignment="CENTER_RIGHT" fx:id="boxContinuous" HBox.hgrow="ALWAYS" text="Continuous" />
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Bot Direction" />
+                        <ComboBox fx:id="boxDirection" HBox.hgrow="ALWAYS" />
                     </children>
                     <padding>
                         <Insets right="30.0" />

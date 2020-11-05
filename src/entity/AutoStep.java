@@ -9,6 +9,7 @@ public class AutoStep {
     private int targetY;
     private double topSpeed = 0.5;
     private MoveStrategy moveStrategy = MoveStrategy.Curve;
+    private RobotDirection robotDirection = RobotDirection.Optimal;
     private String action = NO_ACTION;
     private double desiredHead = -1;
     private boolean continuous = false;
@@ -120,6 +121,7 @@ public class AutoStep {
         clone.setTargetY(this.getTargetY());
         clone.setTopSpeed(this.getTopSpeed());
         clone.setMoveStrategy(this.getMoveStrategy());
+        clone.setRobotDirection(this.getRobotDirection());
         clone.setAction(this.getAction());
         clone.setDesiredHead(this.getDesiredHead());
         clone.setContinuous(this.isContinuous());
@@ -146,6 +148,14 @@ public class AutoStep {
 
     public void setTargetReference(String targetReference) {
         this.targetReference = targetReference;
+    }
+
+    public RobotDirection getRobotDirection() {
+        return robotDirection;
+    }
+
+    public void setRobotDirection(RobotDirection robotDirection) {
+        this.robotDirection = robotDirection;
     }
 
     public boolean isSameTarget(AutoStep s){

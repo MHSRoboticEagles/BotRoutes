@@ -1,9 +1,6 @@
 package gui;
 
-import entity.AutoRoute;
-import entity.AutoStep;
-import entity.BotActionObj;
-import entity.MoveStrategy;
+import entity.*;
 import io.FileLoader;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -43,6 +40,9 @@ public class StepController {
     private ComboBox boxStrategy;
 
     @FXML
+    private ComboBox boxDirection;
+
+    @FXML
     private ComboBox boxAction;
 
     @FXML
@@ -56,6 +56,7 @@ public class StepController {
     public void initialize() {
         try {
             boxStrategy.getItems().setAll(MoveStrategy.values());
+            boxDirection.getItems().setAll(RobotDirection.values());
             DecimalFormat format = new DecimalFormat( "#.0" );
             tfWait.setTextFormatter(new TextFormatter<Object>(c -> {
                 if ( c.getControlNewText().isEmpty() )
@@ -117,6 +118,7 @@ public class StepController {
         this.selectedStep.setWaitMS(Integer.valueOf(this.tfWait.getText()));
         this.selectedStep.setTopSpeed(Double.valueOf(this.tfSpeed.getText()));
         this.selectedStep.setMoveStrategy((MoveStrategy)this.boxStrategy.getSelectionModel().getSelectedItem());
+        this.selectedStep.setRobotDirection((RobotDirection) this.boxDirection.getSelectionModel().getSelectedItem());
         this.selectedStep.setTargetX(Integer.valueOf(this.tfX.getText()));
         this.selectedStep.setTargetY(Integer.valueOf(this.tfY.getText()));
         if (this.boxAction.getSelectionModel().getSelectedItem() != null) {
@@ -124,6 +126,9 @@ public class StepController {
             if (this.boxAction.getSelectionModel().getSelectedItem() instanceof BotActionObj) {
                 BotActionObj selAction = (BotActionObj) this.boxAction.getSelectionModel().getSelectedItem();
                 actionName = selAction.getMethodName();
+            }
+            else{
+                actionName = this.boxAction.getSelectionModel().getSelectedItem().toString();
             }
             this.selectedStep.setAction(actionName);
         }
@@ -141,6 +146,7 @@ public class StepController {
         this.tfSpeed.setText(String.format("%.2f", this.selectedStep.getTopSpeed()));
         this.tfWait.setText(Integer.toString(this.selectedStep.getWaitMS()));
         this.boxStrategy.getSelectionModel().select(selectedStep.getMoveStrategy());
+        this.boxDirection.getSelectionModel().select(selectedStep.getRobotDirection());
         this.boxAction.getSelectionModel().select(selectedStep.getAction());
         this.boxTargets.getSelectionModel().select(selectedStep.getTargetReference());
         this.tfX.setText(Integer.toString(selectedStep.getTargetX()));
