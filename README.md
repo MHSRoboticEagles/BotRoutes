@@ -1,2 +1,2 @@
 # BotRoutes
-This program is for designing and managing autonomous movement of odometry-enabled robots.
+This program helps design and manage autonomous movement of odometry-enabled robots.
