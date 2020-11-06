@@ -81,6 +81,10 @@ public class RouteController {
 
     public ArrayList<TargetReference> getTargetReferences() {
         ArrayList<TargetReference> refs = new ArrayList<>();
+        TargetReference dummy = new TargetReference();
+        dummy.setDotName("");
+        dummy.setDescription("None");
+        refs.add(dummy);
         for (AutoDot d : this.namedDots){
             TargetReference tr = new TargetReference(d);
             refs.add(tr);

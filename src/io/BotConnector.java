@@ -52,7 +52,7 @@ public class BotConnector {
 
     public static void publishRoute(AutoRoute route) throws Exception{
         String local = FileLoader.getRouteFilePath(route.getRouteName());
-        String command = String.format("%s push %s /sdcard/FIRST/routes/%s", getAdbCommand(), local.toString(), route.getRouteName());
+        String command = String.format("%s push %s /sdcard/FIRST/routes/%s.json", getAdbCommand(), local.toString(), route.getRouteName());
         executeCommand(command, CONNECT_TIMEOUT);
     }
 

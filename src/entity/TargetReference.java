@@ -5,6 +5,10 @@ import java.util.Objects;
 public class TargetReference extends AutoDot {
     private String description = "";
 
+    public TargetReference(){
+
+    }
+
     public TargetReference(AutoDot model){
         this.setDotName(model.getDotName());
         this.setX(model.getX());

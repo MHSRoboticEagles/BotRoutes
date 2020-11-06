@@ -6,10 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import logic.RouteController;
 
@@ -50,6 +47,9 @@ public class StepController {
 
     @FXML
     private TextField tfHead;
+
+    @FXML
+    private CheckBox boxContinuous;
 
 
     @FXML
@@ -133,8 +133,18 @@ public class StepController {
             this.selectedStep.setAction(actionName);
         }
 
-        this.selectedStep.setTargetReference((String) this.boxTargets.getSelectionModel().getSelectedItem());
+        if (this.boxTargets.getSelectionModel().getSelectedItem() != null){
+            if (this.boxTargets.getSelectionModel().getSelectedItem() instanceof TargetReference){
+                TargetReference tr = (TargetReference)this.boxTargets.getSelectionModel().getSelectedItem();
+                this.selectedStep.setTargetReference(tr.getDotName());
+            }
+        }
+        else{
+            this.selectedStep.setTargetReference("");
+        }
+
         this.selectedStep.setDesiredHead(Double.valueOf(this.tfHead.getText()));
+        this.selectedStep.setContinuous(this.boxContinuous.isSelected());
 
         this.lstSteps.setItems(null);
         this.lstSteps.setItems(FXCollections.observableArrayList(this.selectedRoute.getSteps()));
@@ -152,6 +162,7 @@ public class StepController {
         this.tfX.setText(Integer.toString(selectedStep.getTargetX()));
         this.tfY.setText(Integer.toString(selectedStep.getTargetY()));
         this.tfHead.setText(selectedStep.getDesiredHeadString());
+        this.boxContinuous.setSelected(selectedStep.isContinuous());
     }
 
     public void setSelectedRoute(AutoRoute selectedRoute) {
