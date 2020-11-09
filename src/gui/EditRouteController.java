@@ -73,13 +73,11 @@ public class EditRouteController {
         }
     }
 
-    public void setRouteController(RouteController routeController, AutoRoute route) {
+    public void setRouteController(RouteController routeController, AutoRoute route, boolean addRoute) {
         this.routeController = routeController;
         this.selectedRoute = route;
-        if (this.selectedRoute == null){
-            this.selectedRoute = this.routeController.initRoute();
-            add = true;
-        }
+        add = addRoute;
+
         boxName.getSelectionModel().select(this.selectedRoute.getName());
         tfIndex.setText(Integer.toString(this.selectedRoute.getNameIndex()));
         tfX.setText(Integer.toString(this.selectedRoute.getStartX()));

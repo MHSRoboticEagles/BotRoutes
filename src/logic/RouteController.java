@@ -12,6 +12,7 @@ public class RouteController {
     private ArrayList<BotActionObj> botActions = new ArrayList<>();
 
     private RoutesChangeListener routesChangeListener = null;
+    private DotsChangeListener dotsChangeListener = null;
 
     public RouteController(){
 
@@ -23,6 +24,7 @@ public class RouteController {
         this.routes = FileLoader.listRoutes();
         this.botActions = FileLoader.listBotActions();
         Collections.sort(this.routes);
+        Collections.sort(this.namedDots);
         Collections.sort(this.botActions);
         reconcileData();
     }
@@ -131,6 +133,13 @@ public class RouteController {
         return route;
     }
 
+    public AutoRoute cloneRoute(AutoRoute route){
+        int nextIndex = getMinAvailableIndex(route.getName());
+        AutoRoute clone = route.clone();
+        clone.setNameIndex(nextIndex);
+        return clone;
+    }
+
     public void addRoute(AutoRoute route){
         this.routes.add(route);
         Collections.sort(this.routes);
@@ -220,5 +229,31 @@ public class RouteController {
     public void deleteRouteStep(AutoRoute route, AutoStep step) throws Exception{
         route.getSteps().remove(step);
         FileLoader.saveRoute(route);
+    }
+
+    public void addDot(AutoDot dot){
+        this.namedDots.add(dot);
+        Collections.sort(this.namedDots);
+        fireDotUpdateEvent(dot);
+    }
+
+    public void fireDotUpdateEvent(AutoDot dot){
+        if(dotsChangeListener != null){
+            int index = 0;
+            if (dot != null) {
+                for (int i = 0; i < this.namedDots.size(); i++) {
+                    AutoDot d = this.namedDots.get(i);
+                    if (dot.equals(d)) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            dotsChangeListener.onDotUpdated(index);
+        }
+    }
+
+    public void setDotsChangeListener(DotsChangeListener dotsChangeListener) {
+        this.dotsChangeListener = dotsChangeListener;
     }
 }

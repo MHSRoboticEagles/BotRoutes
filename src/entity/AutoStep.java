@@ -7,7 +7,7 @@ public class AutoStep {
     private int waitMS = 0;
     private int targetX;
     private int targetY;
-    private double topSpeed = 0.5;
+    private double topSpeed = 0;
     private MoveStrategy moveStrategy = MoveStrategy.Curve;
     private RobotDirection robotDirection = RobotDirection.Optimal;
     private String action = NO_ACTION;
@@ -23,12 +23,13 @@ public class AutoStep {
             action = "None";
         }
 
-        description = String.format("%sAction: %s\n", description, action);
         if (moveStrategy == MoveStrategy.Spin){
-            description = String.format("%s%s to %.2f degree mark\n", description, moveStrategy, desiredHead);
+            description = String.format("%s%s to %.2f degrees. Speed %.1f\n", description, moveStrategy, desiredHead, topSpeed);
         }else {
-            description = String.format("%s%s to %s\n", description, moveStrategy, getDestination());
+            description = String.format("%s%s to %s. Speed %.1f\n", description, moveStrategy, getDestination(), topSpeed);
         }
+
+        description = String.format("%sAction: %s\n", description, action);
         return description;
     }
 

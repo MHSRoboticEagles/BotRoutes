@@ -153,6 +153,20 @@ public class FileLoader {
         return resutls;
     }
 
+    public static void saveDot(AutoDot dot) throws IOException {
+        String fileContents = dot.serialize();
+        ByteBuffer byteContents = charset.encode(fileContents);
+        File folder = getDotsFolder();
+        String fullName = String.format("%s.json", dot.getDotName());
+        FileOutputStream outputStream = new FileOutputStream(new File(folder, fullName));
+        try {
+            outputStream.write(byteContents.array(), 0, byteContents.limit());
+            outputStream.flush();
+        } finally {
+            outputStream.close();
+        }
+    }
+
     public static ArrayList<BotActionObj> listBotActions() throws Exception{
         Path homePath = getHomeFolder();
         File actionsFile = new File(homePath.toString(), BOT_ACTIONS_FILENAME);

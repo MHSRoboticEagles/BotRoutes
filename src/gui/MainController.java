@@ -142,10 +142,37 @@ public class MainController {
                 fieldMap.displaySelectedRoute(routes.get(selectedIndex));
                 currentRoute = routes.get(selectedIndex);
             }
+            addDotsPane();
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    protected void addDotsPane(){
+        TitledPane pane = new TitledPane("Coordinates" , new Label("Coordinates"));
+        leftNav.getPanes().add(pane);
+        ListView lstDots = new ListView();
+        lstDots.setItems(FXCollections.observableArrayList(this.routeController.getNamedDots()));
+        pane.setContent(lstDots);
+        lstDots.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == MouseButton.PRIMARY &&
+                        mouseEvent.getClickCount() == 2){
+                    AutoDot selectedDot = (AutoDot)lstDots.getSelectionModel().getSelectedItem();
+                    if (selectedDot != null){
+                        editDot(selectedDot);
+                    }
+                }
+                else if (mouseEvent.getButton() == MouseButton.PRIMARY){
+                    AutoDot selectedDot = (AutoDot)lstDots.getSelectionModel().getSelectedItem();
+                    if (selectedDot != null){
+                        fieldMap.drawSelectedDot(selectedDot);
+                    }
+                }
+            }
+        });
     }
 
     protected void initRouteListMenu(ListView lstSteps){
@@ -240,6 +267,7 @@ public class MainController {
                 btnConnect.setText("Disconnect");
                 btnSync.setDisable(false);
                 btnPush.setDisable(false);
+                showMessage("Connected", Alert.AlertType.INFORMATION);
             }
             else{
                 BotConnector.runDisconnect();
@@ -247,6 +275,7 @@ public class MainController {
                 btnConnect.setText("Connect");
                 btnSync.setDisable(true);
                 btnPush.setDisable(true);
+                showMessage("Disconnected", Alert.AlertType.INFORMATION);
             }
         }
         catch (Exception ex){
@@ -272,6 +301,7 @@ public class MainController {
     protected void pushConfigs(){
         try{
             BotConnector.publishRoute(currentRoute);
+            showMessage(String.format("Route %s pushed", currentRoute.getRouteName()), Alert.AlertType.INFORMATION);
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);
@@ -280,6 +310,16 @@ public class MainController {
 
     @FXML
     protected void addRoute() {
+        addRoute(this.routeController.initRoute(), "New Route");
+    }
+
+    @FXML
+    protected void cloneRoute(){
+        AutoRoute clone = this.routeController.cloneRoute(currentRoute);
+        addRoute(clone, "Clone Route");
+    }
+
+    private void addRoute(AutoRoute route, String title){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-route.fxml"));
         Parent parent = null;
         try {
@@ -288,7 +328,7 @@ public class MainController {
             e.printStackTrace();
         }
         EditRouteController editRouteController = fxmlLoader.<EditRouteController>getController();
-        editRouteController.setRouteController(this.routeController, null);
+        editRouteController.setRouteController(this.routeController, route, true);
 
 
         Scene scene = new Scene(parent, 400, 250);
@@ -296,9 +336,11 @@ public class MainController {
         stage.initOwner(leftNav.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
-        stage.setTitle("New Route");
+        stage.setTitle(title);
         stage.showAndWait();
     }
+
+
 
     @FXML
     protected void editRoute() {
@@ -310,7 +352,7 @@ public class MainController {
             e.printStackTrace();
         }
         EditRouteController editRouteController = fxmlLoader.<EditRouteController>getController();
-        editRouteController.setRouteController(this.routeController, this.currentRoute);
+        editRouteController.setRouteController(this.routeController, this.currentRoute, false);
 
 
         Scene scene = new Scene(parent, 400, 250);
@@ -356,6 +398,27 @@ public class MainController {
                 showMessage(ex.getMessage(), Alert.AlertType.ERROR);
             }
         }
+    }
+
+    protected void editDot(AutoDot dot) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-dot.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        EditDotController editDotController = fxmlLoader.<EditDotController>getController();
+        editDotController.setRouteController(this.routeController, dot, false);
+
+
+        Scene scene = new Scene(parent, 400, 250);
+        Stage stage = new Stage();
+        stage.initOwner(leftNav.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setTitle("Edit dot");
+        stage.showAndWait();
     }
 
 

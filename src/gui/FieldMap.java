@@ -101,6 +101,21 @@ public class FieldMap {
         }
     }
 
+    public void drawSelectedDot(AutoDot dot){
+        GraphicsContext gc = mapFlow.getGraphicsContext2D();
+        if (this.timeline != null) {
+            this.timeline.stop();
+            if (this.timer != null) {
+                this.timer.stop();
+            }
+        }
+        gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
+        drawFieldOutline(gc);
+        if (dot != null){
+            drawDot(dot, gc);
+        }
+    }
+
     protected void drawFieldOutline(GraphicsContext gc){
         double height = mapFlow.getHeight();
         double width = mapFlow.getWidth();
@@ -149,6 +164,13 @@ public class FieldMap {
             }
             gc.stroke();
         }
+    }
+
+    protected void drawDot(AutoDot dot, GraphicsContext gc){
+        double height = mapFlow.getHeight();
+        double x = dot.getX()*MAP_SCALE;
+        double y = height - dot.getY()*MAP_SCALE;
+        gc.fillOval(x - diam/2, y - diam/2, diam, diam);
     }
 
     private void drawFieldElements(GraphicsContext gc, AutoRoute selectedRoute) {
