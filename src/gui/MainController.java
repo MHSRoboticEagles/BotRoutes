@@ -32,6 +32,7 @@ public class MainController {
     private AutoRoute currentRoute;
     boolean connected = false;
     boolean dotsMode = false;
+    ListView lstDots = new ListView();
 
     @FXML
     private Button btnConnect;
@@ -39,6 +40,15 @@ public class MainController {
     private Button btnSync;
     @FXML
     private Button btnPush;
+
+    @FXML
+    private Button btnAdd;
+    @FXML
+    private Button btnClone;
+    @FXML
+    private Button btnEdit;
+    @FXML
+    private Button btnDelete;
 
     @FXML
     private Accordion leftNav;
@@ -160,7 +170,6 @@ public class MainController {
     protected void addDotsPane(){
         TitledPane pane = new TitledPane("Coordinates" , new Label("Coordinates"));
         leftNav.getPanes().add(pane);
-        ListView lstDots = new ListView();
         ObservableList<AutoDot> dots = this.routeController.getNamedDots();
         lstDots.setItems(dots);
         pane.setContent(lstDots);
@@ -198,6 +207,10 @@ public class MainController {
                         lstDots.getSelectionModel().select(0);
                     }
                 }
+                btnAdd.setDisable(dotsMode);
+                btnDelete.setDisable(dotsMode);
+                btnEdit.setDisable(dotsMode);
+                btnClone.setDisable(dotsMode);
             }
         });
     }
@@ -360,8 +373,17 @@ public class MainController {
     @FXML
     protected void pushConfigs(){
         try{
-            BotConnector.publishRoute(currentRoute);
-            showMessage(String.format("Route %s pushed", currentRoute.getRouteName()), Alert.AlertType.INFORMATION);
+            if (dotsMode){
+                if (lstDots.getSelectionModel().getSelectedItem() != null) {
+                    AutoDot selectedDot = (AutoDot) lstDots.getSelectionModel().getSelectedItem();
+                    BotConnector.publishDot(selectedDot);
+                    showMessage(String.format("Coordinate %s pushed", selectedDot.getDotName()), Alert.AlertType.INFORMATION);
+                }
+            }
+            else {
+                BotConnector.publishRoute(currentRoute);
+                showMessage(String.format("Route %s pushed", currentRoute.getRouteName()), Alert.AlertType.INFORMATION);
+            }
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);

@@ -1,5 +1,6 @@
 package io;
 
+import entity.AutoDot;
 import entity.AutoRoute;
 
 import java.io.BufferedReader;
@@ -53,6 +54,12 @@ public class BotConnector {
     public static void publishRoute(AutoRoute route) throws Exception{
         String local = FileLoader.getRouteFilePath(route.getRouteName());
         String command = String.format("%s push %s /sdcard/FIRST/routes/%s.json", getAdbCommand(), local.toString(), route.getRouteName());
+        executeCommand(command, CONNECT_TIMEOUT);
+    }
+
+    public static void publishDot(AutoDot dot) throws Exception{
+        String local = FileLoader.getDotFilePath(dot.getDotName());
+        String command = String.format("%s push %s /sdcard/FIRST/dots/%s.json", getAdbCommand(), local.toString(), dot.getDotName());
         executeCommand(command, CONNECT_TIMEOUT);
     }
 
