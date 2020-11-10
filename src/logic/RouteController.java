@@ -2,17 +2,18 @@ package logic;
 
 import entity.*;
 import io.FileLoader;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class RouteController {
-    private ArrayList<AutoDot> namedDots = new ArrayList<>();
+    private ObservableList<AutoDot> namedDots = null;
     private ArrayList<AutoRoute> routes = new ArrayList<>();
     private ArrayList<BotActionObj> botActions = new ArrayList<>();
 
     private RoutesChangeListener routesChangeListener = null;
-    private DotsChangeListener dotsChangeListener = null;
 
     public RouteController(){
 
@@ -20,7 +21,7 @@ public class RouteController {
 
     public void init() throws Exception{
         FileLoader.ensureAppDirectories();
-        this.namedDots = FileLoader.listDots();
+        this.namedDots = FXCollections.observableArrayList(FileLoader.listDots());
         this.routes = FileLoader.listRoutes();
         this.botActions = FileLoader.listBotActions();
         Collections.sort(this.routes);
@@ -77,7 +78,7 @@ public class RouteController {
         return null;
     }
 
-    public ArrayList<AutoDot> getNamedDots() {
+    public ObservableList<AutoDot> getNamedDots() {
         return namedDots;
     }
 
@@ -106,10 +107,6 @@ public class RouteController {
         return refs;
     }
 
-    public void setNamedDots(ArrayList<AutoDot> namedDots) {
-        this.namedDots = namedDots;
-    }
-
     public ArrayList<AutoRoute> getRoutes() {
         return routes;
     }
@@ -131,6 +128,25 @@ public class RouteController {
         route.setName(AutoRoute.NAME_BLUE);
         route.setNameIndex(getMinAvailableIndex(AutoRoute.NAME_BLUE));
         return route;
+    }
+
+    public AutoDot initDot(){
+        AutoDot dot = new AutoDot();
+        int asciiCode = AutoDot.asciiA;
+        for(int i = 0; i < this.namedDots.size(); i++){
+            AutoDot d = this.namedDots.get(i);
+            int ascii = d.getDotName().charAt(0);
+            if (ascii != asciiCode){
+                break;
+            }
+            asciiCode++;
+        }
+        // in an unlikely scenario that we ran out of letters, overwrite Z
+        if (asciiCode > AutoDot.asciiZ){
+            asciiCode = AutoDot.asciiZ;
+        }
+        dot.setDotName(Character.toString((char)asciiCode));
+        return dot;
     }
 
     public AutoRoute cloneRoute(AutoRoute route){
@@ -188,6 +204,16 @@ public class RouteController {
         }
     }
 
+    public void deleteDot(AutoDot dot) throws Exception{
+        for(AutoDot d : namedDots){
+            if(d.getDotName().equals(dot.getDotName())){
+                namedDots.remove(d);
+                FileLoader.deleteDotFile(dot.getDotName());
+                break;
+            }
+        }
+    }
+
     public void setRoutesChangeListener(RoutesChangeListener routesChangeListener) {
         this.routesChangeListener = routesChangeListener;
     }
@@ -234,26 +260,6 @@ public class RouteController {
     public void addDot(AutoDot dot){
         this.namedDots.add(dot);
         Collections.sort(this.namedDots);
-        fireDotUpdateEvent(dot);
     }
 
-    public void fireDotUpdateEvent(AutoDot dot){
-        if(dotsChangeListener != null){
-            int index = 0;
-            if (dot != null) {
-                for (int i = 0; i < this.namedDots.size(); i++) {
-                    AutoDot d = this.namedDots.get(i);
-                    if (dot.equals(d)) {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-            dotsChangeListener.onDotUpdated(index);
-        }
-    }
-
-    public void setDotsChangeListener(DotsChangeListener dotsChangeListener) {
-        this.dotsChangeListener = dotsChangeListener;
-    }
 }

@@ -8,7 +8,7 @@ import io.BotConnector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +31,7 @@ public class MainController {
     private FieldMap fieldMap;
     private AutoRoute currentRoute;
     boolean connected = false;
+    boolean dotsMode = false;
 
     @FXML
     private Button btnConnect;
@@ -87,8 +88,15 @@ public class MainController {
 
             @Override
             public void onCoordinatePicked(AutoDot selected) {
-                ListView listView = (ListView) leftNav.getExpandedPane().getContent();
-                addStep(listView, selected, currentRoute.getSteps().size());
+                if (!dotsMode) {
+                    ListView listView = (ListView) leftNav.getExpandedPane().getContent();
+                    addStep(listView, selected, currentRoute.getSteps().size());
+                }
+                else{
+                    AutoDot dot = routeController.initDot();
+                    selected.setDotName(dot.getDotName());
+                    addDot(selected);
+                }
             }
         });
     }
@@ -136,13 +144,13 @@ public class MainController {
                 initRouteListMenu(lstSteps);
 
             }
+            addDotsPane();
             if (leftNav.getPanes().size() > 0) {
                 leftNav.setExpandedPane(leftNav.getPanes().get(selectedIndex));
                 lblName.setText(routes.get(selectedIndex).getRouteName());
                 fieldMap.displaySelectedRoute(routes.get(selectedIndex));
                 currentRoute = routes.get(selectedIndex);
             }
-            addDotsPane();
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);
@@ -153,7 +161,8 @@ public class MainController {
         TitledPane pane = new TitledPane("Coordinates" , new Label("Coordinates"));
         leftNav.getPanes().add(pane);
         ListView lstDots = new ListView();
-        lstDots.setItems(FXCollections.observableArrayList(this.routeController.getNamedDots()));
+        ObservableList<AutoDot> dots = this.routeController.getNamedDots();
+        lstDots.setItems(dots);
         pane.setContent(lstDots);
         lstDots.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -172,6 +181,57 @@ public class MainController {
                     }
                 }
             }
+        });
+        initDotListMenu(lstDots);
+        if (dots.size() > 0){
+            lblName.setText(dots.get(0).getDotName());
+            fieldMap.drawSelectedDot(dots.get(0));
+        }
+        pane.expandedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldVal, Boolean newVal) {
+                dotsMode = newVal;
+                if (newVal){
+                    if (dots.size() > 0){
+                        lblName.setText(dots.get(0).getDotName());
+                        fieldMap.drawSelectedDot(dots.get(0));
+                        lstDots.getSelectionModel().select(0);
+                    }
+                }
+            }
+        });
+    }
+
+    protected void initDotListMenu(ListView lstDots){
+        ContextMenu dotListMenu = new ContextMenu();
+        MenuItem menuDetail = new MenuItem("Edit");
+        MenuItem menuAdd = new MenuItem("Add");
+        MenuItem menuDelete = new MenuItem("Delete");
+
+        menuDetail.setOnAction((event) -> {
+            if (lstDots.getSelectionModel().getSelectedItem() != null) {
+                AutoDot selectedDot = (AutoDot)lstDots.getSelectionModel().getSelectedItem();
+                editDot(selectedDot);
+            }
+        });
+
+        menuAdd.setOnAction((event) -> {
+            AutoDot dot = this.routeController.initDot();
+            addDot(dot);
+        });
+
+
+        menuDelete.setOnAction((event) -> {
+            if (lstDots.getSelectionModel().getSelectedItem() != null) {
+                AutoDot selectedDot = (AutoDot)lstDots.getSelectionModel().getSelectedItem();
+                deleteDot(selectedDot);
+
+            }
+        });
+        dotListMenu.getItems().addAll(menuDetail, menuAdd, menuDelete);
+
+        lstDots.setOnContextMenuRequested(event -> {
+            dotListMenu.show(lstDots, event.getScreenX(), event.getScreenY());
         });
     }
 
@@ -382,6 +442,23 @@ public class MainController {
         }
     }
 
+    protected void deleteDot(AutoDot selectedDot){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedDot.getDotName() + " ?", ButtonType.YES, ButtonType.NO);
+        if (leftNav != null && leftNav.getScene() != null) {
+            alert.initOwner(leftNav.getScene().getWindow());
+        }
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            try {
+                this.routeController.deleteDot(selectedDot);
+            }
+            catch (Exception ex){
+                showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
     protected void deleteStep(AutoStep step, ListView lstSteps){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + step.toString() + " ?", ButtonType.YES, ButtonType.NO);
         if (leftNav != null && leftNav.getScene() != null) {
@@ -398,6 +475,27 @@ public class MainController {
                 showMessage(ex.getMessage(), Alert.AlertType.ERROR);
             }
         }
+    }
+
+    protected void addDot(AutoDot dot) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-dot.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        EditDotController editDotController = fxmlLoader.<EditDotController>getController();
+        editDotController.setRouteController(this.routeController, dot, true);
+
+
+        Scene scene = new Scene(parent, 400, 250);
+        Stage stage = new Stage();
+        stage.initOwner(leftNav.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setTitle("New coordinate");
+        stage.showAndWait();
     }
 
     protected void editDot(AutoDot dot) {
@@ -417,7 +515,7 @@ public class MainController {
         stage.initOwner(leftNav.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
-        stage.setTitle("Edit dot");
+        stage.setTitle("Edit coordinate");
         stage.showAndWait();
     }
 

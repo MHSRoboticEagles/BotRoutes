@@ -111,6 +111,7 @@ public class FieldMap {
         }
         gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
         drawFieldOutline(gc);
+        drawDefaultFieldElements(gc);
         if (dot != null){
             drawDot(dot, gc);
         }
@@ -167,6 +168,7 @@ public class FieldMap {
     }
 
     protected void drawDot(AutoDot dot, GraphicsContext gc){
+        gc.setFill(Color.YELLOWGREEN);
         double height = mapFlow.getHeight();
         double x = dot.getX()*MAP_SCALE;
         double y = height - dot.getY()*MAP_SCALE;
@@ -180,6 +182,10 @@ public class FieldMap {
         else{
             drawFieldElementsBlue(gc);
         }
+    }
+
+    private void drawDefaultFieldElements(GraphicsContext gc) {
+            drawFieldElementsRed(gc);
     }
 
     private void drawFieldElementsBlue(GraphicsContext gc){

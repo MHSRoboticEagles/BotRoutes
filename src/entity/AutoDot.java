@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 public class AutoDot implements Comparable<AutoDot>{
     private String dotName = "A";
+    public static int asciiA = 65;
+    public static int asciiZ = 90;
     private boolean selected;
     private int x;
     private int y;

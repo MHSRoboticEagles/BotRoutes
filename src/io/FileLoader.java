@@ -123,6 +123,11 @@ public class FileLoader {
         return String.format("%s/%s.json", folder.toString(), routeName);
     }
 
+    public static String getDotFilePath(String dotName){
+        Path folder = getDotFolder();
+        return String.format("%s/%s.json", folder.toString(), dotName);
+    }
+
     public static void deleteRouteFile(String routeName) throws Exception{
         Path path = Paths.get(getRouteFilePath(routeName));
         try {
@@ -164,6 +169,16 @@ public class FileLoader {
             outputStream.flush();
         } finally {
             outputStream.close();
+        }
+    }
+
+    public static void deleteDotFile(String dotName) throws Exception{
+        Path path = Paths.get(getDotFilePath(dotName));
+        try {
+            Files.delete(path);
+        }
+        catch (Exception ex){
+            throw new Exception(String.format("Cannot delete file %s. %s", path.toString(), ex.getMessage()));
         }
     }
 
