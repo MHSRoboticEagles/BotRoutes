@@ -184,11 +184,14 @@ public class FileLoader {
 
     public static ArrayList<BotActionObj> listBotActions() throws Exception{
         Path homePath = getHomeFolder();
+        ArrayList<BotActionObj> actions = new ArrayList<>();
         File actionsFile = new File(homePath.toString(), BOT_ACTIONS_FILENAME);
-        String content = Files.readString(Path.of(actionsFile.toURI()), StandardCharsets.US_ASCII);
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<BotActionObj>>() {}.getType();
-        ArrayList<BotActionObj> actions = gson.fromJson(content, listType);
+        if (actionsFile.exists()) {
+            String content = Files.readString(Path.of(actionsFile.toURI()), StandardCharsets.US_ASCII);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<BotActionObj>>() {}.getType();
+            actions = gson.fromJson(content, listType);
+        }
 
         return actions;
     }
