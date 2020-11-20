@@ -1,7 +1,6 @@
 package entity;
 
 public enum MoveStrategy {
-    None,
     Curve,
     Diag,
     Spin,
@@ -9,5 +8,7 @@ public enum MoveStrategy {
     SpinNStraight,
     Strafe,
     Straight,
-    Auto
+    StraightRelative,
+    Auto,
+    None
 }

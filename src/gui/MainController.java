@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainController {
-    RouteController routeController = new RouteController();
+    RouteController routeController = null;
     private FieldMap fieldMap;
     private AutoRoute currentRoute;
     boolean connected = false;
@@ -67,6 +67,16 @@ public class MainController {
         try {
             btnSync.setDisable(true);
             btnPush.setDisable(true);
+            initController();
+        }
+        catch (Exception ex){
+            showMessage(ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    protected void initController(){
+        try {
+            routeController = new RouteController();
             routeController.init();
             initFieldMap();
             initRouteList(0);
@@ -363,7 +373,7 @@ public class MainController {
             BotConnector.pullDots();
             BotConnector.pullBotActions();
             BotConnector.pullBotConfig();
-            initRouteList(0);
+            initController();
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);

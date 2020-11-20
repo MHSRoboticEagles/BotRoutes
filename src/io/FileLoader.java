@@ -185,6 +185,12 @@ public class FileLoader {
     public static ArrayList<BotActionObj> listBotActions() throws Exception{
         Path homePath = getHomeFolder();
         ArrayList<BotActionObj> actions = new ArrayList<>();
+        BotActionObj dummy = new BotActionObj();
+        dummy.setDescription("None");
+        dummy.setMethodName("");
+        dummy.setReturnRef("");
+        dummy.setGeo(false);
+        actions.add(dummy);
         File actionsFile = new File(homePath.toString(), BOT_ACTIONS_FILENAME);
         if (actionsFile.exists()) {
             String content = Files.readString(Path.of(actionsFile.toURI()), StandardCharsets.US_ASCII);

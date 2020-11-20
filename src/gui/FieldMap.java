@@ -1,9 +1,6 @@
 package gui;
 
-import entity.AutoDot;
-import entity.AutoRoute;
-import entity.AutoStep;
-import entity.CoordinateChangeListener;
+import entity.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -23,6 +20,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.awt.*;
 
 public class FieldMap {
     private Canvas mapFlow;
@@ -157,14 +156,40 @@ public class FieldMap {
             double startY = height - selectedRoute.getStartY() * MAP_SCALE;
             gc.fillOval(startX - diam/2, startY - diam/2, diam, diam);
             gc.moveTo(startX, startY);
-            for(AutoStep step: selectedRoute.getSteps()){
-                double x = step.getTargetX()*MAP_SCALE;
-                double y = height - step.getTargetY()*MAP_SCALE;
+            for(int i = 0; i < selectedRoute.getSteps().size(); i++){
+                AutoStep step = selectedRoute.getSteps().get(i);
+                Point previousTarget = new Point(selectedRoute.getStartX(), selectedRoute.getStartY());
+                if (i > 0){
+                    AutoStep prevStep = selectedRoute.getSteps().get(i-1);
+                    previousTarget = new Point(prevStep.getTargetX(),prevStep.getTargetY());
+                }
+                Point target  = getCoordinate(step, previousTarget);
+                double x = target.getX();
+                double y = target.getY();
                 gc.lineTo(x, y);
                 gc.fillOval(x - diam/2, y - diam/2, diam, diam);
             }
             gc.stroke();
         }
+    }
+
+    private Point getCoordinate(AutoStep step, Point previousTarget){
+        double height = mapFlow.getHeight();
+        Point target = new Point();
+        if (step.getMoveStrategy() == MoveStrategy.StraightRelative){
+            if (step.getRobotDirection() == RobotDirection.Forward){
+                target.x = (int)(previousTarget.getX() + step.getTargetX());
+            }
+            else{
+                target.x = (int)(previousTarget.getX() - step.getTargetX());
+            }
+            target.y= (int)(previousTarget.getY());
+        }
+        else {
+            target.x = step.getTargetX() * MAP_SCALE;
+            target.y = (int) (height - step.getTargetY() * MAP_SCALE);
+        }
+        return target;
     }
 
     protected void drawDot(AutoDot dot, GraphicsContext gc){
