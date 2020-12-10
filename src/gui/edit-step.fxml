@@ -16,6 +16,16 @@
             <children>
                 <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Condition" />
+                        <ComboBox fx:id="boxConditionAction" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="tfConditionValue" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Wait  (ms)" />
                         <TextField fx:id="tfWait" HBox.hgrow="ALWAYS" />
                     </children>

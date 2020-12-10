@@ -1,9 +1,6 @@
 package gui;
 
-import entity.AutoDot;
-import entity.AutoRoute;
-import entity.AutoStep;
-import entity.CoordinateChangeListener;
+import entity.*;
 import io.BotConnector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -374,6 +371,8 @@ public class MainController {
             BotConnector.pullBotActions();
             BotConnector.pullBotConfig();
             initController();
+            BotConnector.pullLogs();
+//            BotConnector.pullConfigs();
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);

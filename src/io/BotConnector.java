@@ -51,6 +51,18 @@ public class BotConnector {
         executeCommand(command, CONNECT_TIMEOUT);
     }
 
+    public static void pullLogs() throws Exception{
+        Path local = FileLoader.getLogFolder();
+        String command = String.format("%s pull /sdcard/FIRST/matchlogs/. %s", getAdbCommand(), local.toString());
+        executeCommand(command, CONNECT_TIMEOUT);
+    }
+
+    public static void pullConfigs() throws Exception{
+        Path local = FileLoader.getConfigFolder();
+        String command = String.format("%s pull /sdcard/FIRST/*.xml %s", getAdbCommand(), local.toString());
+        executeCommand(command, CONNECT_TIMEOUT);
+    }
+
     public static void publishRoute(AutoRoute route) throws Exception{
         String local = FileLoader.getRouteFilePath(route.getRouteName());
         String command = String.format("%s push %s /sdcard/FIRST/routes/%s.json", getAdbCommand(), local.toString(), route.getRouteName());

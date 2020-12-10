@@ -23,6 +23,8 @@ public class FileLoader {
     private static final String HOME_FOLDER_PATH = "user.home";
     private static final String ROOT_FOLDER = "botroutes";
     private static final String ROUTE_FOLDER = "routes";
+    private static final String LOG_FOLDER = "logs";
+    private static final String CONFIG_FOLDER = "configs";
     private static final String DOT_FOLDER = "dots";
     public static final String BOT_ACTIONS_FILENAME = "bot-actions.json";
     private static final String HOME_FOLDER = System.getProperty(HOME_FOLDER_PATH);
@@ -34,6 +36,10 @@ public class FileLoader {
             ensureDirectory(getRouteFolder());
 
             ensureDirectory(getDotFolder());
+
+            ensureDirectory(getLogFolder());
+
+            ensureDirectory(getConfigFolder());
         }
         catch (Exception ex){
             throw new Exception("Unable to initialize directories", ex);
@@ -53,6 +59,16 @@ public class FileLoader {
     public static Path getDotFolder(){
         Path pathDots = Paths.get(HOME_FOLDER, ROOT_FOLDER, DOT_FOLDER);
         return pathDots;
+    }
+
+    public static Path getLogFolder(){
+        Path pathLogs = Paths.get(HOME_FOLDER, ROOT_FOLDER, LOG_FOLDER);
+        return pathLogs;
+    }
+
+    public static Path getConfigFolder(){
+        Path pathConfig = Paths.get(HOME_FOLDER, ROOT_FOLDER, CONFIG_FOLDER);
+        return pathConfig;
     }
 
     public static void ensureDirectory(Path dirPath) throws Exception {
@@ -190,7 +206,6 @@ public class FileLoader {
         dummy.setMethodName("");
         dummy.setReturnRef("");
         dummy.setGeo(false);
-        actions.add(dummy);
         File actionsFile = new File(homePath.toString(), BOT_ACTIONS_FILENAME);
         if (actionsFile.exists()) {
             String content = Files.readString(Path.of(actionsFile.toURI()), StandardCharsets.US_ASCII);
@@ -198,6 +213,7 @@ public class FileLoader {
             Type listType = new TypeToken<ArrayList<BotActionObj>>() {}.getType();
             actions = gson.fromJson(content, listType);
         }
+        actions.add(dummy);
 
         return actions;
     }

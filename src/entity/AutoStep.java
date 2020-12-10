@@ -14,6 +14,8 @@ public class AutoStep {
     private double desiredHead = -1;
     private boolean continuous = false;
     private String targetReference = "";
+    private String conditionValue = "";
+    private String conditionFunction = "";
 
     @Override
     public String toString() {
@@ -127,6 +129,8 @@ public class AutoStep {
         clone.setDesiredHead(this.getDesiredHead());
         clone.setContinuous(this.isContinuous());
         clone.setTargetReference(this.getTargetReference());
+        clone.setConditionFunction(this.getConditionFunction());
+        clone.setConditionValue(this.getConditionValue());
         return clone;
     }
 
@@ -167,5 +171,21 @@ public class AutoStep {
     public boolean isSameTarget(AutoDot dot){
         return this.getTargetX() == dot.getX() &&
                 this.getTargetY() == dot.getY();
+    }
+
+    public String getConditionValue() {
+        return conditionValue;
+    }
+
+    public void setConditionValue(String conditionValue) {
+        this.conditionValue = conditionValue;
+    }
+
+    public String getConditionFunction() {
+        return conditionFunction;
+    }
+
+    public void setConditionFunction(String conditionFunction) {
+        this.conditionFunction = conditionFunction;
     }
 }

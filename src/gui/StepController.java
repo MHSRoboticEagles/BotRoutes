@@ -22,6 +22,12 @@ public class StepController {
     private int addIndex = -1;
 
     @FXML
+    private ComboBox boxConditionAction;
+
+    @FXML
+    private TextField tfConditionValue;
+
+    @FXML
     private TextField tfWait;
 
     @FXML
@@ -133,6 +139,19 @@ public class StepController {
             this.selectedStep.setAction(actionName);
         }
 
+        this.selectedStep.setConditionValue(this.tfConditionValue.getText());
+        if (this.boxConditionAction.getSelectionModel().getSelectedItem() != null) {
+            String actionName = "";
+            if (this.boxConditionAction.getSelectionModel().getSelectedItem() instanceof BotActionObj) {
+                BotActionObj selAction = (BotActionObj) this.boxConditionAction.getSelectionModel().getSelectedItem();
+                actionName = selAction.getMethodName();
+            }
+            else{
+                actionName = this.boxConditionAction.getSelectionModel().getSelectedItem().toString();
+            }
+            this.selectedStep.setConditionFunction(actionName);
+        }
+
         if (this.boxTargets.getSelectionModel().getSelectedItem() != null){
             if (this.boxTargets.getSelectionModel().getSelectedItem() instanceof TargetReference){
                 TargetReference tr = (TargetReference)this.boxTargets.getSelectionModel().getSelectedItem();
@@ -162,6 +181,8 @@ public class StepController {
         this.tfX.setText(Integer.toString(selectedStep.getTargetX()));
         this.tfY.setText(Integer.toString(selectedStep.getTargetY()));
         this.tfHead.setText(selectedStep.getDesiredHeadString());
+        this.tfConditionValue.setText(selectedStep.getConditionValue());
+        this.boxConditionAction.getSelectionModel().select(selectedStep.getConditionFunction());
         this.boxContinuous.setSelected(selectedStep.isContinuous());
     }
 
@@ -176,6 +197,7 @@ public class StepController {
     public void setRouteController(RouteController routeController) {
         this.routeController = routeController;
         boxAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
+        boxConditionAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
         boxTargets.setItems(FXCollections.observableArrayList(routeController.getTargetReferences()));
     }
 }
