@@ -137,7 +137,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
         this.lastRunTime = lastRunTime;
     }
 
-    public AutoDot findLocationPointer(AutoStep step){
+    public AutoDot findLocationPointer(AutoStep step, String condition){
         AutoDot locationPointer = new AutoDot();
         locationPointer.setX(this.getStartX());
         locationPointer.setY(this.getStartY());
@@ -145,7 +145,19 @@ public class AutoRoute implements Comparable<AutoRoute> {
         int stepIndex = findStepIndex(step);
 
         if (stepIndex > 0){
-            AutoStep previous = this.getSteps().get(stepIndex - 1);
+            int previousIndex = stepIndex - 1;
+            AutoStep previous = this.getSteps().get(previousIndex);
+            while (!stepApplies(previous, condition)){
+                if (previousIndex > 0){
+                    previousIndex--;
+                }
+                previous = this.getSteps().get(stepIndex - 1);
+                if (previousIndex == 0){
+                    break;
+                }
+            }
+
+
             if (previous.isSameTarget(step)){
                 locationPointer.setX(step.getTargetX());
                 locationPointer.setY(step.getTargetY());
@@ -158,6 +170,10 @@ public class AutoRoute implements Comparable<AutoRoute> {
         }
 
         return locationPointer;
+    }
+
+    public boolean stepApplies(AutoStep step, String condition){
+        return !step.hasCondition() || (step.hasCondition() && step.getConditionValue().equals(condition));
     }
 
     public int findStepIndex(AutoStep step){

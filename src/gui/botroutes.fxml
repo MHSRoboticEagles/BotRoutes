@@ -24,7 +24,16 @@
             </Accordion>
             <VBox prefWidth="600" alignment="TOP_CENTER">
                <children>
-                  <Label fx:id="lblName" textAlignment="CENTER" text="Name goes here"/>
+                  <HBox alignment="CENTER_LEFT">
+                     <Label fx:id="lblName" textAlignment="CENTER" text="Name goes here"/>
+                     <ToolBar fx:id="barConditions" prefHeight="40.0">
+                        <items>
+                           <ToggleButton fx:id="btnA" mnemonicParsing="false" text="A" onMouseClicked="#onSelectA" />
+                           <ToggleButton fx:id="btnB" mnemonicParsing="false" text="B" onMouseClicked="#onSelectB" />
+                           <ToggleButton fx:id="btnC" mnemonicParsing="false" text="C" onMouseClicked="#onSelectC" />
+                        </items>
+                     </ToolBar>
+                  </HBox>
                   <HBox alignment="CENTER" prefHeight="576" prefWidth="384" styleClass="field-canvas">
                      <children>
                         <Canvas fx:id="mapFlow" height="576" width="384" />

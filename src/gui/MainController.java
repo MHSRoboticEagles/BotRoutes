@@ -15,6 +15,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.RouteController;
@@ -30,6 +31,7 @@ public class MainController {
     boolean connected = false;
     boolean dotsMode = false;
     ListView lstDots = new ListView();
+    private String conditionValue = "";
 
     @FXML
     private Button btnConnect;
@@ -60,10 +62,21 @@ public class MainController {
     private Canvas mapFlow;
 
     @FXML
+    private ToolBar barConditions;
+
+    @FXML
+    private ToggleButton btnA;
+    @FXML
+    private ToggleButton btnB;
+    @FXML
+    private ToggleButton btnC;
+
+    @FXML
     public void initialize() {
         try {
             btnSync.setDisable(true);
             btnPush.setDisable(true);
+            barConditions.setVisible(false);
             initController();
         }
         catch (Exception ex){
@@ -85,7 +98,8 @@ public class MainController {
 
                 @Override
                 public void onStepAdded(AutoRoute route, AutoStep step) {
-                    fieldMap.displaySelectedRoute(route);
+                    enableConditionBar(route);
+                    fieldMap.displaySelectedRoute(route, conditionValue);
                 }
             });
         }
@@ -131,8 +145,9 @@ public class MainController {
                     public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldVal, Boolean newVal) {
                             if (newVal){
                                 lblName.setText(route.getRouteName());
-                                fieldMap.displaySelectedRoute(route);
                                 currentRoute = route;
+                                enableConditionBar(currentRoute);
+                                fieldMap.displaySelectedRoute(currentRoute, conditionValue);
                             }
                     }
                 });
@@ -153,7 +168,7 @@ public class MainController {
                         else if (mouseEvent.getButton() == MouseButton.PRIMARY){
                             AutoStep selectedStep = (AutoStep)lstSteps.getSelectionModel().getSelectedItem();
                             if (selectedStep != null){
-                                fieldMap.animateSelectedStep(route, selectedStep);
+                                fieldMap.animateSelectedStep(route, selectedStep, conditionValue);
                             }
                         }
                     }
@@ -165,8 +180,10 @@ public class MainController {
             if (leftNav.getPanes().size() > 0) {
                 leftNav.setExpandedPane(leftNav.getPanes().get(selectedIndex));
                 lblName.setText(routes.get(selectedIndex).getRouteName());
-                fieldMap.displaySelectedRoute(routes.get(selectedIndex));
                 currentRoute = routes.get(selectedIndex);
+                enableConditionBar(currentRoute);
+                fieldMap.displaySelectedRoute(currentRoute, conditionValue);
+
             }
         }
         catch (Exception ex){
@@ -563,6 +580,38 @@ public class MainController {
         alert.setTitle(title);
         alert.setContentText(msg);
         alert.show();
+    }
+
+    @FXML
+    protected void onSelectA() {
+        btnB.setSelected(false);
+        btnC.setSelected(false);
+        conditionValue = "A";
+        fieldMap.displaySelectedRoute(currentRoute, conditionValue);
+    }
+
+    @FXML
+    protected void onSelectB() {
+        btnA.setSelected(false);
+        btnC.setSelected(false);
+        conditionValue = "B";
+        fieldMap.displaySelectedRoute(currentRoute, conditionValue);
+    }
+
+    @FXML
+    protected void onSelectC() {
+        btnB.setSelected(false);
+        btnA.setSelected(false);
+        conditionValue = "C";
+        fieldMap.displaySelectedRoute(currentRoute, conditionValue);
+    }
+
+    protected void enableConditionBar(AutoRoute route){
+        barConditions.setVisible(routeController.hasConditions(route));
+        conditionValue = "A";
+        btnA.setSelected(true);
+        btnB.setSelected(false);
+        btnC.setSelected(false);
     }
 
 

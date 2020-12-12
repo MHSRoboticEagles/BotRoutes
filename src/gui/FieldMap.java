@@ -84,7 +84,7 @@ public class FieldMap {
     }
 
 
-    public void displaySelectedRoute(AutoRoute selectedRoute){
+    public void displaySelectedRoute(AutoRoute selectedRoute, String conditionValue){
         GraphicsContext gc = mapFlow.getGraphicsContext2D();
         if (this.timeline != null) {
             this.timeline.stop();
@@ -96,7 +96,7 @@ public class FieldMap {
         drawFieldOutline(gc);
         drawFieldElements(gc, selectedRoute);
         if (selectedRoute != null){
-            drawRoute(selectedRoute, gc);
+            drawRoute(selectedRoute, gc, conditionValue);
         }
     }
 
@@ -145,7 +145,7 @@ public class FieldMap {
         gc.stroke();
     }
 
-    protected void drawRoute(AutoRoute selectedRoute, GraphicsContext gc){
+    protected void drawRoute(AutoRoute selectedRoute, GraphicsContext gc, String conditionValue){
         double height = mapFlow.getHeight();
         if (selectedRoute != null){
             gc.setStroke(Color.DARKGREEN.brighter());
@@ -158,19 +158,25 @@ public class FieldMap {
             gc.moveTo(startX, startY);
             for(int i = 0; i < selectedRoute.getSteps().size(); i++){
                 AutoStep step = selectedRoute.getSteps().get(i);
-                Point previousTarget = new Point(selectedRoute.getStartX(), selectedRoute.getStartY());
-                if (i > 0){
-                    AutoStep prevStep = selectedRoute.getSteps().get(i-1);
-                    previousTarget = new Point(prevStep.getTargetX(),prevStep.getTargetY());
+                if (meetsCondition(step, conditionValue)) {
+                    Point previousTarget = new Point(selectedRoute.getStartX(), selectedRoute.getStartY());
+                    if (i > 0) {
+                        AutoStep prevStep = selectedRoute.getSteps().get(i - 1);
+                        previousTarget = new Point(prevStep.getTargetX(), prevStep.getTargetY());
+                    }
+                    Point target = getCoordinate(step, previousTarget);
+                    double x = target.getX();
+                    double y = target.getY();
+                    gc.lineTo(x, y);
+                    gc.fillOval(x - diam / 2, y - diam / 2, diam, diam);
                 }
-                Point target  = getCoordinate(step, previousTarget);
-                double x = target.getX();
-                double y = target.getY();
-                gc.lineTo(x, y);
-                gc.fillOval(x - diam/2, y - diam/2, diam, diam);
             }
             gc.stroke();
         }
+    }
+
+    private boolean meetsCondition(AutoStep step, String condition){
+        return !step.hasCondition() || (step.hasCondition() && step.getConditionValue().equals(condition));
     }
 
     private Point getCoordinate(AutoStep step, Point previousTarget){
@@ -395,11 +401,11 @@ public class FieldMap {
         gc.fillOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius() * 2, circle.getRadius() * 2);
     }
 
-    public void animateSelectedStep(AutoRoute selectedRoute, AutoStep selectedStep){
+    public void animateSelectedStep(AutoRoute selectedRoute, AutoStep selectedStep, String conditionValue){
 
-        displaySelectedRoute(selectedRoute);
+        displaySelectedRoute(selectedRoute, conditionValue);
 
-        AutoDot locationPointer = selectedRoute.findLocationPointer(selectedStep);
+        AutoDot locationPointer = selectedRoute.findLocationPointer(selectedStep, conditionValue);
         AutoDot destination = inchesToPixels(new AutoDot(selectedStep.getTargetX(), selectedStep.getTargetY()));
         boolean drawLine = !selectedStep.isSameTarget(locationPointer);
         AutoDot pixels = inchesToPixels(locationPointer);

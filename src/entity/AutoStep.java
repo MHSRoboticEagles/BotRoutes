@@ -188,4 +188,8 @@ public class AutoStep {
     public void setConditionFunction(String conditionFunction) {
         this.conditionFunction = conditionFunction;
     }
+
+    public boolean hasCondition(){
+        return this.conditionFunction.isEmpty() == false;
+    }
 }

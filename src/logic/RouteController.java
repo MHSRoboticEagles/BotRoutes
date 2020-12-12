@@ -262,4 +262,15 @@ public class RouteController {
         Collections.sort(this.namedDots);
     }
 
+    public boolean hasConditions(AutoRoute route){
+        boolean hasConditions = false;
+        for (AutoStep step : route.getSteps()){
+            if (step.hasCondition()){
+                hasConditions = true;
+                break;
+            }
+        }
+        return hasConditions;
+    }
+
 }
