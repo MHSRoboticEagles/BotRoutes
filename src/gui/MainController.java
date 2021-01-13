@@ -138,13 +138,14 @@ public class MainController {
             }
             ArrayList<AutoRoute> routes = routeController.getRoutes();
             for(AutoRoute route : routes){
-                TitledPane pane = new TitledPane(route.getRouteName() , new Label(route.getRouteName()));
+                TitledPane pane = new TitledPane(route.getRouteFullName() , new Label(route.getRouteFullName()));
                 leftNav.getPanes().add(pane);
                 pane.expandedProperty().addListener(new ChangeListener<Boolean>() {
                     @Override
                     public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldVal, Boolean newVal) {
                             if (newVal){
-                                lblName.setText(route.getRouteName());
+                                lblName.setText(route.getRouteFullName());
+                                pane.setText(route.getRouteFullName());
                                 currentRoute = route;
                                 enableConditionBar(currentRoute);
                                 fieldMap.displaySelectedRoute(currentRoute, conditionValue);
@@ -178,8 +179,10 @@ public class MainController {
             }
             addDotsPane();
             if (leftNav.getPanes().size() > 0) {
-                leftNav.setExpandedPane(leftNav.getPanes().get(selectedIndex));
-                lblName.setText(routes.get(selectedIndex).getRouteName());
+                TitledPane pane = leftNav.getPanes().get(selectedIndex);
+                leftNav.setExpandedPane(pane);
+                lblName.setText(routes.get(selectedIndex).getRouteFullName());
+                pane.setText(routes.get(selectedIndex).getRouteFullName());
                 currentRoute = routes.get(selectedIndex);
                 enableConditionBar(currentRoute);
                 fieldMap.displaySelectedRoute(currentRoute, conditionValue);

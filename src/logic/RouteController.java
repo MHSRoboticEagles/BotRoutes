@@ -162,6 +162,10 @@ public class RouteController {
         fireUpdateEvent(route);
     }
 
+    public void updateRoute(AutoRoute route){
+        fireUpdateEvent(route);
+    }
+
     private void fireUpdateEvent(AutoRoute route){
         if (routesChangeListener != null){
             int index = 0;

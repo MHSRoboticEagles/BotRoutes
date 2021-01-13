@@ -27,6 +27,9 @@ public class EditRouteController {
     protected ComboBox boxName;
 
     @FXML
+    protected TextField tfDescription;
+
+    @FXML
     protected TextField tfIndex;
 
     @FXML
@@ -48,6 +51,9 @@ public class EditRouteController {
             updateRoute();
             if (add) {
                 this.routeController.addRoute(this.selectedRoute);
+            }
+            else{
+                this.routeController.updateRoute(this.selectedRoute);
             }
             FileLoader.saveRoute(selectedRoute);
             closeStage(event);
@@ -79,6 +85,7 @@ public class EditRouteController {
         add = addRoute;
 
         boxName.getSelectionModel().select(this.selectedRoute.getName());
+        tfDescription.setText(this.selectedRoute.getDescription());
         tfIndex.setText(Integer.toString(this.selectedRoute.getNameIndex()));
         tfX.setText(Integer.toString(this.selectedRoute.getStartX()));
         tfY.setText(Integer.toString(this.selectedRoute.getStartY()));
@@ -86,6 +93,7 @@ public class EditRouteController {
 
     private void updateRoute(){
         this.selectedRoute.setName(this.boxName.getSelectionModel().getSelectedItem().toString());
+        this.selectedRoute.setDescription(this.tfDescription.getText());
         this.selectedRoute.setNameIndex(Integer.valueOf(tfIndex.getText()));
         this.selectedRoute.setStartX(Integer.valueOf(tfX.getText()));
         this.selectedRoute.setStartY(Integer.valueOf(tfY.getText()));

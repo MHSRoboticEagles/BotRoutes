@@ -26,6 +26,15 @@
                 </HBox>
                 <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                     <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Description" />
+                        <TextField fx:id="tfDescription" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Index" />
                         <TextField fx:id="tfIndex" HBox.hgrow="ALWAYS" />
                     </children>

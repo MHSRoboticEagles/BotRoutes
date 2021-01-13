@@ -18,6 +18,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
     private int startX;
     private int startY;
     private long lastRunTime = 0;
+    private String description;
 
     public String serialize() {
         Gson gson = new Gson();
@@ -41,6 +42,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
         cloned.setStartY(this.getStartY());
         cloned.setSelected(this.isSelected());
         cloned.setTemp(this.isTemp());
+        cloned.setDescription(this.getDescription());
         for(int i = 0; i < steps.size(); i++){
             cloned.steps.add(this.steps.get(i));
         }
@@ -66,6 +68,15 @@ public class AutoRoute implements Comparable<AutoRoute> {
             return  String.format("%s-%d-%s", name, nameIndex, NAME_NEW);
         }
         return  String.format("%s-%d", name, nameIndex);
+    }
+
+    public String getRouteFullName()
+    {
+        String fullName = getRouteName();
+        if(this.getDescription() != null && this.getDescription().isEmpty() == false){
+            fullName = String.format("%s-%s",fullName, this.getDescription());
+        }
+        return  fullName;
     }
 
 
@@ -191,5 +202,13 @@ public class AutoRoute implements Comparable<AutoRoute> {
     @Override
     public int compareTo(AutoRoute o) {
         return this.getRouteName().compareTo(o.getRouteName());
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
