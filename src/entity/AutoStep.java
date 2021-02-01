@@ -192,4 +192,8 @@ public class AutoStep {
     public boolean hasCondition(){
         return this.conditionFunction.isEmpty() == false;
     }
+
+    public boolean meetsCondition(String condition){
+        return !this.hasCondition() || (this.hasCondition() && this.getConditionValue().equals(condition));
+    }
 }

@@ -1,6 +1,8 @@
 package entity;
 
 import com.google.gson.Gson;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,10 +17,12 @@ public class AutoRoute implements Comparable<AutoRoute> {
     private boolean selected;
     private boolean temp;
     private ArrayList<AutoStep> steps = new ArrayList<>();
+    private  transient ObservableList<AutoStep> visibleSteps = null;
     private int startX;
     private int startY;
     private long lastRunTime = 0;
     private String description;
+
 
     public String serialize() {
         Gson gson = new Gson();
@@ -44,7 +48,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
         cloned.setTemp(this.isTemp());
         cloned.setDescription(this.getDescription());
         for(int i = 0; i < steps.size(); i++){
-            cloned.steps.add(this.steps.get(i));
+            cloned.steps.add(this.steps.get(i).clone());
         }
         return cloned;
     }
@@ -61,6 +65,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
     public int hashCode() {
         return Objects.hash(getRouteName());
     }
+
 
     public String getRouteName()
     {
@@ -82,6 +87,24 @@ public class AutoRoute implements Comparable<AutoRoute> {
 
     public ArrayList<AutoStep> getSteps() {
         return steps;
+    }
+
+    public ObservableList<AutoStep> getVisibleSteps(String condition){
+        if (visibleSteps == null){
+            visibleSteps = FXCollections.observableArrayList(steps);
+        }
+        updateMatchingSteps(condition);
+        return visibleSteps;
+    }
+
+    public void updateMatchingSteps(String condition){
+        visibleSteps.clear();
+        ArrayList<AutoStep> matchingSteps = new ArrayList<>();
+        for (AutoStep step : getSteps()){
+            if (step.meetsCondition(condition)){
+                visibleSteps.add(step);
+            }
+        }
     }
 
     public void setSteps(ArrayList<AutoStep> steps) {
@@ -162,7 +185,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
                 if (previousIndex > 0){
                     previousIndex--;
                 }
-                previous = this.getSteps().get(stepIndex - 1);
+                previous = this.getSteps().get(previousIndex);
                 if (previousIndex == 0){
                     break;
                 }

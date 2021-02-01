@@ -13,6 +13,7 @@ public class AutoDot implements Comparable<AutoDot>{
     private int x;
     private int y;
     private double heading = -1;
+    private String fieldSide = AutoRoute.NAME_RED;
 
     public AutoDot(){
 
@@ -48,6 +49,7 @@ public class AutoDot implements Comparable<AutoDot>{
         dot.setY(this.getY());
         dot.setHeading(this.getHeading());
         dot.setSelected(this.isSelected());
+        dot.setFieldSide(this.getFieldSide());
         return dot;
     }
 
@@ -115,5 +117,13 @@ public class AutoDot implements Comparable<AutoDot>{
     @Override
     public int compareTo(AutoDot o) {
         return this.getDotName().compareTo(o.getDotName());
+    }
+
+    public String getFieldSide() {
+        return fieldSide;
+    }
+
+    public void setFieldSide(String fieldSide) {
+        this.fieldSide = fieldSide;
     }
 }

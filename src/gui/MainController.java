@@ -45,6 +45,9 @@ public class MainController {
     @FXML
     private Button btnClone;
     @FXML
+    private Button btnMirror;
+
+    @FXML
     private Button btnEdit;
     @FXML
     private Button btnDelete;
@@ -154,7 +157,7 @@ public class MainController {
                 });
 
                 ListView lstSteps = new ListView();
-                lstSteps.setItems(FXCollections.observableArrayList(route.getSteps()));
+                lstSteps.setItems(route.getVisibleSteps(conditionValue));
                 pane.setContent(lstSteps);
                 lstSteps.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -238,6 +241,7 @@ public class MainController {
                 btnDelete.setDisable(dotsMode);
                 btnEdit.setDisable(dotsMode);
                 btnClone.setDisable(dotsMode);
+                btnMirror.setDisable(dotsMode);
             }
         });
     }
@@ -430,6 +434,12 @@ public class MainController {
         addRoute(clone, "Clone Route");
     }
 
+    @FXML
+    protected void mirrorRoute(){
+        AutoRoute clone = this.routeController.mirrorRoute(currentRoute);
+        addRoute(clone, "Mirror Route");
+    }
+
     private void addRoute(AutoRoute route, String title){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-route.fxml"));
         Parent parent = null;
@@ -589,32 +599,50 @@ public class MainController {
     protected void onSelectA() {
         btnB.setSelected(false);
         btnC.setSelected(false);
+        highlightButton(btnA);
+        btnB.setStyle(null);
+        btnC.setStyle(null);
         conditionValue = "A";
-        fieldMap.displaySelectedRoute(currentRoute, conditionValue);
+        updateConditionalView();
     }
 
     @FXML
     protected void onSelectB() {
         btnA.setSelected(false);
         btnC.setSelected(false);
+        highlightButton(btnB);
+        btnC.setStyle(null);
+        btnA.setStyle(null);
         conditionValue = "B";
-        fieldMap.displaySelectedRoute(currentRoute, conditionValue);
+        updateConditionalView();
     }
 
     @FXML
     protected void onSelectC() {
         btnB.setSelected(false);
         btnA.setSelected(false);
+        highlightButton(btnC);
+        btnB.setStyle(null);
+        btnA.setStyle(null);
         conditionValue = "C";
+        updateConditionalView();
+    }
+
+    protected void updateConditionalView(){
+        currentRoute.updateMatchingSteps(conditionValue);
+        routeController.reconcileRouteSteps(currentRoute, conditionValue);
         fieldMap.displaySelectedRoute(currentRoute, conditionValue);
     }
 
     protected void enableConditionBar(AutoRoute route){
         barConditions.setVisible(routeController.hasConditions(route));
-        conditionValue = "A";
-        btnA.setSelected(true);
-        btnB.setSelected(false);
-        btnC.setSelected(false);
+        onSelectA();
+
+    }
+
+    protected void highlightButton(ToggleButton btn){
+        btn.setStyle(
+                "-fx-background-color: green;" + "-fx-text-fill: white");
     }
 
 

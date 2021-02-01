@@ -158,11 +158,13 @@ public class FieldMap {
             gc.moveTo(startX, startY);
             for(int i = 0; i < selectedRoute.getSteps().size(); i++){
                 AutoStep step = selectedRoute.getSteps().get(i);
-                if (meetsCondition(step, conditionValue)) {
+                if (step.meetsCondition(conditionValue)) {
                     Point previousTarget = new Point(selectedRoute.getStartX(), selectedRoute.getStartY());
                     if (i > 0) {
-                        AutoStep prevStep = selectedRoute.getSteps().get(i - 1);
-                        previousTarget = new Point(prevStep.getTargetX(), prevStep.getTargetY());
+                        AutoStep prevStep = getPreviousStep(selectedRoute, i, conditionValue);
+                        if (prevStep != null) {
+                            previousTarget = new Point(prevStep.getTargetX(), prevStep.getTargetY());
+                        }
                     }
                     Point target = getCoordinate(step, previousTarget);
                     double x = target.getX();
@@ -175,8 +177,16 @@ public class FieldMap {
         }
     }
 
-    private boolean meetsCondition(AutoStep step, String condition){
-        return !step.hasCondition() || (step.hasCondition() && step.getConditionValue().equals(condition));
+    private AutoStep getPreviousStep(AutoRoute selectedRoute, int currentIndex, String conditionValue){
+        AutoStep prevStep = null;
+        for(int prevIndex = currentIndex - 1; prevIndex >= 0; prevIndex--){
+            AutoStep step = selectedRoute.getSteps().get(prevIndex);
+            if (step.meetsCondition(conditionValue)){
+                prevStep = step;
+                break;
+            }
+        }
+        return prevStep;
     }
 
     private Point getCoordinate(AutoStep step, Point previousTarget){
@@ -190,6 +200,8 @@ public class FieldMap {
                 target.x = (int)(previousTarget.getX() - step.getTargetX());
             }
             target.y= (int)(previousTarget.getY());
+            target.x = target.x * MAP_SCALE;
+            target.y = (int) (height - target.y * MAP_SCALE);
         }
         else {
             target.x = step.getTargetX() * MAP_SCALE;

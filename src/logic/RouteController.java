@@ -10,6 +10,7 @@ import java.util.Collections;
 
 public class RouteController {
     private ObservableList<AutoDot> namedDots = null;
+
     private ArrayList<AutoRoute> routes = new ArrayList<>();
     private ArrayList<BotActionObj> botActions = new ArrayList<>();
 
@@ -39,7 +40,7 @@ public class RouteController {
     public void reconcileRoute(AutoRoute route){
         for(AutoStep step: route.getSteps()){
             if (!step.getTargetReference().isEmpty()){
-                AutoDot dot = findTargetReference(step.getTargetReference());
+                AutoDot dot = findTargetReference(step.getTargetReference(), route);
                 if (dot != null){
                     step.setTargetX(dot.getX());
                     step.setTargetY(dot.getY());
@@ -48,21 +49,33 @@ public class RouteController {
         }
     }
 
-    public AutoDot findTargetReference(String name){
-        AutoDot dot = findNamedDot(name);
+    public void reconcileRouteSteps(AutoRoute route, String condition){
+        for(AutoStep step: route.getVisibleSteps(condition)){
+            if (!step.getTargetReference().isEmpty() && !condition.isEmpty()){
+                AutoDot dot = findNamedDot(condition, route.getName());
+                if (dot != null){
+                    step.setTargetX(dot.getX());
+                    step.setTargetY(dot.getY());
+                }
+            }
+        }
+    }
+
+    public AutoDot findTargetReference(String name, AutoRoute route){
+        AutoDot dot = findNamedDot(name, route.getName());
         if (dot == null){
             //try actions
             BotActionObj actionObj = findAction(name);
             if (actionObj != null && !actionObj.getReturnRef().isEmpty()){
-                dot = findNamedDot(actionObj.getReturnRef());
+                dot = findNamedDot(actionObj.getReturnRef(), route.getName());
             }
         }
         return dot;
     }
 
-    public AutoDot findNamedDot(String name){
+    public AutoDot findNamedDot(String name, String fieldSide){
         for(AutoDot d : this.namedDots){
-            if (d.getDotName().equals(name)){
+            if (d.getDotName().equals(name) && d.getFieldSide().equals(fieldSide)){
                 return d;
             }
         }
@@ -94,7 +107,7 @@ public class RouteController {
         }
         for(BotActionObj actionObj : this.botActions){
             if (actionObj.isGeo() && !actionObj.getReturnRef().isEmpty()){
-                AutoDot dot = findNamedDot(actionObj.getReturnRef());
+                AutoDot dot = findNamedDot(actionObj.getReturnRef(), AutoRoute.NAME_RED);
                 if (dot != null){
                     TargetReference tr = new TargetReference(dot);
                     tr.setDotName(actionObj.getMethodName());
@@ -154,6 +167,42 @@ public class RouteController {
         AutoRoute clone = route.clone();
         clone.setNameIndex(nextIndex);
         return clone;
+    }
+
+    public AutoRoute mirrorRoute(AutoRoute route){
+        String name = route.getName();
+        if(name.equals(AutoRoute.NAME_RED)){
+            name = AutoRoute.NAME_BLUE;
+        }
+        else{
+            name = AutoRoute.NAME_RED;
+        }
+        int nextIndex = getMinAvailableIndex(name);
+        AutoRoute clone = route.clone();
+        clone.setName(name);
+        clone.setNameIndex(nextIndex);
+        clone.setStartX(getMirrorX(clone.getStartX()));
+        for(AutoStep step : clone.getSteps()){
+            step.setTargetX(getMirrorX(step.getTargetX()));
+            if (step.getMoveStrategy().equals(MoveStrategy.Spin)){
+                step.setDesiredHead(getMirrorDegree(step.getDesiredHead()));
+            }
+        }
+        return clone;
+    }
+
+    protected int getMirrorX(int targetX){
+        int MIDDLE = 48;
+        int diffX = MIDDLE - targetX;
+        int mirrorX = MIDDLE + diffX;
+        return mirrorX;
+    }
+
+    protected double getMirrorDegree(double heading){
+        int MIDDLE = 180;
+        double diff = MIDDLE - heading;
+        double mirror = MIDDLE + diff;
+        return mirror;
     }
 
     public void addRoute(AutoRoute route){
@@ -276,5 +325,4 @@ public class RouteController {
         }
         return hasConditions;
     }
-
 }
