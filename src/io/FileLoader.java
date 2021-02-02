@@ -139,9 +139,9 @@ public class FileLoader {
         return String.format("%s/%s.json", folder.toString(), routeName);
     }
 
-    public static String getDotFilePath(String dotName){
+    public static String getDotFilePath(String dotName, String fieldSide){
         Path folder = getDotFolder();
-        return String.format("%s/%s.json", folder.toString(), dotName);
+        return String.format("%s/%s_%s.json", folder.toString(), dotName, fieldSide);
     }
 
     public static void deleteRouteFile(String routeName) throws Exception{
@@ -188,8 +188,8 @@ public class FileLoader {
         }
     }
 
-    public static void deleteDotFile(String dotName) throws Exception{
-        Path path = Paths.get(getDotFilePath(dotName));
+    public static void deleteDotFile(String dotName, String fieldSide) throws Exception{
+        Path path = Paths.get(getDotFilePath(dotName, fieldSide));
         try {
             Files.delete(path);
         }

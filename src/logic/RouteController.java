@@ -261,7 +261,7 @@ public class RouteController {
         for(AutoDot d : namedDots){
             if(d.getDotName().equals(dot.getDotName())){
                 namedDots.remove(d);
-                FileLoader.deleteDotFile(dot.getDotName());
+                FileLoader.deleteDotFile(dot.getDotName(), dot.getFieldSide());
                 break;
             }
         }

@@ -70,8 +70,8 @@ public class BotConnector {
     }
 
     public static void publishDot(AutoDot dot) throws Exception{
-        String local = FileLoader.getDotFilePath(dot.getDotName());
-        String command = String.format("%s push %s /sdcard/FIRST/dots/%s.json", getAdbCommand(), local.toString(), dot.getDotName());
+        String local = FileLoader.getDotFilePath(dot.getDotName(), dot.getFieldSide());
+        String command = String.format("%s push %s /sdcard/FIRST/dots/%s_%s.json", getAdbCommand(), local.toString(), dot.getDotName(), dot.getFieldSide());
         executeCommand(command, CONNECT_TIMEOUT);
     }
 

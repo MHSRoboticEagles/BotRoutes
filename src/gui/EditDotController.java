@@ -29,6 +29,9 @@ public class EditDotController {
     @FXML
     protected TextField tfY;
 
+    @FXML
+    protected ComboBox boxFieldSide;
+
 
     @FXML
     protected void btnSaveClicked(ActionEvent event){
@@ -52,7 +55,13 @@ public class EditDotController {
 
     @FXML
     public void initialize() {
+        try {
+            boxFieldSide.getItems().add(AutoRoute.NAME_BLUE);
+            boxFieldSide.getItems().add(AutoRoute.NAME_RED);
+        }
+        catch (Exception ex){
 
+        }
     }
 
     public void setRouteController(RouteController routeController, AutoDot dot, boolean addDot) {
@@ -61,6 +70,7 @@ public class EditDotController {
         add = addDot;
 
         tfName.setText(this.selectedDot.getDotName());
+        boxFieldSide.getSelectionModel().select(this.selectedDot.getFieldSide());
         tfHead.setText(Double.toString(this.selectedDot.getHeading()));
         tfX.setText(Integer.toString(this.selectedDot.getX()));
         tfY.setText(Integer.toString(this.selectedDot.getY()));
@@ -68,6 +78,7 @@ public class EditDotController {
 
     private void updateDot(){
         this.selectedDot.setDotName(this.tfName.getText());
+        this.selectedDot.setFieldSide(this.boxFieldSide.getSelectionModel().getSelectedItem().toString());
         this.selectedDot.setHeading(Double.valueOf(tfHead.getText()));
         this.selectedDot.setX(Integer.valueOf(tfX.getText()));
         this.selectedDot.setY(Integer.valueOf(tfY.getText()));

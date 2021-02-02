@@ -65,9 +65,9 @@ public class AutoDot implements Comparable<AutoDot>{
     @Override
     public String toString() {
         if (heading != -1){
-            return String.format("%s. %d : %d. Heading: %.2f", getDotName(), x, y, heading);
+            return String.format("%s-%s %d : %d. Heading: %.2f", getDotName(), getFieldSide(), x, y, heading);
         }
-        return String.format("%s. %d : %d", getDotName(), x, y);
+        return String.format("%s-%s. %d : %d", getDotName(), getFieldSide(), x, y);
     }
 
     public String getDotName() {

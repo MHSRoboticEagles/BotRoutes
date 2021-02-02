@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
 
 <AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditDotController">
     <children>
@@ -16,6 +17,7 @@
                     <children>
                         <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Name" />
                         <TextField fx:id="tfName" HBox.hgrow="ALWAYS"  />
+                        <ComboBox fx:id="boxFieldSide" HBox.hgrow="ALWAYS"/>
                     </children>
                     <padding>
                         <Insets right="30.0" />
