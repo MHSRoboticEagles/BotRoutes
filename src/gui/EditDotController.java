@@ -40,6 +40,9 @@ public class EditDotController {
             if (add) {
                 this.routeController.addDot(this.selectedDot);
             }
+            else{
+                this.routeController.updateDot(this.selectedDot);
+            }
             FileLoader.saveDot(selectedDot);
             closeStage(event);
         }

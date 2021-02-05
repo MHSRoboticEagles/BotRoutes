@@ -15,6 +15,9 @@ public class RouteController {
     private ArrayList<BotActionObj> botActions = new ArrayList<>();
 
     private RoutesChangeListener routesChangeListener = null;
+    private DotsChangeListener dotsChangeListener = null;
+
+    private String CONDITION_FUNCTION = "getDetectionResult"; //this should not be hardcoded ideally
 
     public RouteController(){
 
@@ -39,24 +42,32 @@ public class RouteController {
 
     public void reconcileRoute(AutoRoute route){
         for(AutoStep step: route.getSteps()){
-            if (!step.getTargetReference().isEmpty()){
-                AutoDot dot = findTargetReference(step.getTargetReference(), route);
-                if (dot != null){
-                    step.setTargetX(dot.getX());
-                    step.setTargetY(dot.getY());
-                }
+           reconcileStep(step, route);
+        }
+    }
+
+    public void reconcileStep(AutoStep step, AutoRoute route){
+        if (!step.getTargetReference().isEmpty()){
+            AutoDot dot = findTargetReference(step.getTargetReference(), route);
+            if (dot != null){
+                step.setTargetX(dot.getX());
+                step.setTargetY(dot.getY());
             }
         }
     }
 
     public void reconcileRouteSteps(AutoRoute route, String condition){
-        for(AutoStep step: route.getVisibleSteps(condition)){
-            if (!step.getTargetReference().isEmpty() && !condition.isEmpty()){
-                AutoDot dot = findNamedDot(condition, route.getName());
-                if (dot != null){
-                    step.setTargetX(dot.getX());
-                    step.setTargetY(dot.getY());
-                }
+        for(AutoStep step: route.buildVisibleSteps(condition)){
+            reconcileVisibleStep(step, route, condition);
+        }
+    }
+
+    public void reconcileVisibleStep(AutoStep step, AutoRoute route, String condition){
+        if (!step.getTargetReference().isEmpty() && !condition.isEmpty()){
+            AutoDot dot = findNamedDot(condition, route.getName());
+            if (dot != null){
+                step.setTargetX(dot.getX());
+                step.setTargetY(dot.getY());
             }
         }
     }
@@ -271,8 +282,12 @@ public class RouteController {
         this.routesChangeListener = routesChangeListener;
     }
 
-    public AutoStep initStep (AutoRoute route, AutoDot selectedDot, int addIndex){
+    public AutoStep initStep (AutoRoute route, AutoDot selectedDot, int addIndex, String condition){
         AutoStep step = new AutoStep();
+        step.setConditionValue(condition);
+        if (!condition.isEmpty()){
+            step.setConditionFunction(CONDITION_FUNCTION);
+        }
         if (selectedDot != null){
             step.setTargetX(selectedDot.getX());
             step.setTargetY(selectedDot.getY());
@@ -292,27 +307,51 @@ public class RouteController {
         return step;
     }
 
-    public void addStep(AutoRoute route, AutoStep newStep, int index){
-        if (index >= route.getSteps().size()){
+    public void addStep(AutoRoute route, AutoStep newStep, int index, String condition){
+        reconcileStep(newStep, route);
+        int realIndex = 0;
+        if (index - 1 > 0){
+            AutoStep prevStep = route.getVisibleSteps().get(index - 1);
+            if (prevStep != null){
+                realIndex = prevStep.getOriginalIndex() + 1;
+            }
+        }
+
+        if (realIndex > route.getSteps().size()){
             route.getSteps().add(newStep);
         }
+        else{
+            route.getSteps().add(realIndex, newStep);
+        }
+
+        // or updateVisibleSteps on the route
+        if (index >= route.getVisibleSteps().size()){
+            route.getVisibleSteps().add(newStep);
+        }
         else {
-            route.getSteps().add(index, newStep);
+            route.getVisibleSteps().add(index, newStep);
         }
-        reconcileRoute(route);
-        if (this.routesChangeListener != null){
-            this.routesChangeListener.onStepAdded(route, newStep);
-        }
+//
+//        if (this.routesChangeListener != null){
+//            this.routesChangeListener.onStepAdded(route, newStep);
+//        }
     }
 
     public void deleteRouteStep(AutoRoute route, AutoStep step) throws Exception{
         route.getSteps().remove(step);
+        route.getVisibleSteps().remove(step);
         FileLoader.saveRoute(route);
     }
 
     public void addDot(AutoDot dot){
         this.namedDots.add(dot);
         Collections.sort(this.namedDots);
+    }
+
+    public void updateDot(AutoDot dot){
+        if (dotsChangeListener != null){
+            dotsChangeListener.onDotUpdated(dot);
+        }
     }
 
     public boolean hasConditions(AutoRoute route){
@@ -324,5 +363,9 @@ public class RouteController {
             }
         }
         return hasConditions;
+    }
+
+    public void setDotsChangeListener(DotsChangeListener dotsChangeListener) {
+        this.dotsChangeListener = dotsChangeListener;
     }
 }

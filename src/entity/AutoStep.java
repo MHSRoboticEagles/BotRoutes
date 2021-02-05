@@ -16,6 +16,7 @@ public class AutoStep {
     private String targetReference = "";
     private String conditionValue = "";
     private String conditionFunction = "";
+    private transient int originalIndex = -1;
 
     @Override
     public String toString() {
@@ -195,5 +196,13 @@ public class AutoStep {
 
     public boolean meetsCondition(String condition){
         return !this.hasCondition() || (this.hasCondition() && this.getConditionValue().equals(condition));
+    }
+
+    public int getOriginalIndex() {
+        return originalIndex;
+    }
+
+    public void setOriginalIndex(int originalIndex) {
+        this.originalIndex = originalIndex;
     }
 }

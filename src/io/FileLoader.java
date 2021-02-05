@@ -178,7 +178,7 @@ public class FileLoader {
         String fileContents = dot.serialize();
         ByteBuffer byteContents = charset.encode(fileContents);
         File folder = getDotsFolder();
-        String fullName = String.format("%s.json", dot.getDotName());
+        String fullName = String.format("%s_%s.json", dot.getDotName(), dot.getFieldSide());
         FileOutputStream outputStream = new FileOutputStream(new File(folder, fullName));
         try {
             outputStream.write(byteContents.array(), 0, byteContents.limit());

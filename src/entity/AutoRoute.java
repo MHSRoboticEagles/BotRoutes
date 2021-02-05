@@ -89,7 +89,11 @@ public class AutoRoute implements Comparable<AutoRoute> {
         return steps;
     }
 
-    public ObservableList<AutoStep> getVisibleSteps(String condition){
+    public ObservableList<AutoStep> getVisibleSteps(){
+        return visibleSteps;
+    }
+
+    public ObservableList<AutoStep> buildVisibleSteps(String condition){
         if (visibleSteps == null){
             visibleSteps = FXCollections.observableArrayList(steps);
         }
@@ -99,11 +103,13 @@ public class AutoRoute implements Comparable<AutoRoute> {
 
     public void updateMatchingSteps(String condition){
         visibleSteps.clear();
-        ArrayList<AutoStep> matchingSteps = new ArrayList<>();
+        int counter = 0;
         for (AutoStep step : getSteps()){
+            step.setOriginalIndex(counter);
             if (step.meetsCondition(condition)){
                 visibleSteps.add(step);
             }
+            counter++;
         }
     }
 

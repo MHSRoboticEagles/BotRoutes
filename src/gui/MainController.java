@@ -4,7 +4,6 @@ import entity.*;
 import io.BotConnector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,9 +14,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.DotsChangeListener;
 import logic.RouteController;
 import logic.RoutesChangeListener;
 
@@ -105,6 +104,12 @@ public class MainController {
                     fieldMap.displaySelectedRoute(route, conditionValue);
                 }
             });
+            routeController.setDotsChangeListener(new DotsChangeListener() {
+                @Override
+                public void onDotUpdated(AutoDot dot) {
+                    lstDots.refresh();
+                }
+            });
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);
@@ -157,7 +162,7 @@ public class MainController {
                 });
 
                 ListView lstSteps = new ListView();
-                lstSteps.setItems(route.getVisibleSteps(conditionValue));
+                lstSteps.setItems(route.buildVisibleSteps(conditionValue));
                 pane.setContent(lstSteps);
                 lstSteps.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -335,7 +340,7 @@ public class MainController {
     }
 
     protected void addStep(ListView lstSteps, AutoDot selectedDot, int addIndex){
-        openStepEdit(this.routeController.initStep(currentRoute, selectedDot, addIndex), currentRoute, lstSteps, addIndex);
+        openStepEdit(this.routeController.initStep(currentRoute, selectedDot, addIndex, conditionValue), currentRoute, lstSteps, addIndex);
     }
 
     protected void openStepEdit(AutoStep selectedStep, AutoRoute selectedRoute, ListView lstSteps, int addIndex){
@@ -351,6 +356,7 @@ public class MainController {
         dialogController.setSelectedStep(selectedStep, addIndex);
         dialogController.setSelectedRoute(selectedRoute);
         dialogController.setLstSteps(lstSteps);
+        dialogController.setCondition(conditionValue);
 
         Scene scene = new Scene(parent, 500, 400);
         Stage stage = new Stage();
@@ -530,7 +536,7 @@ public class MainController {
         if (alert.getResult() == ButtonType.YES) {
             try {
                 this.routeController.deleteRouteStep(this.currentRoute, step);
-                lstSteps.getItems().remove(step);
+//                lstSteps.getItems().remove(step);
             }
             catch (Exception ex){
                 showMessage(ex.getMessage(), Alert.AlertType.ERROR);

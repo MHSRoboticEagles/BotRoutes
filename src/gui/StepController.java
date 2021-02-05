@@ -18,6 +18,7 @@ public class StepController {
     private RouteController routeController;
     private AutoStep selectedStep;
     private AutoRoute selectedRoute;
+    private String condition;
     private ListView lstSteps;
     private int addIndex = -1;
 
@@ -93,16 +94,10 @@ public class StepController {
         try {
             updateStep();
             if (addIndex >= 0){
-                boolean append = addIndex >= selectedRoute.getSteps().size();
-                this.routeController.addStep(selectedRoute, selectedStep, addIndex);
-                if (append) {
-                    this.lstSteps.getItems().add(selectedStep);
-                }
-                else{
-                    this.lstSteps.getItems().add(addIndex, selectedStep);
-                }
+                this.routeController.addStep(selectedRoute, selectedStep, addIndex, condition);
             }
             FileLoader.saveRoute(selectedRoute);
+            this.lstSteps.refresh();
             closeStage(event);
         }
         catch (Exception ex){
@@ -164,9 +159,6 @@ public class StepController {
 
         this.selectedStep.setDesiredHead(Double.valueOf(this.tfHead.getText()));
         this.selectedStep.setContinuous(this.boxContinuous.isSelected());
-
-        this.lstSteps.setItems(null);
-        this.lstSteps.setItems(FXCollections.observableArrayList(this.selectedRoute.getSteps()));
     }
 
     public void setSelectedStep(AutoStep selectedStep, int addIndex) {
@@ -199,5 +191,13 @@ public class StepController {
         boxAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
         boxConditionAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
         boxTargets.setItems(FXCollections.observableArrayList(routeController.getTargetReferences()));
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
