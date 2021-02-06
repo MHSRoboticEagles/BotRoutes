@@ -310,10 +310,16 @@ public class RouteController {
     public void addStep(AutoRoute route, AutoStep newStep, int index, String condition){
         reconcileStep(newStep, route);
         int realIndex = 0;
-        if (index - 1 > 0){
+        if (index - 1 >= 0){
             AutoStep prevStep = route.getVisibleSteps().get(index - 1);
             if (prevStep != null){
                 realIndex = prevStep.getOriginalIndex() + 1;
+            }
+        }
+        else{
+            AutoStep nextStep = route.getVisibleSteps().get(index + 1);
+            if (nextStep != null){
+                realIndex = nextStep.getOriginalIndex() - 1;
             }
         }
 

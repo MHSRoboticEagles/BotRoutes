@@ -641,8 +641,12 @@ public class MainController {
     }
 
     protected void enableConditionBar(AutoRoute route){
-        barConditions.setVisible(routeController.hasConditions(route));
-        onSelectA();
+        conditionValue = "";
+        boolean hasConditions = routeController.hasConditions(route);
+        barConditions.setVisible(hasConditions);
+        if (hasConditions) {
+            onSelectA();
+        }
 
     }
 
