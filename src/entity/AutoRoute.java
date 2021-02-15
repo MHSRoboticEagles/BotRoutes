@@ -199,12 +199,12 @@ public class AutoRoute implements Comparable<AutoRoute> {
 
 
             if (previous.isSameTarget(step)){
-                locationPointer.setX(step.getTargetX());
-                locationPointer.setY(step.getTargetY());
+                locationPointer.setX(step.getRelX());
+                locationPointer.setY(step.getRelY());
             }
             else{
-                locationPointer.setX(previous.getTargetX());
-                locationPointer.setY(previous.getTargetY());
+                locationPointer.setX(previous.getRelX());
+                locationPointer.setY(previous.getRelY());
             }
 
         }

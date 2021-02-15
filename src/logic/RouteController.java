@@ -324,6 +324,7 @@ public class RouteController {
                 }
             }
         }
+        newStep.setOriginalIndex(realIndex);
 
         if (realIndex > route.getSteps().size()){
             route.getSteps().add(newStep);

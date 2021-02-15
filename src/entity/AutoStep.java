@@ -17,6 +17,8 @@ public class AutoStep {
     private String conditionValue = "";
     private String conditionFunction = "";
     private transient int originalIndex = -1;
+    private transient int relX;
+    private transient int relY;
 
     @Override
     public String toString() {
@@ -204,5 +206,21 @@ public class AutoStep {
 
     public void setOriginalIndex(int originalIndex) {
         this.originalIndex = originalIndex;
+    }
+
+    public int getRelX() {
+        return relX;
+    }
+
+    public void setRelX(int relX) {
+        this.relX = relX;
+    }
+
+    public int getRelY() {
+        return relY;
+    }
+
+    public void setRelY(int relY) {
+        this.relY = relY;
     }
 }

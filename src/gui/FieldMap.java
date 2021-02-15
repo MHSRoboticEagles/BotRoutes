@@ -163,7 +163,7 @@ public class FieldMap {
                     if (i > 0) {
                         AutoStep prevStep = getPreviousStep(selectedRoute, i, conditionValue);
                         if (prevStep != null) {
-                            previousTarget = new Point(prevStep.getTargetX(), prevStep.getTargetY());
+                            previousTarget = new Point(prevStep.getRelX(), prevStep.getRelY());
                         }
                     }
                     Point target = getCoordinate(step, previousTarget);
@@ -200,6 +200,8 @@ public class FieldMap {
                 target.x = (int)(previousTarget.getX() - step.getTargetX());
             }
             target.y= (int)(previousTarget.getY());
+            step.setRelX(target.x);
+            step.setRelY(target.y);
             target.x = target.x * MAP_SCALE;
             target.y = (int) (height - target.y * MAP_SCALE);
         }
@@ -211,6 +213,8 @@ public class FieldMap {
                 target.x = (int)(previousTarget.getX() - step.getTargetX());
             }
             target.y= (int)(previousTarget.getY());
+            step.setRelX(target.x);
+            step.setRelY(target.y);
             target.x = target.x * MAP_SCALE;
             target.y = (int) (height - target.y * MAP_SCALE);
         }
@@ -223,10 +227,14 @@ public class FieldMap {
                 target.x = (int)previousTarget.getX();
                 target.y = step.getTargetY();
             }
+            step.setRelX(target.x);
+            step.setRelY(target.y);
             target.x = target.x * MAP_SCALE;
             target.y = (int) (height - target.y * MAP_SCALE);
         }
         else {
+            step.setRelX(step.getTargetX());
+            step.setRelY(step.getTargetY());
             target.x = step.getTargetX() * MAP_SCALE;
             target.y = (int) (height - step.getTargetY() * MAP_SCALE);
         }
@@ -441,7 +449,7 @@ public class FieldMap {
         displaySelectedRoute(selectedRoute, conditionValue);
 
         AutoDot locationPointer = selectedRoute.findLocationPointer(selectedStep, conditionValue);
-        AutoDot destination = inchesToPixels(new AutoDot(selectedStep.getTargetX(), selectedStep.getTargetY()));
+        AutoDot destination = inchesToPixels(new AutoDot(selectedStep.getRelX(), selectedStep.getRelY()));
         boolean drawLine = !selectedStep.isSameTarget(locationPointer);
         AutoDot pixels = inchesToPixels(locationPointer);
         GraphicsContext gc = mapFlow.getGraphicsContext2D();
