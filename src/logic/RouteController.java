@@ -317,9 +317,11 @@ public class RouteController {
             }
         }
         else{
-            AutoStep nextStep = route.getVisibleSteps().get(index + 1);
-            if (nextStep != null){
-                realIndex = nextStep.getOriginalIndex() - 1;
+            if (route.getVisibleSteps().size() > index + 1) {
+                AutoStep nextStep = route.getVisibleSteps().get(index + 1);
+                if (nextStep != null) {
+                    realIndex = nextStep.getOriginalIndex() - 1;
+                }
             }
         }
 

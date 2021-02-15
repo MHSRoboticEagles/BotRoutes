@@ -203,6 +203,29 @@ public class FieldMap {
             target.x = target.x * MAP_SCALE;
             target.y = (int) (height - target.y * MAP_SCALE);
         }
+        else if (step.getMoveStrategy() == MoveStrategy.StrafeRelative){
+            if (step.getRobotDirection() == RobotDirection.Left){
+                target.x = (int)(previousTarget.getX() + step.getTargetX());
+            }
+            else{
+                target.x = (int)(previousTarget.getX() - step.getTargetX());
+            }
+            target.y= (int)(previousTarget.getY());
+            target.x = target.x * MAP_SCALE;
+            target.y = (int) (height - target.y * MAP_SCALE);
+        }
+        else if (step.getMoveStrategy() == MoveStrategy.AutoLine){
+            if (step.getTargetX() > 0){
+                target.x = step.getTargetX();
+                target.y = (int)previousTarget.getY();
+            }
+            else{
+                target.x = (int)previousTarget.getX();
+                target.y = step.getTargetY();
+            }
+            target.x = target.x * MAP_SCALE;
+            target.y = (int) (height - target.y * MAP_SCALE);
+        }
         else {
             target.x = step.getTargetX() * MAP_SCALE;
             target.y = (int) (height - step.getTargetY() * MAP_SCALE);
