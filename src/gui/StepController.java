@@ -83,6 +83,17 @@ public class StepController {
                     return c;
                 }
             }));
+            boxTargets.setOnAction( (event) -> {
+                if (this.boxTargets.getSelectionModel().getSelectedItem() != null){
+                    if (this.boxTargets.getSelectionModel().getSelectedItem() instanceof TargetReference){
+                        TargetReference tr = (TargetReference)this.boxTargets.getSelectionModel().getSelectedItem();
+                        if (tr != null){
+                            this.tfX.setText(Integer.toString(tr.getX()));
+                            this.tfY.setText(Integer.toString(tr.getY()));
+                        }
+                    }
+                }
+            });
         }
         catch (Exception ex){
 
@@ -97,6 +108,7 @@ public class StepController {
                 this.routeController.addStep(selectedRoute, selectedStep, addIndex, condition);
             }
             FileLoader.saveRoute(selectedRoute);
+            this.routeController.notifyStepUpdate(selectedRoute, selectedStep);
             this.lstSteps.refresh();
             closeStage(event);
         }
@@ -190,7 +202,7 @@ public class StepController {
         this.routeController = routeController;
         boxAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
         boxConditionAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
-        boxTargets.setItems(FXCollections.observableArrayList(routeController.getTargetReferences()));
+        boxTargets.setItems(FXCollections.observableArrayList(routeController.getTargetReferences(this.selectedRoute)));
     }
 
     public String getCondition() {

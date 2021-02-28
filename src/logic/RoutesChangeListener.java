@@ -6,4 +6,5 @@ import entity.AutoStep;
 public interface RoutesChangeListener {
     void onRoutesUpdated(int selectedIndex);
     void onStepAdded(AutoRoute route, AutoStep step);
+    void onStepDeleted(AutoRoute route, AutoStep step);
 }

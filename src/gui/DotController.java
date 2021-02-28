@@ -148,6 +148,6 @@ public class DotController {
     public void setRouteController(RouteController routeController) {
         this.routeController = routeController;
         boxAction.setItems(FXCollections.observableArrayList(routeController.getBotActions()));
-        boxTargets.setItems(FXCollections.observableArrayList(routeController.getTargetReferences()));
+        boxTargets.setItems(FXCollections.observableArrayList(routeController.getTargetReferences(this.selectedRoute)));
     }
 }

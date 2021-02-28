@@ -100,7 +100,12 @@ public class MainController {
 
                 @Override
                 public void onStepAdded(AutoRoute route, AutoStep step) {
-                    enableConditionBar(route);
+                    enableConditionBar(route, step);
+                    fieldMap.displaySelectedRoute(route, conditionValue);
+                }
+                @Override
+                public void onStepDeleted(AutoRoute route, AutoStep step) {
+                    enableConditionBar(route, null);
                     fieldMap.displaySelectedRoute(route, conditionValue);
                 }
             });
@@ -129,7 +134,7 @@ public class MainController {
             public void onCoordinatePicked(AutoDot selected) {
                 if (!dotsMode) {
                     ListView listView = (ListView) leftNav.getExpandedPane().getContent();
-                    addStep(listView, selected, currentRoute.getSteps().size());
+                    addStep(listView, selected, currentRoute.getVisibleSteps().size());
                 }
                 else{
                     AutoDot dot = routeController.initDot();
@@ -155,7 +160,7 @@ public class MainController {
                                 lblName.setText(route.getRouteFullName());
                                 pane.setText(route.getRouteFullName());
                                 currentRoute = route;
-                                enableConditionBar(currentRoute);
+                                enableConditionBar(currentRoute, null);
                                 fieldMap.displaySelectedRoute(currentRoute, conditionValue);
                             }
                     }
@@ -192,7 +197,7 @@ public class MainController {
                 lblName.setText(routes.get(selectedIndex).getRouteFullName());
                 pane.setText(routes.get(selectedIndex).getRouteFullName());
                 currentRoute = routes.get(selectedIndex);
-                enableConditionBar(currentRoute);
+                enableConditionBar(currentRoute, null);
                 fieldMap.displaySelectedRoute(currentRoute, conditionValue);
 
             }
@@ -306,7 +311,7 @@ public class MainController {
         menuAdd.setOnAction((event) -> {
             int selectedIndex = lstSteps.getSelectionModel().getSelectedIndex() + 1;
             if (selectedIndex == 0){
-                selectedIndex = currentRoute.getSteps().size();
+                selectedIndex = currentRoute.getVisibleSteps().size();
             }
 
             addStep(lstSteps, null, selectedIndex);
@@ -325,7 +330,7 @@ public class MainController {
         ContextMenu routeListMenuShort = new ContextMenu();
         MenuItem menuNew = new MenuItem("New");
         menuNew.setOnAction((event) -> {
-            addStep(lstSteps, null, currentRoute.getSteps().size());
+            addStep(lstSteps, null, currentRoute.getVisibleSteps().size());
         });
         routeListMenuShort.getItems().addAll(menuNew);
 
@@ -352,9 +357,9 @@ public class MainController {
             e.printStackTrace();
         }
         StepController dialogController = fxmlLoader.<StepController>getController();
+        dialogController.setSelectedRoute(selectedRoute);
         dialogController.setRouteController(this.routeController);
         dialogController.setSelectedStep(selectedStep, addIndex);
-        dialogController.setSelectedRoute(selectedRoute);
         dialogController.setLstSteps(lstSteps);
         dialogController.setCondition(conditionValue);
 
@@ -640,12 +645,27 @@ public class MainController {
         fieldMap.displaySelectedRoute(currentRoute, conditionValue);
     }
 
-    protected void enableConditionBar(AutoRoute route){
+    protected void enableConditionBar(AutoRoute route, AutoStep step){
         conditionValue = "";
         boolean hasConditions = routeController.hasConditions(route);
         barConditions.setVisible(hasConditions);
         if (hasConditions) {
-            onSelectA();
+            if (step != null){
+                switch (step.getConditionValue()){
+                    case "A":
+                        onSelectA();
+                        break;
+                    case "B":
+                        onSelectB();
+                        break;
+                    case "C":
+                        onSelectC();
+                        break;
+                }
+            }
+            else {
+                onSelectA();
+            }
         }
 
     }

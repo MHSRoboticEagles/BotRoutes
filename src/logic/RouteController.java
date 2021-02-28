@@ -106,29 +106,39 @@ public class RouteController {
         return namedDots;
     }
 
-    public ArrayList<TargetReference> getTargetReferences() {
+    public ArrayList<TargetReference> getTargetReferences(AutoRoute route) {
         ArrayList<TargetReference> refs = new ArrayList<>();
         TargetReference dummy = new TargetReference();
         dummy.setDotName("");
         dummy.setDescription("None");
         refs.add(dummy);
         for (AutoDot d : this.namedDots){
-            TargetReference tr = new TargetReference(d);
-            refs.add(tr);
+            if (d.getFieldSide().equals(route.getName())) {
+                TargetReference tr = new TargetReference(d);
+                refs.add(tr);
+            }
         }
         for(BotActionObj actionObj : this.botActions){
             if (actionObj.isGeo() && !actionObj.getReturnRef().isEmpty()){
-                AutoDot dot = findNamedDot(actionObj.getReturnRef(), AutoRoute.NAME_RED);
-                if (dot != null){
-                    TargetReference tr = new TargetReference(dot);
-                    tr.setDotName(actionObj.getMethodName());
-                    tr.setDescription(String.format("Result of %s (%s)", actionObj.getDescription(), dot.toString()));
+                AutoDot dot = findNamedDot(actionObj.getReturnRef(), route.getName());
+                TargetReference tr = createTargetReference( dot, actionObj);
+                if (tr != null){
                     refs.add(tr);
                 }
             }
         }
         Collections.sort(refs);
         return refs;
+    }
+
+    private TargetReference createTargetReference(AutoDot dot, BotActionObj actionObj){
+        TargetReference tr = null;
+        if (dot != null){
+            tr = new TargetReference(dot);
+            tr.setDotName(actionObj.getMethodName());
+            tr.setDescription(String.format("Result of %s (%s)", actionObj.getDescription(), dot.toString()));
+        }
+        return tr;
     }
 
     public ArrayList<AutoRoute> getRoutes() {
@@ -340,16 +350,21 @@ public class RouteController {
         else {
             route.getVisibleSteps().add(index, newStep);
         }
-//
-//        if (this.routesChangeListener != null){
-//            this.routesChangeListener.onStepAdded(route, newStep);
-//        }
+    }
+
+    public void notifyStepUpdate(AutoRoute route, AutoStep step){
+        if (this.routesChangeListener != null){
+            this.routesChangeListener.onStepAdded(route, step);
+        }
     }
 
     public void deleteRouteStep(AutoRoute route, AutoStep step) throws Exception{
         route.getSteps().remove(step);
         route.getVisibleSteps().remove(step);
         FileLoader.saveRoute(route);
+        if (this.routesChangeListener != null){
+            this.routesChangeListener.onStepDeleted(route, step);
+        }
     }
 
     public void addDot(AutoDot dot){
