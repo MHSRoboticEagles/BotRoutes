@@ -20,7 +20,7 @@ This program helps design and manage autonomous movement of odometry-enabled rob
 * Download configuration file from [this repository](https://github.com/MHSRoboticEagles/BotRoutes/tree/master/config) and place them in the botroutes folder.
 
 * Create a new file run.bat in c:\MasterOdo folder with the following content:
-c:\java-11\bin\java --module-path c:\javafx-11\lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar c:\MasterOdo.jar 
+c:\java-11\bin\java --module-path c:\javafx-11\lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar c:\MasterOdo\BotRoutes.jar 
 
 * Save the run.bat file
 
