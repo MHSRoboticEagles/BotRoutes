@@ -30,6 +30,7 @@ public class FileLoader {
     private static final String HOME_FOLDER = System.getProperty(HOME_FOLDER_PATH);
     public static void ensureAppDirectories() throws Exception {
         try {
+            File homeFolder = new File(HOME_FOLDER);
             Path pathRoot = Paths.get(HOME_FOLDER, ROOT_FOLDER);
             ensureDirectory(pathRoot);
 
