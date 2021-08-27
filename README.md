@@ -7,25 +7,26 @@ This program helps design and manage autonomous movement of odometry-enabled rob
 ## Installation Mac
 * Download and install [OpenJDK 11](https://adoptopenjdk.net/). Choose version 11 and HotSpot JVM. Once the pkg file is downloaded
 double-click and follow the instruction to install java.
-Verify your installation.
-Open the Terminal window and run this command in the Terminal:
+Verify your installation. Open the Terminal window and run this command in the Terminal:
 
 ```
 $ java - version
 ```
+Make sure that the output of this command references version 11.
 
-* Download [Java FX SDK v11](https://github.com/MHSRoboticEagles/BotRoutes/install/javafx-sdk-11.0.2.zip)
+* Download [Java FX SDK v11](https://github.com/MHSRoboticEagles/BotRoutes/install/javafx-sdk-11.0.2.zip).
+
 Unzip the content of the zip archive, for example under your home directory ~/javafx-sdk-11.0.2
 
 * Create a directory *botroutes* under your home directory: ~/botroutes
 
 * Download the latest version of BotRoutes.jar from [Releases](https://github.com/MHSRoboticEagles/BotRoutes/releases)
-and place it under ~/botroutes directory
+and place it under ~/botroutes directory.
 
 * Download configuration file from [this repository](https://github.com/MHSRoboticEagles/BotRoutes/tree/master/config) 
 and place them in the ~/botroutes directory.
 
-* Start the program using the following command:
+* Start the program using the following command in the Terminal:
 
 ```
 $java --module-path ~/javafx-sdk-11.0.2/lib/ --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ~/botroutes/BotRoutes.jar
