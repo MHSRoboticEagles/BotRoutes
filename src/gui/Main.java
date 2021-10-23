@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private static final double WIDTH  = 800;
+    private static final double WIDTH  = 900;
     private static final double HEIGHT = 720;
 
     @Override
