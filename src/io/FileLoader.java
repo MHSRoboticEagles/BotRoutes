@@ -21,13 +21,13 @@ import java.util.ArrayList;
 public class FileLoader {
     protected static Charset charset = Charset.forName("UTF-8");
     private static final String HOME_FOLDER_PATH = "user.home";
-    private static final String ROOT_FOLDER = "botroutes";
+    private static final String ROOT_FOLDER = "config";
     private static final String ROUTE_FOLDER = "routes";
     private static final String LOG_FOLDER = "logs";
     private static final String CONFIG_FOLDER = "configs";
     private static final String DOT_FOLDER = "dots";
     public static final String BOT_ACTIONS_FILENAME = "bot-actions.json";
-    private static final String HOME_FOLDER = System.getProperty(HOME_FOLDER_PATH);
+    private static final String HOME_FOLDER = ".";
     public static void ensureAppDirectories() throws Exception {
         try {
             File homeFolder = new File(HOME_FOLDER);
@@ -114,7 +114,7 @@ public class FileLoader {
                     resutls.add(route);
                 }
                 catch (Exception ex){
-                    System.out.println(String.format("Cannot read file %s. %s", f.getName(), ex.getMessage()));
+                    System.out.println(String.format("Cannot read file %s . %s", f.getName(), ex.getMessage()));
                 }
             }
         }

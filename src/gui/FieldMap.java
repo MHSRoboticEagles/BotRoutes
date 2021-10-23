@@ -9,16 +9,12 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.image.Image;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -26,9 +22,6 @@ import java.awt.*;
 public class FieldMap {
     private Canvas mapFlow;
     private static final int MAP_SCALE = 4;
-    private static final int TILES_NUM_Y = 6;
-    private static final int TILES_NUM_X = 4;
-    ContextMenu canvasMenu = null;
     private double diam = 20;
     private CoordinateChangeListener coordinateChangeListener = null;
     private Timeline timeline = null;
@@ -93,8 +86,7 @@ public class FieldMap {
             }
         }
         gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
-        drawFieldOutline(gc);
-        drawFieldElements(gc, selectedRoute);
+        drawField(gc);
         if (selectedRoute != null){
             drawRoute(selectedRoute, gc, conditionValue);
         }
@@ -109,40 +101,15 @@ public class FieldMap {
             }
         }
         gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
-        drawFieldOutline(gc);
-        drawDefaultFieldElements(gc);
+        drawField(gc);
         if (dot != null){
             drawDot(dot, gc);
         }
     }
 
-    protected void drawFieldOutline(GraphicsContext gc){
-        double height = mapFlow.getHeight();
-        double width = mapFlow.getWidth();
-
-        gc.setStroke(Color.BLACK.brighter());
-        gc.setLineWidth(2);
-        gc.beginPath();
-        double startX = 0;
-        double startY = 0;
-        gc.moveTo(startX, startY);
-        gc.lineTo(0, height);
-        gc.lineTo(width, height);
-        gc.lineTo(width, 0);
-        gc.lineTo(0, 0);
-        //horizontal
-        for (int i = 0; i < TILES_NUM_Y; i++){
-            int y = (i+1) * inchesToPixels(24);
-            gc.moveTo(0, y);
-            gc.lineTo(width, y);
-        }
-        //vertical
-        for (int i = 0; i < TILES_NUM_X; i++){
-            int x = (i+1) * inchesToPixels(24);
-            gc.moveTo(x, 0);
-            gc.lineTo(x, height);
-        }
-        gc.stroke();
+    protected void drawField(GraphicsContext gc) {
+        Image original = new Image(getClass().getResourceAsStream("FreightFrenzyField.png"));
+        gc.drawImage(original, 0, 0, mapFlow.getWidth(), mapFlow.getHeight());
     }
 
     protected void drawRoute(AutoRoute selectedRoute, GraphicsContext gc, String conditionValue){
@@ -247,201 +214,6 @@ public class FieldMap {
         double x = dot.getX()*MAP_SCALE;
         double y = height - dot.getY()*MAP_SCALE;
         gc.fillOval(x - diam/2, y - diam/2, diam, diam);
-    }
-
-    private void drawFieldElements(GraphicsContext gc, AutoRoute selectedRoute) {
-        if (selectedRoute.getName().equals(AutoRoute.NAME_RED)){
-            drawFieldElementsRed(gc);
-        }
-        else{
-            drawFieldElementsBlue(gc);
-        }
-    }
-
-    private void drawDefaultFieldElements(GraphicsContext gc) {
-            drawFieldElementsRed(gc);
-    }
-
-    private void drawFieldElementsBlue(GraphicsContext gc){
-        //line 2
-        AutoDot startDot = new AutoDot(48, 24);
-        AutoDot startPixels = inchesToPixels(startDot);
-        Rectangle line = new Rectangle(startPixels.getX(), startPixels.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, line, Color.DARKBLUE);
-
-        //line 1
-        AutoDot startDot2 = new AutoDot(24, 24);
-        AutoDot startPixel2s = inchesToPixels(startDot2);
-        Rectangle line2 = new Rectangle(startPixel2s.getX(), startPixel2s.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, line2, Color.DARKBLUE);
-
-        //rings
-        AutoDot startDotRings = new AutoDot(35, 52);
-        AutoDot startPixelRings = inchesToPixels(startDotRings);
-        Rectangle rings = new Rectangle(startPixelRings.getX(), startPixelRings.getY(), inchesToPixels(2), inchesToPixels(4));
-        drawRectangle(gc, rings, Color.DARKBLUE);
-
-        //Zone A
-        AutoDot startDotA = new AutoDot(0, 96);
-        AutoDot startPixelA = inchesToPixels(startDotA);
-        Rectangle lineA = new Rectangle(startPixelA.getX(), startPixelA.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineA, Color.DARKBLUE);
-        Rectangle lineAU = new Rectangle(startPixelA.getX(), startPixelA.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineAU, Color.DARKBLUE);
-
-        AutoDot startDotAL = new AutoDot(0, 74);
-        AutoDot startPixelAL = inchesToPixels(startDotAL);
-        Rectangle lineAL = new Rectangle(startPixelAL.getX(), startPixelAL.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineAL, Color.DARKBLUE);
-
-        AutoDot startDotAR = new AutoDot(22, 96);
-        AutoDot startPixelAR = inchesToPixels(startDotAR);
-        Rectangle lineAR = new Rectangle(startPixelAR.getX(), startPixelAR.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineAR, Color.DARKBLUE);
-
-        //Zone B
-        AutoDot startDotB = new AutoDot(24, 120);
-        AutoDot startPixelB = inchesToPixels(startDotB);
-        Rectangle lineB = new Rectangle(startPixelB.getX(), startPixelB.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineB, Color.DARKBLUE);
-        Rectangle lineBU = new Rectangle(startPixelB.getX(), startPixelB.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineBU, Color.DARKBLUE);
-
-        AutoDot startDotBL = new AutoDot(24, 98);
-        AutoDot startPixelBL = inchesToPixels(startDotBL);
-        Rectangle lineBL = new Rectangle(startPixelBL.getX(), startPixelBL.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineBL, Color.DARKBLUE);
-
-        AutoDot startDotBR = new AutoDot(46, 120);
-        AutoDot startPixelBR = inchesToPixels(startDotBR);
-        Rectangle lineBR = new Rectangle(startPixelBR.getX(), startPixelBR.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineBR, Color.DARKBLUE);
-
-        //Zone C
-        AutoDot startDotC = new AutoDot(0, 144);
-        AutoDot startPixelC = inchesToPixels(startDotC);
-        Rectangle lineC = new Rectangle(startPixelC.getX(), startPixelC.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineC, Color.DARKBLUE);
-        Rectangle lineCU = new Rectangle(startPixelC.getX(), startPixelC.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineCU, Color.DARKBLUE);
-
-        AutoDot startDotCL = new AutoDot(0, 122);
-        AutoDot startPixelCL = inchesToPixels(startDotCL);
-        Rectangle lineCL = new Rectangle(startPixelCL.getX(), startPixelCL.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineCL, Color.DARKBLUE);
-
-        AutoDot startDotCR = new AutoDot(22, 144);
-        AutoDot startPixelCR = inchesToPixels(startDotCR);
-        Rectangle lineCR = new Rectangle(startPixelCR.getX(), startPixelCR.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineCR, Color.DARKBLUE);
-
-        // wobble left
-        AutoDot centerWL = new AutoDot(21, 30);
-        AutoDot centerWLPix = inchesToPixels(centerWL);
-        Circle wobbleLeft = new Circle(centerWLPix.getX(), centerWLPix.getY(), inchesToPixels(4));
-        drawCircle(gc, wobbleLeft, Color.DARKBLUE);
-
-        // wobble right
-        AutoDot centerWR = new AutoDot(45, 30);
-        AutoDot centerWRPix = inchesToPixels(centerWR);
-        Circle wobbleRight = new Circle(centerWRPix.getX(), centerWRPix.getY(), inchesToPixels(4));
-        drawCircle(gc, wobbleRight, Color.DARKBLUE);
-    }
-
-    private void drawFieldElementsRed(GraphicsContext gc){
-        //line 2
-        AutoDot startDot = new AutoDot(72, 24);
-        AutoDot startPixels = inchesToPixels(startDot);
-        Rectangle line = new Rectangle(startPixels.getX(), startPixels.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, line, Color.DARKRED);
-
-        //line 1
-        AutoDot startDot2 = new AutoDot(48, 24);
-        AutoDot startPixel2s = inchesToPixels(startDot2);
-        Rectangle line2 = new Rectangle(startPixel2s.getX(), startPixel2s.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, line2, Color.DARKRED);
-
-        //rings
-        AutoDot startDotRings = new AutoDot(59, 52);
-        AutoDot startPixelRings = inchesToPixels(startDotRings);
-        Rectangle rings = new Rectangle(startPixelRings.getX(), startPixelRings.getY(), inchesToPixels(2), inchesToPixels(4));
-        drawRectangle(gc, rings, Color.DARKRED);
-
-        //Zone A
-        AutoDot startDotA = new AutoDot(72, 96);
-        AutoDot startPixelA = inchesToPixels(startDotA);
-        Rectangle lineA = new Rectangle(startPixelA.getX(), startPixelA.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineA, Color.DARKRED);
-        Rectangle lineAU = new Rectangle(startPixelA.getX(), startPixelA.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineAU, Color.DARKRED);
-
-        AutoDot startDotAL = new AutoDot(72, 74);
-        AutoDot startPixelAL = inchesToPixels(startDotAL);
-        Rectangle lineAL = new Rectangle(startPixelAL.getX(), startPixelAL.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineAL, Color.DARKRED);
-
-        AutoDot startDotAR = new AutoDot(94, 96);
-        AutoDot startPixelAR = inchesToPixels(startDotAR);
-        Rectangle lineAR = new Rectangle(startPixelAR.getX(), startPixelAR.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineAR, Color.DARKRED);
-
-        //Zone B
-        AutoDot startDotB = new AutoDot(48, 120);
-        AutoDot startPixelB = inchesToPixels(startDotB);
-        Rectangle lineB = new Rectangle(startPixelB.getX(), startPixelB.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineB, Color.DARKRED);
-        Rectangle lineBU = new Rectangle(startPixelB.getX(), startPixelB.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineBU, Color.DARKRED);
-
-        AutoDot startDotBL = new AutoDot(48, 98);
-        AutoDot startPixelBL = inchesToPixels(startDotBL);
-        Rectangle lineBL = new Rectangle(startPixelBL.getX(), startPixelBL.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineBL, Color.DARKRED);
-
-        AutoDot startDotBR = new AutoDot(70, 120);
-        AutoDot startPixelBR = inchesToPixels(startDotBR);
-        Rectangle lineBR = new Rectangle(startPixelBR.getX(), startPixelBR.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineBR, Color.DARKRED);
-
-        //Zone C
-        AutoDot startDotC = new AutoDot(72, 144);
-        AutoDot startPixelC = inchesToPixels(startDotC);
-        Rectangle lineC = new Rectangle(startPixelC.getX(), startPixelC.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineC, Color.DARKRED);
-        Rectangle lineCU = new Rectangle(startPixelC.getX(), startPixelC.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineCU, Color.DARKRED);
-
-        AutoDot startDotCL = new AutoDot(72, 122);
-        AutoDot startPixelCL = inchesToPixels(startDotCL);
-        Rectangle lineCL = new Rectangle(startPixelCL.getX(), startPixelCL.getY(), inchesToPixels(24), inchesToPixels(2));
-        drawRectangle(gc, lineCL, Color.DARKRED);
-
-        AutoDot startDotCR = new AutoDot(94, 144);
-        AutoDot startPixelCR = inchesToPixels(startDotCR);
-        Rectangle lineCR = new Rectangle(startPixelCR.getX(), startPixelCR.getY(), inchesToPixels(2), inchesToPixels(24));
-        drawRectangle(gc, lineCR, Color.DARKRED);
-
-        // wobble left
-        AutoDot centerWL = new AutoDot(45, 30);
-        AutoDot centerWLPix = inchesToPixels(centerWL);
-        Circle wobbleLeft = new Circle(centerWLPix.getX(), centerWLPix.getY(), inchesToPixels(4));
-        drawCircle(gc, wobbleLeft, Color.DARKRED);
-
-        // wobble right
-        AutoDot centerWR = new AutoDot(69, 30);
-        AutoDot centerWRPix = inchesToPixels(centerWR);
-        Circle wobbleRight = new Circle(centerWRPix.getX(), centerWRPix.getY(), inchesToPixels(4));
-        drawCircle(gc, wobbleRight, Color.DARKRED);
-    }
-
-    private void drawRectangle(GraphicsContext gc, Rectangle rect, Paint paint){
-        gc.setFill(paint);
-        gc.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-    }
-
-    private void drawCircle(GraphicsContext gc, Circle circle, Paint paint){
-        gc.setFill(paint);
-        gc.fillOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius() * 2, circle.getRadius() * 2);
     }
 
     public void animateSelectedStep(AutoRoute selectedRoute, AutoStep selectedStep, String conditionValue){
