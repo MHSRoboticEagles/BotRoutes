@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Objects;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class AutoDot implements Comparable<AutoDot>{
     private String dotName = "A";
@@ -54,7 +55,7 @@ public class AutoDot implements Comparable<AutoDot>{
     }
 
     public String serialize() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
     public static AutoDot deserialize(String data) {

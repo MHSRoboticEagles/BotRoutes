@@ -1,6 +1,7 @@
 package entity;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,7 +26,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
 
 
     public String serialize() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
     public static AutoRoute deserialize(String data) {
