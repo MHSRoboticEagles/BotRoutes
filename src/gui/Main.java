@@ -1,6 +1,7 @@
 package gui;
 
 import io.BotConnector;
+import io.FileLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        processCommandLine();
+
         Parent root = FXMLLoader.load(getClass().getResource("botroutes.fxml"));
         primaryStage.setTitle("Bot Routes");
         primaryStage.setWidth(WIDTH);
@@ -30,7 +33,19 @@ public class Main extends Application {
             BotConnector.runDisconnect();
         }
         catch (Exception ex){
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    private void processCommandLine() {
+        try {
+            String homePath = getParameters().getNamed().get("homeFolder");
+            if (homePath != null) {
+                System.out.format("HomePath='%s'.\n", homePath);
+                FileLoader.setHomeFolder(homePath);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         }
     }
 

@@ -28,18 +28,19 @@ public class FileLoader {
     private static final String DOT_FOLDER = "dots";
     public static final String BOT_ACTIONS_FILENAME = "bot-actions.json";
     private static final String HOME_FOLDER = System.getProperty(HOME_FOLDER_PATH);
+
+    private static Path resolvedHomeFolder;
+
+    static {
+        resolvedHomeFolder = Paths.get(HOME_FOLDER, ROOT_FOLDER);
+    }
+
     public static void ensureAppDirectories() throws Exception {
         try {
-            File homeFolder = new File(HOME_FOLDER);
-            Path pathRoot = Paths.get(HOME_FOLDER, ROOT_FOLDER);
-            ensureDirectory(pathRoot);
-
+            ensureDirectory(resolvedHomeFolder);
             ensureDirectory(getRouteFolder());
-
             ensureDirectory(getDotFolder());
-
             ensureDirectory(getLogFolder());
-
             ensureDirectory(getConfigFolder());
         }
         catch (Exception ex){
@@ -47,28 +48,32 @@ public class FileLoader {
         }
     }
 
+    public static void setHomeFolder(String path) throws Exception {
+        resolvedHomeFolder = Path.of(path);
+        ensureAppDirectories();
+    }
+
     public static Path getHomeFolder(){
-        Path pathRoot = Paths.get(HOME_FOLDER, ROOT_FOLDER);
-        return pathRoot;
+        return resolvedHomeFolder;
     }
 
     public static Path getRouteFolder(){
-        Path pathRoutes = Paths.get(HOME_FOLDER, ROOT_FOLDER, ROUTE_FOLDER);
+        Path pathRoutes = Paths.get(String.valueOf(resolvedHomeFolder), ROUTE_FOLDER);
         return pathRoutes;
     }
 
     public static Path getDotFolder(){
-        Path pathDots = Paths.get(HOME_FOLDER, ROOT_FOLDER, DOT_FOLDER);
+        Path pathDots = Paths.get(String.valueOf(resolvedHomeFolder), DOT_FOLDER);
         return pathDots;
     }
 
     public static Path getLogFolder(){
-        Path pathLogs = Paths.get(HOME_FOLDER, ROOT_FOLDER, LOG_FOLDER);
+        Path pathLogs = Paths.get(String.valueOf(resolvedHomeFolder), LOG_FOLDER);
         return pathLogs;
     }
 
     public static Path getConfigFolder(){
-        Path pathConfig = Paths.get(HOME_FOLDER, ROOT_FOLDER, CONFIG_FOLDER);
+        Path pathConfig = Paths.get(String.valueOf(resolvedHomeFolder), CONFIG_FOLDER);
         return pathConfig;
     }
 
