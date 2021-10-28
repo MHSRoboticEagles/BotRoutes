@@ -21,16 +21,29 @@ import java.awt.*;
 
 public class FieldMap {
     private Canvas mapFlow;
-    private static final int MAP_SCALE = 4;
+    private double MAP_SCALE;
     private double diam = 20;
     private CoordinateChangeListener coordinateChangeListener = null;
     private Timeline timeline = null;
     private AnimationTimer timer = null;
+
+    private double robotWidth = 18;
+    private double robotLength = 18;
+
     public FieldMap (Canvas canvas){
         this.mapFlow = canvas;
+        double avgCanvasSize = (canvas.getHeight() + canvas.getWidth()) / 2;
+        this.MAP_SCALE = avgCanvasSize / 144;
     }
 
-    public void init(){
+    public void init() {
+        init(18,18);
+    }
+
+    public void init(int robotLengthInches, int robotWidthInches) {
+        this.robotLength = robotLengthInches;
+        this.robotWidth = robotWidthInches;
+
         mapFlow.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -169,7 +182,7 @@ public class FieldMap {
             target.y= (int)(previousTarget.getY());
             step.setRelX(target.x);
             step.setRelY(target.y);
-            target.x = target.x * MAP_SCALE;
+            target.x = (int) (target.x * MAP_SCALE);
             target.y = (int) (height - target.y * MAP_SCALE);
         }
         else if (step.getMoveStrategy() == MoveStrategy.StrafeRelative){
@@ -182,7 +195,7 @@ public class FieldMap {
             target.y= (int)(previousTarget.getY());
             step.setRelX(target.x);
             step.setRelY(target.y);
-            target.x = target.x * MAP_SCALE;
+            target.x = (int) (target.x * MAP_SCALE);
             target.y = (int) (height - target.y * MAP_SCALE);
         }
         else if (step.getMoveStrategy() == MoveStrategy.AutoLine){
@@ -196,13 +209,13 @@ public class FieldMap {
             }
             step.setRelX(target.x);
             step.setRelY(target.y);
-            target.x = target.x * MAP_SCALE;
+            target.x = (int) (target.x * MAP_SCALE);
             target.y = (int) (height - target.y * MAP_SCALE);
         }
         else {
             step.setRelX(step.getTargetX());
             step.setRelY(step.getTargetY());
-            target.x = step.getTargetX() * MAP_SCALE;
+            target.x = (int) (step.getTargetX() * MAP_SCALE);
             target.y = (int) (height - step.getTargetY() * MAP_SCALE);
         }
         return target;
@@ -214,6 +227,54 @@ public class FieldMap {
         double x = dot.getX()*MAP_SCALE;
         double y = height - dot.getY()*MAP_SCALE;
         gc.fillOval(x - diam/2, y - diam/2, diam, diam);
+        drawRobotAroundDot(dot.getX(), dot.getY(), dot.getHeading(), gc);
+    }
+
+    protected void drawRobotAroundDot(double centerX, double centerY, double robotHeading, GraphicsContext gc) {
+
+        double halfWidth = this.robotWidth/2;
+        double halfLength = this.robotLength/2;
+        double halfDiagnonal = Math.sqrt(halfLength*halfLength + halfWidth*halfWidth);
+
+        double robotBodyAngle = Math.atan2(halfWidth, halfLength); // center to corner angle
+
+        double x = centerX*MAP_SCALE;
+        double y = mapFlow.getHeight() - centerY*MAP_SCALE;
+
+        if (robotHeading != -1) {
+            double aRadians = Math.toRadians(robotHeading + 90);
+
+            gc.setFill(Color.YELLOWGREEN);
+            gc.setStroke(Color.YELLOWGREEN);
+            gc.setLineWidth(2);
+
+            double x1 = x + halfDiagnonal * MAP_SCALE * Math.cos(aRadians + robotBodyAngle);
+            double y1 = y - halfDiagnonal * MAP_SCALE * Math.sin(aRadians + robotBodyAngle);
+            double x2 = x + halfDiagnonal * MAP_SCALE * Math.cos(aRadians + Math.PI - robotBodyAngle);
+            double y2 = y - halfDiagnonal * MAP_SCALE * Math.sin(aRadians + Math.PI - robotBodyAngle);
+            double x3 = x + halfDiagnonal * MAP_SCALE * Math.cos(aRadians + Math.PI + robotBodyAngle);
+            double y3 = y - halfDiagnonal * MAP_SCALE * Math.sin(aRadians + Math.PI + robotBodyAngle);
+            double x4 = x + halfDiagnonal * MAP_SCALE * Math.cos(aRadians - robotBodyAngle);
+            double y4 = y - halfDiagnonal * MAP_SCALE * Math.sin(aRadians - robotBodyAngle);
+
+            double xc = x + 9 * MAP_SCALE * Math.cos(aRadians);
+            double yc = y - 9 * MAP_SCALE * Math.sin(aRadians);
+
+            gc.strokeLine(x1, y1, x2, y2);
+            gc.strokeLine(x2, y2, x3, y3);
+            gc.strokeLine(x3, y3, x4, y4);
+            gc.strokeLine(x4, y4, x1, y1);
+
+            gc.strokeLine(x, y, xc, yc);
+        } else {
+            gc.setStroke(Color.YELLOWGREEN);
+            gc.setLineWidth(2);
+
+            double diam = MAP_SCALE * (this.robotLength + this.robotWidth) / 2;
+
+            gc.strokeOval(x - diam/2, y - diam/2, diam, diam);
+        }
+
     }
 
     public void animateSelectedStep(AutoRoute selectedRoute, AutoStep selectedStep, String conditionValue){
@@ -259,13 +320,13 @@ public class FieldMap {
     private AutoDot inchesToPixels(AutoDot inches){
         double height = mapFlow.getHeight();
         AutoDot pixelDot = new AutoDot();
-        pixelDot.setX(inches.getX()*MAP_SCALE);
+        pixelDot.setX((int) (inches.getX()*MAP_SCALE));
         pixelDot.setY((int)Math.round(height - inches.getY()*MAP_SCALE));
         return pixelDot;
     }
 
     private int inchesToPixels(int inches){
-        return inches * MAP_SCALE;
+        return (int) (inches * MAP_SCALE);
     }
 
     public void setCoordinateChangeListener(CoordinateChangeListener coordinateChangeListener) {

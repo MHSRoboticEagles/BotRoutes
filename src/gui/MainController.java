@@ -123,7 +123,7 @@ public class MainController {
 
     protected void initFieldMap(){
         fieldMap = new FieldMap(this.mapFlow);
-        fieldMap.init();
+        fieldMap.init(18, 13);
         fieldMap.setCoordinateChangeListener(new CoordinateChangeListener() {
             @Override
             public void onCoordinateChanged(AutoDot dot, String description) {
