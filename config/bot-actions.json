@@ -1,1 +1,64 @@
-[{"description":"Init WobbleSwing","isGeo":false,"methodName":"backWobbleSwing"},{"description":"Close Claw","isGeo":false,"methodName":"closeWobbleClaw"},{"description":"Detect Stack","isGeo":true,"methodName":"detectStack","returnRef":"B"},{"description":"Detection Lights","isGeo":false,"methodName":"displayDetectionLights"},{"description":"Place Wobble","isGeo":false,"methodName":"forwardWobbleSwing"},{"description":"Get Detection Result","isGeo":true,"methodName":"getDetectionResult","returnRef":"B"},{"description":"Move Intake","isGeo":false,"methodName":"intake"},{"description":"Move Intake Reverse","isGeo":false,"methodName":"intakeReverse"},{"description":"Camera Left","isGeo":false,"methodName":"leftRingCamera"},{"description":"Lift Wobble Up","isGeo":false,"methodName":"liftAndHoldWobbleSwing"},{"description":"Lift Wobble Wall","isGeo":false,"methodName":"liftWobbleWall"},{"description":"Lift Wobble Wall Drop","isGeo":false,"methodName":"liftWobbleWallDrop"},{"description":"Lights Off","isGeo":false,"methodName":"lightsOff"},{"description":"Open Claw","isGeo":false,"methodName":"openWobbleClaw"},{"description":"Camera Right","isGeo":false,"methodName":"rightRingCamera"},{"description":"Shoot","isGeo":false,"methodName":"shootServo"},{"description":"Move Shooter","isGeo":false,"methodName":"shooter"},{"description":"Green Light","isGeo":false,"methodName":"signalOK"},{"description":"Stop Intake","isGeo":false,"methodName":"stopintake"},{"description":"Stop Shooter","isGeo":false,"methodName":"stopshooter"}]
+[
+  {
+    "description": "Start Turntable",
+    "isGeo": false,
+    "methodName": "startTurntable"
+  },
+  {
+    "description": "Stop Turntable",
+    "isGeo": false,
+    "methodName": "stopTurntable"
+  },
+  {
+    "description": "Drop Element",
+    "isGeo": false,
+    "methodName": "dropElement"
+  },
+  {
+    "description": "Reset Element Dropper",
+    "isGeo": false,
+    "methodName": "resetDropper"
+  },
+  {
+    "description": "Start Intake",
+    "isGeo": false,
+    "methodName": "startIntake"
+  },
+  {
+    "description": "Reverse Intake",
+    "isGeo": false,
+    "methodName": "reverseIntake"
+  },
+  {
+    "description": "Stop Intake",
+    "isGeo": false,
+    "methodName": "stopIntake"
+  },
+  {
+    "description": "Detect Barcode (future)",
+    "isGeo": true,
+    "methodName": "detectBarcode_future",
+    "returnRef": "B"
+  },
+  {
+    "description": "Get Detection Result (future)",
+    "isGeo": true,
+    "methodName": "getDetectionResult_future",
+    "returnRef": "B"
+  },
+  {
+    "description": "Detection Lights (future)",
+    "isGeo": false,
+    "methodName": "displayDetectionLights_future"
+  },
+  {
+    "description": "Lights Off (future)",
+    "isGeo": false,
+    "methodName": "lightsOff_future"
+  },
+  {
+    "description": "Green Light (future)",
+    "isGeo": false,
+    "methodName": "signalOK_future"
+  }
+]
