@@ -39,6 +39,9 @@ public class EditRouteController {
     protected TextField tfY;
 
     @FXML
+    protected TextField tfRotation;
+
+    @FXML
     protected void onNameChange(ActionEvent event){
         String name = boxName.getSelectionModel().getSelectedItem().toString();
         int index = routeController.getMinAvailableIndex(name);
@@ -89,6 +92,7 @@ public class EditRouteController {
         tfIndex.setText(Integer.toString(this.selectedRoute.getNameIndex()));
         tfX.setText(Integer.toString(this.selectedRoute.getStartX()));
         tfY.setText(Integer.toString(this.selectedRoute.getStartY()));
+        tfRotation.setText(Integer.toString(this.selectedRoute.getInitRotation()));
     }
 
     private void updateRoute(){
@@ -97,6 +101,7 @@ public class EditRouteController {
         this.selectedRoute.setNameIndex(Integer.valueOf(tfIndex.getText()));
         this.selectedRoute.setStartX(Integer.valueOf(tfX.getText()));
         this.selectedRoute.setStartY(Integer.valueOf(tfY.getText()));
+        this.selectedRoute.setInitRotation(Integer.valueOf(tfRotation.getText()));
     }
 
 

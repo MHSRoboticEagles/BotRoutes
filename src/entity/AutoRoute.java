@@ -21,6 +21,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
     private  transient ObservableList<AutoStep> visibleSteps = null;
     private int startX;
     private int startY;
+    private int initRotation;
     private long lastRunTime = 0;
     private String description;
 
@@ -45,6 +46,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
         cloned.setNameIndex(this.getNameIndex());
         cloned.setStartX(this.getStartX());
         cloned.setStartY(this.getStartY());
+        cloned.setInitRotation(this.getInitRotation());
         cloned.setSelected(this.isSelected());
         cloned.setTemp(this.isTemp());
         cloned.setDescription(this.getDescription());
@@ -240,5 +242,13 @@ public class AutoRoute implements Comparable<AutoRoute> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getInitRotation() {
+        return initRotation;
+    }
+
+    public void setInitRotation(int initRotation) {
+        this.initRotation = initRotation;
     }
 }

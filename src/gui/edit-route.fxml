@@ -53,6 +53,15 @@
                         <Insets right="30.0" />
                     </padding>
                 </HBox>
+                <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Initial Rotation" />
+                        <TextField fx:id="tfRotation" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
                 <HBox alignment="CENTER_RIGHT" spacing="10">
                     <children>
                         <Button mnemonicParsing="false" onAction="#btnSaveClicked" text="Save" />

@@ -15,6 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -121,8 +122,12 @@ public class FieldMap {
     }
 
     protected void drawField(GraphicsContext gc) {
+        gc.save();
         Image original = new Image(getClass().getResourceAsStream("FreightFrenzyField.png"));
+        Rotate r = new Rotate(90, mapFlow.getWidth()/2, mapFlow.getHeight()/2);
+        gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
         gc.drawImage(original, 0, 0, mapFlow.getWidth(), mapFlow.getHeight());
+        gc.restore();
     }
 
     protected void drawRoute(AutoRoute selectedRoute, GraphicsContext gc, String conditionValue){
