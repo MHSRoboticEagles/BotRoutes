@@ -191,7 +191,7 @@ public class MainController {
 
             }
             addDotsPane();
-            if (leftNav.getPanes().size() > 0) {
+            if (leftNav.getPanes().size() > 0 && routes.size() > 0) {
                 TitledPane pane = leftNav.getPanes().get(selectedIndex);
                 leftNav.setExpandedPane(pane);
                 lblName.setText(routes.get(selectedIndex).getRouteFullName());
