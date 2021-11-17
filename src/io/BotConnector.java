@@ -24,43 +24,44 @@ public class BotConnector {
         executeCommand(command, CONNECT_TIMEOUT);
     }
 
-    public static void pullBotActions() throws Exception{
+    public static String pullBotActions() throws Exception{
         String homeFolder = FileLoader.getHomeFolder().toString();
         String remotePath = String.format("/sdcard/FIRST/settings/%s", BOT_ACTIONS_FILENAME);
         String command = String.format("%s pull %s %s", getAdbCommand(), remotePath, homeFolder);
-        executeCommand(command, CONNECT_TIMEOUT);
+        return executeCommand(command, CONNECT_TIMEOUT);
     }
 
-    public static void pullBotConfig() throws Exception{
+    public static String pullBotConfig() throws Exception{
         String homeFolder = FileLoader.getHomeFolder().toString();
         String remotePath = "/sdcard/FIRST/settings/bot-config.json";
         String command = String.format("%s pull %s %s", getAdbCommand(), remotePath, homeFolder);
-        executeCommand(command, CONNECT_TIMEOUT);
+        return executeCommand(command, CONNECT_TIMEOUT);
     }
 
 
-    public static void pullRoutes() throws Exception{
+    public static String pullRoutes() throws Exception{
         Path local = FileLoader.getRouteFolder();
         String command = String.format("%s pull /sdcard/FIRST/routes/. %s", getAdbCommand(), local.toString());
-        executeCommand(command, CONNECT_TIMEOUT);
+        return executeCommand(command, CONNECT_TIMEOUT);
     }
 
-    public static void pullDots() throws Exception{
+    public static String pullDots() throws Exception{
         Path local = FileLoader.getDotFolder();
         String command = String.format("%s pull /sdcard/FIRST/dots/. %s", getAdbCommand(), local.toString());
-        executeCommand(command, CONNECT_TIMEOUT);
+        return executeCommand(command, CONNECT_TIMEOUT);
     }
 
-    public static void pullLogs() throws Exception{
+    public static String pullLogs() throws Exception{
         Path local = FileLoader.getLogFolder();
         String command = String.format("%s pull /sdcard/FIRST/matchlogs/. %s", getAdbCommand(), local.toString());
-        executeCommand(command, CONNECT_TIMEOUT);
+        return executeCommand(command, CONNECT_TIMEOUT);
     }
 
-    public static void pullConfigs() throws Exception{
+    public static String pullConfigs() throws Exception{
         Path local = FileLoader.getConfigFolder();
-        String command = String.format("%s pull /sdcard/FIRST/*.xml %s", getAdbCommand(), local.toString());
-        executeCommand(command, CONNECT_TIMEOUT);
+
+        String command = String.format("%s shell ls /sdcard/FIRST/*.xml | tr -s \"\\r\\n\" \"\\0\" | xargs -0 %s pull\n", getAdbCommand(), getAdbCommand());
+        return executeCommand(command, CONNECT_TIMEOUT);
     }
 
     public static void publishRoute(AutoRoute route) throws Exception{

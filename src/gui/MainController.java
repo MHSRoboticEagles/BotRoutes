@@ -401,13 +401,15 @@ public class MainController {
     @FXML
     protected void pullConfigs(){
         try{
-            BotConnector.pullRoutes();
-            BotConnector.pullDots();
-            BotConnector.pullBotActions();
-            BotConnector.pullBotConfig();
+            StringBuilder sb = new StringBuilder();
+            sb.append(BotConnector.pullRoutes());
+            sb.append(BotConnector.pullDots());
+            sb.append(BotConnector.pullBotActions());
+            sb.append(BotConnector.pullBotConfig());
             initController();
-            BotConnector.pullLogs();
-//            BotConnector.pullConfigs();
+            sb.append(BotConnector.pullLogs());
+            sb.append(BotConnector.pullConfigs());
+            showMessage(String.format("Downloaded robots config files. %s", sb.toString()), Alert.AlertType.INFORMATION);
         }
         catch (Exception ex){
             showMessage(ex.getMessage(), Alert.AlertType.ERROR);
