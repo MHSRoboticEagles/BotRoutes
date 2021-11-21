@@ -93,12 +93,6 @@ public class FieldMap {
 
     public void displaySelectedRoute(AutoRoute selectedRoute, String conditionValue){
         GraphicsContext gc = mapFlow.getGraphicsContext2D();
-        if (this.timeline != null) {
-            this.timeline.stop();
-            if (this.timer != null) {
-                this.timer.stop();
-            }
-        }
         gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
         drawField(gc);
         if (selectedRoute != null){
@@ -136,14 +130,12 @@ public class FieldMap {
             gc.setStroke(Color.DARKGREEN.brighter());
             gc.setFill(Color.YELLOWGREEN);
             gc.setLineWidth(5);
-//            gc.beginPath();
             double robotHeading = selectedRoute.getInitRotation();
             double strokeStartX = selectedRoute.getStartX() * MAP_SCALE;
             double strokeStartY = height - selectedRoute.getStartY() * MAP_SCALE;
             gc.fillOval(strokeStartX - diam/2, strokeStartY - diam/2, diam, diam);
-            drawRobotAroundDot(selectedRoute.getStartX() , selectedRoute.getStartY() , selectedRoute.getInitRotation(), gc, Color.YELLOWGREEN);
 
-//            gc.moveTo(startX, startY);
+//            drawRobotAroundDot(selectedRoute.getStartX() , selectedRoute.getStartY() , selectedRoute.getInitRotation(), gc, Color.YELLOWGREEN);
 
             int selectedStepIndex = -1;
             if (selectedStep != null) {
@@ -172,7 +164,6 @@ public class FieldMap {
                     gc.setLineWidth(5);
                     gc.setFill(robotColor.brighter());
                     gc.setStroke(robotColor);
-//                    gc.lineTo(x, y);
                     gc.strokeLine(strokeStartX, strokeStartY, x, y);
                     gc.fillOval(x - diam / 2, y - diam / 2, diam, diam);
 
@@ -182,13 +173,14 @@ public class FieldMap {
                         robotHeading = -1;
                     }
 
-                    drawRobotAroundDot(x / MAP_SCALE, (mapFlow.getHeight() - y) / MAP_SCALE, robotHeading, gc, robotColor);
+                    if (i == selectedStepIndex) {
+                        drawRobotAroundDot(x / MAP_SCALE, (mapFlow.getHeight() - y) / MAP_SCALE, robotHeading, gc, robotColor);
+                    }
 
                     strokeStartX = x;
                     strokeStartY = y;
                 }
             }
-//            gc.stroke();
         }
     }
 
@@ -314,6 +306,8 @@ public class FieldMap {
 
     public void animateSelectedStep(AutoRoute selectedRoute, AutoStep selectedStep, String conditionValue) {
         GraphicsContext gc = mapFlow.getGraphicsContext2D();
+        gc.clearRect(0, 0, mapFlow.getWidth(), mapFlow.getHeight());
+        drawField(gc);
         drawRoute(selectedRoute, gc, conditionValue, selectedStep);
     }
 
