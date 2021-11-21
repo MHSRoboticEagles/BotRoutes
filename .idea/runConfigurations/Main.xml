@@ -2,7 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="gui.Main" />
     <module name="BotRoutes" />
-    <option name="PROGRAM_PARAMETERS" value="--homeFolder=$ContentRoot$/config" />
+    <option name="PROGRAM_PARAMETERS" value="--homeFolder=$PROJECT_DIR$/../BotConfig" />
     <option name="VM_PARAMETERS" value="--module-path $Projectpath$/../../javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics" />
     <extension name="coverage">
       <pattern>
