@@ -31,10 +31,12 @@ public class FieldMap {
     private double robotWidth = 18;
     private double robotLength = 18;
 
+    private double FIELD_SIZE_IN = 144;
+
     public FieldMap (Canvas canvas){
         this.mapFlow = canvas;
         double avgCanvasSize = (canvas.getHeight() + canvas.getWidth()) / 2;
-        this.MAP_SCALE = avgCanvasSize / 144;
+        this.MAP_SCALE = avgCanvasSize / FIELD_SIZE_IN;
     }
 
     public void init() {
@@ -131,6 +133,7 @@ public class FieldMap {
             gc.setFill(Color.YELLOWGREEN);
             gc.setLineWidth(5);
             double robotHeading = selectedRoute.getInitRotation();
+            double previousHeading = robotHeading;
             double strokeStartX = selectedRoute.getStartX() * MAP_SCALE;
             double strokeStartY = height - selectedRoute.getStartY() * MAP_SCALE;
             gc.fillOval(strokeStartX - diam/2, strokeStartY - diam/2, diam, diam);
@@ -152,7 +155,8 @@ public class FieldMap {
                             previousTarget = new Point(prevStep.getRelX(), prevStep.getRelY());
                         }
                     }
-                    Point target = getCoordinate(step, previousTarget);
+                    Point target = getCoordinate(step, previousTarget, previousHeading);
+
                     double x = target.getX();
                     double y = target.getY();
 
@@ -170,7 +174,7 @@ public class FieldMap {
                     if (step.getDesiredHead() != -1) {
                         robotHeading = step.getDesiredHead();
                     } else if (step.getMoveStrategy() != MoveStrategy.None) {
-                        robotHeading = -1;
+                        robotHeading = previousHeading;
                     }
 
                     if (i == selectedStepIndex) {
@@ -179,6 +183,8 @@ public class FieldMap {
 
                     strokeStartX = x;
                     strokeStartY = y;
+
+                    previousHeading = robotHeading;
                 }
             }
         }
@@ -196,17 +202,26 @@ public class FieldMap {
         return prevStep;
     }
 
-    private Point getCoordinate(AutoStep step, Point previousTarget){
+    private int constrainedCoordinate(int value) {
+        int v = Math.max(0, value);
+        return (int) Math.min(v, FIELD_SIZE_IN);
+    }
+
+    private Point getCoordinate(AutoStep step, Point previousTarget, double previousHeading){
         double height = mapFlow.getHeight();
         Point target = new Point();
+        double prevHeadingRadians = Math.toRadians(previousHeading);
         if (step.getMoveStrategy() == MoveStrategy.StraightRelative){
             if (step.getRobotDirection() == RobotDirection.Forward){
-                target.x = (int)(previousTarget.getX() + step.getTargetX());
+                target.x = (int)(previousTarget.getX() + step.getTargetY() * Math.sin(prevHeadingRadians));
+                target.y = (int)(previousTarget.getY() + step.getTargetY() * Math.cos(prevHeadingRadians));
             }
             else{
-                target.x = (int)(previousTarget.getX() - step.getTargetX());
+                target.x = (int)(previousTarget.getX() - step.getTargetY() * Math.sin(prevHeadingRadians));
+                target.y = (int)(previousTarget.getY() - step.getTargetY() * Math.cos(prevHeadingRadians));
             }
-            target.y= (int)(previousTarget.getY());
+            target.x = constrainedCoordinate(target.x);
+            target.y = constrainedCoordinate(target.y);
             step.setRelX(target.x);
             step.setRelY(target.y);
             target.x = (int) (target.x * MAP_SCALE);
@@ -214,12 +229,15 @@ public class FieldMap {
         }
         else if (step.getMoveStrategy() == MoveStrategy.StrafeRelative){
             if (step.getRobotDirection() == RobotDirection.Left){
-                target.x = (int)(previousTarget.getX() + step.getTargetX());
+                target.x = (int)(previousTarget.getX() - step.getTargetX() * Math.cos(prevHeadingRadians));
+                target.y = (int)(previousTarget.getY() - step.getTargetX() * Math.sin(prevHeadingRadians));
             }
             else{
-                target.x = (int)(previousTarget.getX() - step.getTargetX());
+                target.x = (int)(previousTarget.getX() + step.getTargetX() * Math.cos(prevHeadingRadians));
+                target.y = (int)(previousTarget.getY() + step.getTargetX() * Math.sin(prevHeadingRadians));
             }
-            target.y= (int)(previousTarget.getY());
+            target.x = constrainedCoordinate(target.x);
+            target.y = constrainedCoordinate(target.y);
             step.setRelX(target.x);
             step.setRelY(target.y);
             target.x = (int) (target.x * MAP_SCALE);
@@ -234,6 +252,8 @@ public class FieldMap {
                 target.x = (int)previousTarget.getX();
                 target.y = step.getTargetY();
             }
+            target.x = constrainedCoordinate(target.x);
+            target.y = constrainedCoordinate(target.y);
             step.setRelX(target.x);
             step.setRelY(target.y);
             target.x = (int) (target.x * MAP_SCALE);
