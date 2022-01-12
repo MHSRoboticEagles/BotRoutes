@@ -20,6 +20,10 @@ public class AutoStep {
     private transient int relX;
     private transient int relY;
 
+    private String groupName;
+    private int groupIndex = -1;
+
+
     @Override
     public String toString() {
         String description = String.format("Wait %d ms\n", waitMS);
@@ -134,6 +138,8 @@ public class AutoStep {
         clone.setTargetReference(this.getTargetReference());
         clone.setConditionFunction(this.getConditionFunction());
         clone.setConditionValue(this.getConditionValue());
+        clone.setGroupIndex(this.getGroupIndex());
+        clone.setGroupName(this.getGroupName());
         return clone;
     }
 
@@ -222,5 +228,21 @@ public class AutoStep {
 
     public void setRelY(int relY) {
         this.relY = relY;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public int getGroupIndex() {
+        return groupIndex;
+    }
+
+    public void setGroupIndex(int groupIndex) {
+        this.groupIndex = groupIndex;
     }
 }

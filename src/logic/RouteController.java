@@ -204,7 +204,7 @@ public class RouteController {
         clone.setNameIndex(nextIndex);
         clone.setStartX(getMirrorX(clone.getStartX()));
         for(AutoStep step : clone.getSteps()){
-            step.setTargetX(getMirrorX(step.getTargetX()));
+            step.setTargetX(getMirrorY(step.getTargetY()));
             if (step.getMoveStrategy().equals(MoveStrategy.Spin)){
                 step.setDesiredHead(getMirrorDegree(step.getDesiredHead()));
             }
@@ -217,6 +217,12 @@ public class RouteController {
         int diffX = MIDDLE - targetX;
         int mirrorX = MIDDLE + diffX;
         return mirrorX;
+    }
+
+    protected int getMirrorY(int targetY){
+        int MAX = 144;
+        int mirrorY = MAX - targetY;
+        return mirrorY;
     }
 
     protected double getMirrorDegree(double heading){

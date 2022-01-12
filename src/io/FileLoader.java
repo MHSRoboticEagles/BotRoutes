@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import entity.AutoDot;
 import entity.AutoRoute;
 import entity.BotActionObj;
+import entity.BotCalibConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +28,7 @@ public class FileLoader {
     private static final String CONFIG_FOLDER = "configs";
     private static final String DOT_FOLDER = "dots";
     public static final String BOT_ACTIONS_FILENAME = "bot-actions.json";
+    public static final String BOT_CONFIG_FILENAME = "bot-config.json";
     private static final String HOME_FOLDER = System.getProperty(HOME_FOLDER_PATH);
 
     private static Path resolvedHomeFolder;
@@ -145,6 +147,11 @@ public class FileLoader {
         return String.format("%s/%s.json", folder.toString(), routeName);
     }
 
+    public static String getBotConfigFilePath(){
+        Path folder = getHomeFolder();
+        return String.format("%s/%s.json", folder.toString(), BOT_CONFIG_FILENAME);
+    }
+
     public static String getDotFilePath(String dotName, String fieldSide){
         Path folder = getDotFolder();
         return String.format("%s/%s_%s.json", folder.toString(), dotName, fieldSide);
@@ -222,6 +229,30 @@ public class FileLoader {
         actions.add(dummy);
 
         return actions;
+    }
+
+    public static BotCalibConfig loadBotConfig() throws Exception{
+        Path homePath = getHomeFolder();
+        BotCalibConfig config = new BotCalibConfig();
+        File configFile = new File(homePath.toString(), BOT_CONFIG_FILENAME);
+        if (configFile.exists()) {
+            String content = Files.readString(Path.of(configFile.toURI()), StandardCharsets.US_ASCII);
+            config = BotCalibConfig.deserialize(content);
+        }
+        return config;
+    }
+
+    public static void saveBotConfig(BotCalibConfig config) throws IOException {
+        Path homePath = getHomeFolder();
+        File configFile = new File(homePath.toString(), BOT_CONFIG_FILENAME);
+        FileOutputStream outputStream = new FileOutputStream(configFile);
+        try {
+            ByteBuffer byteContents = charset.encode(config.serialize());
+            outputStream.write(byteContents.array(), 0, byteContents.limit());
+            outputStream.flush();
+        } finally {
+            outputStream.close();
+        }
     }
 
 }

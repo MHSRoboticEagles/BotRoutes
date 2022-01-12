@@ -59,8 +59,8 @@ public class StepController {
     private CheckBox boxContinuous;
 
 
-    @FXML
-    public void initialize() {
+        @FXML
+        public void initialize() {
         try {
             boxStrategy.getItems().setAll(MoveStrategy.values());
             boxDirection.getItems().setAll(RobotDirection.values());

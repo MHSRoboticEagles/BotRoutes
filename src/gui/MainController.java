@@ -1,6 +1,7 @@
 package gui;
 
 import entity.*;
+import io.BotConfigController;
 import io.BotConnector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -451,6 +452,28 @@ public class MainController {
     protected void mirrorRoute(){
         AutoRoute clone = this.routeController.mirrorRoute(currentRoute);
         addRoute(clone, "Mirror Route");
+    }
+
+    @FXML
+    protected void editConfig(){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit-botconfig.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BotConfigController controller = fxmlLoader.<BotConfigController>getController();
+        controller.init();
+
+        Scene scene = new Scene(parent, 700, 500);
+        Stage stage = new Stage();
+        stage.initOwner(leftNav.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setTitle("Bot Configuration");
+        stage.showAndWait();
     }
 
     private void addRoute(AutoRoute route, String title){

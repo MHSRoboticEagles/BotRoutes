@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.BotConfigController">
+    <children>
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <children>
+                <Button mnemonicParsing="false" onAction="#btnSaveClicked" text="Save" />
+                <Button mnemonicParsing="false" onAction="#btnPushClicked" text="Push" />
+                <Button mnemonicParsing="false" onAction="#btnCloseClicked" text="Close" />
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <TabPane fx:id="tabPane"  xmlns="http://javafx.com/javafx/8.0.111"
+                 xmlns:fx="http://www.w3.org/2001/XInclude">
+            <tabs>
+                <Tab  text="General">
+                    <fx:include fx:id="tabPageGeneral" source="tabPanelConfigGeneral.fxml"/>
+                </Tab>
+                <Tab  text="Forward">
+                    <fx:include fx:id="tabPageMR" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Backwards">
+                    <fx:include fx:id="tabPageMRBack" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Strafe Left">
+                    <fx:include fx:id="tabPageMRStrafeLeft" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Strafe Right">
+                    <fx:include fx:id="tabPageMRStrafeRight" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Diag Left">
+                    <fx:include fx:id="tabPageMRDiagLeft" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Diag Right">
+                    <fx:include fx:id="tabPageMRDiagRight" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Spin Left">
+                    <fx:include fx:id="tabPageMRSpinLeft" source="tabPaneMR.fxml"/>
+                </Tab>
+                <Tab  text="Spin Right">
+                    <fx:include fx:id="tabPageMRSpinRight" source="tabPaneMR.fxml"/>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</VBox>

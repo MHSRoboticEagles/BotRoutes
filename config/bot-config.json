@@ -1,1 +1,236 @@
-{"diagMRLeft":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"diagMRRight":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"horizontalTicksDegree":0.0,"horizontalTicksDegreeLeft":0.0,"horizontalTicksDegreeRight":0.0,"leftTicksPerDegree":9.989409719525352,"minRadiusLeft":0.0,"minRadiusRight":0.0,"moveMRBack":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"moveMRForward":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"rightTicksPerDegree":9.628816393064437,"spinLeftConfig":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"spinRightConfig":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"strafeLeftReduction":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"strafeRightReduction":{"MRs":[1.0,1.0,1.0,1.0],"breakSamples":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"distanceRatio":1.0,"headChange":0.0,"motors":["LF","RF","RB","LB"],"selectedIndex":0},"wheelBaseSeparation":13.134761764054907}
+{
+  "wheelBaseSeparation": 13.05,
+  "horizontalTicksDegree": 0.0,
+  "horizontalTicksDegreeLeft": 0.0,
+  "horizontalTicksDegreeRight": 0.0,
+  "leftTicksPerDegree": 9.54,
+  "rightTicksPerDegree": 9.99,
+  "minRadiusLeft": 0.0,
+  "minRadiusRight": 0.0,
+  "positionPIDF": 110.0,
+  "positionToleration": 20,
+  "strafeLeftReduction": {
+    "selectedIndex": 0,
+    "distanceRatio": 1.0,
+    "headChange": 0.0,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "strafeRightReduction": {
+    "selectedIndex": 0,
+    "distanceRatio": 1.0,
+    "headChange": 0.0,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "diagMRLeft": {
+    "selectedIndex": 0,
+    "distanceRatio": 1.0,
+    "headChange": 0.0,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "diagMRRight": {
+    "selectedIndex": 0,
+    "distanceRatio": 1.0,
+    "headChange": 0.0,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "moveMRForward": {
+    "selectedIndex": 2,
+    "distanceRatio": 0.03225806451612903,
+    "headChange": -1.1420872436186449,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      0.98,
+      0.98,
+      0.98,
+      0.98
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "moveMRBack": {
+    "selectedIndex": 2,
+    "distanceRatio": 0.4583333333333333,
+    "headChange": 1.5241761366387978,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      0.96,
+      0.96,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "spinLeftConfig": {
+    "selectedIndex": 0,
+    "distanceRatio": 1.0,
+    "headChange": 0.0,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "spinRightConfig": {
+    "selectedIndex": 0,
+    "distanceRatio": 1.0,
+    "headChange": 0.0,
+    "motors": [
+      "LF",
+      "RF",
+      "RB",
+      "LB"
+    ],
+    "MRs": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "breakSamples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

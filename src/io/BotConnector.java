@@ -2,8 +2,10 @@ package io;
 
 import entity.AutoDot;
 import entity.AutoRoute;
+import entity.BotCalibConfig;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +69,12 @@ public class BotConnector {
     public static void publishRoute(AutoRoute route) throws Exception{
         String local = FileLoader.getRouteFilePath(route.getRouteName());
         String command = String.format("%s push %s /sdcard/FIRST/routes/%s.json", getAdbCommand(), local.toString(), route.getRouteName());
+        executeCommand(command, CONNECT_TIMEOUT);
+    }
+
+    public static void publishBotConfig(BotCalibConfig config) throws Exception{
+        String local = FileLoader.getBotConfigFilePath();
+        String command = String.format("%s push %s /sdcard/FIRST/routes/%s.json", getAdbCommand(), local.toString(), FileLoader.BOT_CONFIG_FILENAME);
         executeCommand(command, CONNECT_TIMEOUT);
     }
 

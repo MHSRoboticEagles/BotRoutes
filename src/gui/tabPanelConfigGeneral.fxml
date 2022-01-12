@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GeneralConfigController">
+    <children>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Wheel Separation(inches)" />
+                <TextField fx:id="tfwheelBaseSeparation" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Left Ticks per Degree" />
+                <TextField fx:id="tfleftTicksPerDegree" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Right Ticks per Degree" />
+                <TextField fx:id="tfrightTicksPerDegree" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Min Radius Left" />
+                <TextField fx:id="tfminRadiusLeft" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Min Radius Right" />
+                <TextField fx:id="tfminRadiusRight" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Position PIDF" />
+                <TextField fx:id="tfpositionPIDF" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label alignment="CENTER_RIGHT" minWidth="100.0" text="Position Toleration" />
+                <TextField fx:id="tfpositionToleration" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets right="30.0" />
+            </padding>
+        </HBox>
+    </children>
+</VBox>

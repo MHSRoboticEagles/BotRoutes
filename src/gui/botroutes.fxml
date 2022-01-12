@@ -12,6 +12,7 @@
             <Button fx:id="btnConnect" mnemonicParsing="false" text="Connect" onMouseClicked="#connect" />
             <Button fx:id="btnSync" mnemonicParsing="false" text="Sync" onMouseClicked="#pullConfigs" />
             <Button fx:id="btnPush" mnemonicParsing="false" text="Push" onMouseClicked="#pushConfigs" />
+            <Button fx:id="btnEditConfig" mnemonicParsing="false" text="Bot Config..." onMouseClicked="#editConfig" />
             <Button fx:id="btnAdd" mnemonicParsing="false" text="New" onMouseClicked="#addRoute" />
             <Button fx:id="btnClone" mnemonicParsing="false" text="Clone" onMouseClicked="#cloneRoute" />
             <Button fx:id="btnMirror" mnemonicParsing="false" text="Mirror" onMouseClicked="#mirrorRoute" />

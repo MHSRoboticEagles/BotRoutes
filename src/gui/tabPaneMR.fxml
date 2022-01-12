@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MotorReductionController">
+    <children>
+        <HBox alignment="BOTTOM_CENTER">
+            <children>
+                <Label alignment="BOTTOM_CENTER" fx:id="lblTitle" wrapText="true" maxWidth="200" text="" />
+            </children>
+        </HBox>
+        <HBox>
+        <children>
+        <VBox minWidth="150" minHeight="450">
+            <children>
+                <VBox alignment="TOP_RIGHT" minHeight="200">
+                    <children>
+                        <Label alignment="CENTER_RIGHT"  text="Front Left" />
+                        <TextField fx:id="tfMRFrontLeft" maxWidth="100" />
+                    </children>
+                </VBox>
+                <VBox alignment="BOTTOM_RIGHT" minHeight="200">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" text="Back Left" />
+                        <TextField fx:id="tfMRBackLeft" maxWidth="100" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+        <VBox minWidth="400" minHeight="450" alignment="CENTER">
+            <children>
+                <ImageView>
+                    <image>
+                        <Image url="@drive.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </VBox>
+        <VBox minWidth="150" minHeight="450">
+            <children>
+                <VBox alignment="TOP_LEFT" minHeight="200">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" text="Front Right" />
+                        <TextField fx:id="tfMRFrontRight" maxWidth="100"  />
+                    </children>
+                </VBox>
+                <VBox alignment="BOTTOM_LEFT" minHeight="200">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" text="Back Right" />
+                        <TextField fx:id="tfMRBackRight" maxWidth="100"  />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+    </HBox>
+    </children>
+</VBox>

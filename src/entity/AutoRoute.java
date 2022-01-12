@@ -24,6 +24,7 @@ public class AutoRoute implements Comparable<AutoRoute> {
     private int initRotation;
     private long lastRunTime = 0;
     private String description;
+    private ArrayList<AutoStepGroup> stepGroups = new ArrayList<>();
 
 
     public String serialize() {
