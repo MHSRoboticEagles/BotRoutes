@@ -9,6 +9,10 @@
   "minRadiusRight": 0.0,
   "positionPIDF": 110.0,
   "positionToleration": 20,
+  "maxVelocityLF": 2700.0,
+  "maxVelocityLB": 2680.0,
+  "maxVelocityRF": 2740.0,
+  "maxVelocityRB": 2680.0,
   "strafeLeftReduction": {
     "selectedIndex": 0,
     "distanceRatio": 1.0,

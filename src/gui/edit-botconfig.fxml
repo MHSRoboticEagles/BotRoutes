@@ -34,6 +34,9 @@
                 <Tab  text="General">
                     <fx:include fx:id="tabPageGeneral" source="tabPanelConfigGeneral.fxml"/>
                 </Tab>
+                <Tab  text="Velocity">
+                    <fx:include fx:id="tabPageVelocity" source="tabPaneMR.fxml"/>
+                </Tab>
                 <Tab  text="Forward">
                     <fx:include fx:id="tabPageMR" source="tabPaneMR.fxml"/>
                 </Tab>

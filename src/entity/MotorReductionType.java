@@ -8,6 +8,7 @@ public enum MotorReductionType {
     DiagMRLeft,
     DiagMRRight,
     SpinLeftConfig,
-    SpinRightConfig
+    SpinRightConfig,
+    Velocity
 
 }

@@ -31,20 +31,37 @@ public class MotorReductionController {
 
     public void init(BotCalibConfig config, MotorReductionType mrType){
         this.setMrType(mrType);
-        MotorReductionBot mr = getReduction(config);
-        tfMRFrontLeft.setText(String.format("%.2f", mr.getLF()));
-        tfMRBackLeft.setText(String.format("%.2f", mr.getLB()));
+        if (this.mrType == MotorReductionType.Velocity) {
+            tfMRFrontLeft.setText(String.format("%.2f", config.getMaxVelocityLF()));
+            tfMRBackLeft.setText(String.format("%.2f", config.getMaxVelocityLB()));
 
-        tfMRFrontRight.setText(String.format("%.2f", mr.getRF()));
-        tfMRBackRight.setText(String.format("%.2f", mr.getRB()));
+            tfMRFrontRight.setText(String.format("%.2f", config.getMaxVelocityRF()));
+            tfMRBackRight.setText(String.format("%.2f", config.getMaxVelocityRB()));
+        }
+        else {
+            MotorReductionBot mr = getReduction(config);
+            tfMRFrontLeft.setText(String.format("%.2f", mr.getLF()));
+            tfMRBackLeft.setText(String.format("%.2f", mr.getLB()));
+
+            tfMRFrontRight.setText(String.format("%.2f", mr.getRF()));
+            tfMRBackRight.setText(String.format("%.2f", mr.getRB()));
+        }
     }
 
     public void save(BotCalibConfig config){
         MotorReductionBot mr = getReduction(config);
-        mr.setLF(Double.valueOf(tfMRFrontLeft.getText()));
-        mr.setLB(Double.valueOf(tfMRBackLeft.getText()));
-        mr.setRF(Double.valueOf(tfMRFrontRight.getText()));
-        mr.setRB(Double.valueOf(tfMRBackRight.getText()));
+        if (this.mrType == MotorReductionType.Velocity){
+            config.setMaxVelocityLF(Double.valueOf(tfMRFrontLeft.getText()));
+            config.setMaxVelocityLB(Double.valueOf(tfMRBackLeft.getText()));
+            config.setMaxVelocityRF(Double.valueOf(tfMRFrontRight.getText()));
+            config.setMaxVelocityRB(Double.valueOf(tfMRBackRight.getText()));
+        }
+        else {
+            mr.setLF(Double.valueOf(tfMRFrontLeft.getText()));
+            mr.setLB(Double.valueOf(tfMRBackLeft.getText()));
+            mr.setRF(Double.valueOf(tfMRFrontRight.getText()));
+            mr.setRB(Double.valueOf(tfMRBackRight.getText()));
+        }
     }
 
     private MotorReductionBot getReduction(BotCalibConfig config){
@@ -81,6 +98,9 @@ public class MotorReductionController {
             case StrafeRightReduction:
                 mr = config.getStrafeRightReduction();
                 lblTitle.setText("Motor Reduction. Strafe Right");
+                break;
+            case Velocity:
+                lblTitle.setText("Max Velocity");
                 break;
         }
         return mr;

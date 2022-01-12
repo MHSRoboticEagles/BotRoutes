@@ -21,6 +21,8 @@ public class BotConfigController {
 
     @FXML private GeneralConfigController tabPageGeneralController;
 
+    @FXML private MotorReductionController tabPageVelocityController;
+
     @FXML private MotorReductionController tabPageMRController;
 
     @FXML private MotorReductionController tabPageMRBackController;
@@ -82,6 +84,11 @@ public class BotConfigController {
             tabPageGeneralController.init(botCalibConfig);
         }
 
+        //Velocity tab
+        if(botCalibConfig != null && tabPageVelocityController != null){
+            tabPageVelocityController.init(botCalibConfig, MotorReductionType.Velocity);
+        }
+
         //MR tab
         if(botCalibConfig != null && tabPageMRController != null){
             tabPageMRController.init(botCalibConfig, MotorReductionType.MRForward);
@@ -141,8 +148,48 @@ public class BotConfigController {
             changed = true;
         }
 
+        if (tabPageVelocityController != null){
+            tabPageVelocityController.save(botCalibConfig);
+            changed = true;
+        }
+
         if (tabPageMRController != null){
             tabPageMRController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRBackController != null){
+            tabPageMRBackController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRStrafeLeftController != null){
+            tabPageMRStrafeLeftController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRStrafeRightController != null){
+            tabPageMRStrafeRightController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRDiagLeftController != null){
+            tabPageMRDiagLeftController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRDiagRightController != null){
+            tabPageMRDiagRightController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRSpinLeftController != null){
+            tabPageMRSpinLeftController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageMRSpinRightController != null){
+            tabPageMRSpinRightController.save(botCalibConfig);
             changed = true;
         }
 
