@@ -1,17 +1,17 @@
 {
-  "wheelBaseSeparation": 13.05,
+  "wheelBaseSeparation": 13.13,
   "horizontalTicksDegree": 0.0,
   "horizontalTicksDegreeLeft": 0.0,
   "horizontalTicksDegreeRight": 0.0,
-  "leftTicksPerDegree": 9.54,
-  "rightTicksPerDegree": 9.99,
+  "leftTicksPerDegree": 9.99,
+  "rightTicksPerDegree": 9.63,
   "minRadiusLeft": 0.0,
   "minRadiusRight": 0.0,
-  "positionPIDF": 110.0,
-  "positionToleration": 20,
-  "maxVelocityLF": 2700.0,
+  "positionPIDF": 20.0,
+  "positionToleration": 110,
+  "maxVelocityLF": 2760.0,
   "maxVelocityLB": 2680.0,
-  "maxVelocityRF": 2740.0,
+  "maxVelocityRF": 2700.0,
   "maxVelocityRB": 2680.0,
   "strafeLeftReduction": {
     "selectedIndex": 0,
@@ -126,9 +126,9 @@
     ]
   },
   "moveMRForward": {
-    "selectedIndex": 2,
-    "distanceRatio": 0.03225806451612903,
-    "headChange": -1.1420872436186449,
+    "selectedIndex": 0,
+    "distanceRatio": 0.7727372342756959,
+    "headChange": 4.603869886851441,
     "motors": [
       "LF",
       "RF",
@@ -136,10 +136,10 @@
       "LB"
     ],
     "MRs": [
-      0.98,
-      0.98,
-      0.98,
-      0.98
+      1.0,
+      0.78,
+      0.78,
+      1.0
     ],
     "breakSamples": [
       0.0,
@@ -154,9 +154,9 @@
     ]
   },
   "moveMRBack": {
-    "selectedIndex": 2,
-    "distanceRatio": 0.4583333333333333,
-    "headChange": 1.5241761366387978,
+    "selectedIndex": 0,
+    "distanceRatio": 0.7421109902067464,
+    "headChange": -14.210400240395131,
     "motors": [
       "LF",
       "RF",
@@ -165,8 +165,8 @@
     ],
     "MRs": [
       1.0,
-      0.96,
-      0.96,
+      0.78,
+      0.78,
       1.0
     ],
     "breakSamples": [

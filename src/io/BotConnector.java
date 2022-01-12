@@ -74,7 +74,7 @@ public class BotConnector {
 
     public static void publishBotConfig(BotCalibConfig config) throws Exception{
         String local = FileLoader.getBotConfigFilePath();
-        String command = String.format("%s push %s /sdcard/FIRST/routes/%s.json", getAdbCommand(), local.toString(), FileLoader.BOT_CONFIG_FILENAME);
+        String command = String.format("%s push %s /sdcard/FIRST/settings/%s", getAdbCommand(), local.toString(), FileLoader.BOT_CONFIG_FILENAME);
         executeCommand(command, CONNECT_TIMEOUT);
     }
 

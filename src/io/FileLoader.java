@@ -149,7 +149,7 @@ public class FileLoader {
 
     public static String getBotConfigFilePath(){
         Path folder = getHomeFolder();
-        return String.format("%s/%s.json", folder.toString(), BOT_CONFIG_FILENAME);
+        return String.format("%s/%s", folder.toString(), BOT_CONFIG_FILENAME);
     }
 
     public static String getDotFilePath(String dotName, String fieldSide){

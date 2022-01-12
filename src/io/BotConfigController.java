@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logic.DotsChangeListener;
@@ -65,13 +66,14 @@ public class BotConfigController {
         }
     }
 
-    public void publishBotConfig(BotCalibConfig config){
+    public void publishBotConfig(BotCalibConfig config, ActionEvent event){
         try
         {
             BotConnector.publishBotConfig(config);
+            showMessage("Bot config pushed", Alert.AlertType.INFORMATION, event);
         }
         catch (Exception ex){
-
+            showMessage(String.format("Unable to push bot config. %s", ex.getMessage()), Alert.AlertType.ERROR, event);
         }
     }
 
@@ -137,7 +139,7 @@ public class BotConfigController {
 
     @FXML
     protected void btnPushClicked(ActionEvent event){
-        publishBotConfig(botCalibConfig);
+        publishBotConfig(botCalibConfig, event);
     }
 
     @FXML
@@ -202,5 +204,20 @@ public class BotConfigController {
         Node source = (Node)  event.getSource();
         Stage stage  = (Stage) source.getScene().getWindow();
         stage.close();
+    }
+
+    protected void showMessage(String msg, Alert.AlertType type, ActionEvent event){
+        String title = "Info";
+        if (type == Alert.AlertType.ERROR){
+            title = "Error";
+        }
+        Alert alert = new Alert(type);
+        Node source = (Node)  event.getSource();
+        if (source != null) {
+            alert.initOwner(source.getScene().getWindow());
+        }
+        alert.setTitle(title);
+        alert.setContentText(msg);
+        alert.show();
     }
 }
