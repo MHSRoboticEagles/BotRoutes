@@ -212,13 +212,14 @@ public class FieldMap {
         Point target = new Point();
         double prevHeadingRadians = Math.toRadians(previousHeading);
         if (step.getMoveStrategy() == MoveStrategy.StraightRelative){
+            // for relative moves, step.X is the only value that matters. step.Y is ignored
             if (step.getRobotDirection() == RobotDirection.Forward){
-                target.x = (int)(previousTarget.getX() + step.getTargetY() * Math.sin(prevHeadingRadians));
-                target.y = (int)(previousTarget.getY() + step.getTargetY() * Math.cos(prevHeadingRadians));
+                target.x = (int)(previousTarget.getX() + step.getTargetX() * Math.sin(prevHeadingRadians));
+                target.y = (int)(previousTarget.getY() + step.getTargetX() * Math.cos(prevHeadingRadians));
             }
             else{
-                target.x = (int)(previousTarget.getX() - step.getTargetY() * Math.sin(prevHeadingRadians));
-                target.y = (int)(previousTarget.getY() - step.getTargetY() * Math.cos(prevHeadingRadians));
+                target.x = (int)(previousTarget.getX() - step.getTargetX() * Math.sin(prevHeadingRadians));
+                target.y = (int)(previousTarget.getY() - step.getTargetX() * Math.cos(prevHeadingRadians));
             }
             target.x = constrainedCoordinate(target.x);
             target.y = constrainedCoordinate(target.y);
@@ -228,6 +229,7 @@ public class FieldMap {
             target.y = (int) (height - target.y * MAP_SCALE);
         }
         else if (step.getMoveStrategy() == MoveStrategy.StrafeRelative){
+            // for relative moves, step.X is the only value that matters. step.Y is ignored
             if (step.getRobotDirection() == RobotDirection.Left){
                 target.x = (int)(previousTarget.getX() - step.getTargetX() * Math.cos(prevHeadingRadians));
                 target.y = (int)(previousTarget.getY() - step.getTargetX() * Math.sin(prevHeadingRadians));
