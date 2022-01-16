@@ -467,7 +467,7 @@ public class MainController {
         BotConfigController controller = fxmlLoader.<BotConfigController>getController();
         controller.init();
 
-        Scene scene = new Scene(parent, 700, 500);
+        Scene scene = new Scene(parent, 700, 600);
         Stage stage = new Stage();
         stage.initOwner(leftNav.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);

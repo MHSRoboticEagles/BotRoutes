@@ -1,6 +1,7 @@
 package io;
 
 import entity.*;
+import gui.FrenzyAttachmentsController;
 import gui.GeneralConfigController;
 import gui.MotorReductionController;
 import javafx.collections.FXCollections;
@@ -21,6 +22,8 @@ public class BotConfigController {
     BotCalibConfig botCalibConfig = null;
 
     @FXML private GeneralConfigController tabPageGeneralController;
+
+    @FXML private FrenzyAttachmentsController tabPageFrenzyAttachmentsController;
 
     @FXML private MotorReductionController tabPageVelocityController;
 
@@ -86,6 +89,11 @@ public class BotConfigController {
             tabPageGeneralController.init(botCalibConfig);
         }
 
+        // Freight Frenzy Attachments tab
+        if(botCalibConfig != null && tabPageFrenzyAttachmentsController != null) {
+            tabPageFrenzyAttachmentsController.init(botCalibConfig);
+        }
+
         //Velocity tab
         if(botCalibConfig != null && tabPageVelocityController != null){
             tabPageVelocityController.init(botCalibConfig, MotorReductionType.Velocity);
@@ -147,6 +155,11 @@ public class BotConfigController {
         boolean changed = false;
         if (tabPageGeneralController != null){
             tabPageGeneralController.save(botCalibConfig);
+            changed = true;
+        }
+
+        if (tabPageFrenzyAttachmentsController != null){
+            tabPageFrenzyAttachmentsController.save(botCalibConfig);
             changed = true;
         }
 

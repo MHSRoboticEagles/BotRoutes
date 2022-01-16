@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<TabPane prefHeight="599.0" prefWidth="764.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FrenzyAttachmentsController">
+    <Tab closable="false" text="Duck Loop">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Label layoutX="31.0" layoutY="33.0" text="Tele-Op">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <Label layoutX="58.0" layoutY="73.0" text="Start Speed:" />
+            <TextField id="tfStartSpeed" fx:id="tfStartSpeed" layoutX="178.0" layoutY="69.0" prefHeight="25.0" prefWidth="60.0" text="0.3" />
+            <Label layoutX="58.0" layoutY="109.0" text="Increment Speed:" />
+            <TextField id="tfSpeedIncrement" fx:id="tfSpeedIncrement" layoutX="178.0" layoutY="105.0" prefHeight="25.0" prefWidth="60.0" text="0.065" />
+            <Label layoutX="58.0" layoutY="146.0" text="Maximum Speed:" />
+            <TextField id="tfMaxSpeed" fx:id="tfMaximumSpeed" layoutX="178.0" layoutY="142.0" prefHeight="25.0" prefWidth="60.0" text="0.45" />
+            <Label layoutX="60.0" layoutY="186.0" text="Loop Delay (ms):" />
+            <TextField id="tfLoopDelayMs" fx:id="tfLoopDelayMs" layoutX="178.0" layoutY="182.0" prefHeight="25.0" prefWidth="60.0" text="140" />
+            <Label layoutX="60.0" layoutY="224.0" text="Loop Count:" />
+            <TextField id="tfLoopCount" fx:id="tfLoopCount" layoutX="178.0" layoutY="220.0" prefHeight="25.0" prefWidth="60.0" text="9" />
+            <Label layoutX="60.0" layoutY="265.0" text="Total Time per Duck:" />
+            <TextField id="tfTotalTime" fx:id="tfLoopTime" editable="false" focusTraversable="false" layoutX="178.0" layoutY="261.0" prefHeight="25.0" prefWidth="60.0" />
+            <LineChart id="tfDuckLoopChart" fx:id="tfDuckLoopChart" animated="false" layoutX="259.0" layoutY="69.0" legendVisible="false" prefHeight="226.0" prefWidth="375.0" title="Motor Speed">
+                <xAxis>
+                    <NumberAxis label="Time" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT" />
+                </yAxis>
+            </LineChart>
+            <Button id="t" layoutX="272.0" layoutY="310.0" mnemonicParsing="false" onAction="#refreshSpeedProfile" text="Recalculate" />
+            <Label layoutX="31.0" layoutY="335.0" text="First Loop">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <Label layoutX="60.0" layoutY="370.0" text="Slowdown Factor" />
+            <TextField id="tfFirstDuckSlowdownFactor" fx:id="tfFirstDuckSlowdownFactor" layoutX="178.0" layoutY="366.0" prefHeight="25.0" prefWidth="60.0" text="0.5" />
+        </AnchorPane>
+    </Tab>
+    <Tab closable="false" text="Lift">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Label layoutX="60.0" layoutY="57.0" text="Lift Extension Position">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Line endX="76.0" endY="-290.0" fill="BLACK" layoutX="281.0" layoutY="314.0" startX="-236.0" startY="-41.0"
+                  strokeWidth="5.0"/>
+
+            <Label layoutX="26.0" layoutY="301.0" text="Under Extension:"/>
+            <TextField fx:id="tfLiftExtensionUnder" layoutX="125.0" layoutY="297.0" prefHeight="25.0" prefWidth="51.0"
+                       text="-5"/>
+            <Label layoutX="70.0" layoutY="268.0" text="No Extension:"/>
+            <TextField fx:id="tfLiftExtensionNone" layoutX="150.0" layoutY="264.0" prefHeight="25.0" prefWidth="66.0"
+                       text="0"/>
+            <Label layoutX="105.0" layoutY="237.0" text="Min Extension:"/>
+            <TextField fx:id="tfLiftExtensionMin" layoutX="193.0" layoutY="233.0" prefHeight="25.0" prefWidth="54.0"
+                       text="200"/>
+            <Label layoutX="173.0" layoutY="188.0" text="Shared Hub:"/>
+            <TextField fx:id="tfLiftExtensionSharedHub" layoutX="247.0" layoutY="184.0" prefHeight="25.0"
+                       prefWidth="57.0" text="260"/>
+
+            <Label layoutX="304.0" layoutY="93.0" text="Level 1:"/>
+            <TextField fx:id="tfLiftExtensionLevel1" layoutX="366.0" layoutY="89.0" prefHeight="25.0" prefWidth="49.0"
+                       text="1720"/>
+            <Label layoutX="334.0" layoutY="61.0" text="Level 2:"/>
+            <TextField fx:id="tfLiftExtensionLevel2" layoutX="390.0" layoutY="57.0" prefHeight="25.0" prefWidth="54.0"
+                       text="1945"/>
+            <Label layoutX="368.0" layoutY="28.0" text="Level 3:"/>
+            <TextField fx:id="tfLiftExtensionLevel3" layoutX="417.0" layoutY="24.0" prefHeight="25.0" prefWidth="59.0"
+                       text="2220"/>
+
+            <Label layoutX="507.0" layoutY="267.0" text="Lift Aiming Angles">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Arc fill="#ffffff00" layoutX="450.0" layoutY="550.0" length="150.0" radiusX="200.0" radiusY="200.0"
+                 startAngle="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="5.0"/>
+            <Line endY="180.0" layoutX="450.0" layoutY="320.0" startY="40.0" stroke="#7c7c7c"/>
+            <Label layoutX="257.0" layoutY="360.0" text="Red Hub:"/>
+            <TextField fx:id="tfLiftAimAngleRed" layoutX="252.0" layoutY="381.0" prefHeight="25.0" prefWidth="47.0"
+                       text="0.3"/>
+            <Label layoutX="432.0" layoutY="289.0" text="Center:"/>
+            <TextField fx:id="tfLiftAimAngleCenter" layoutX="426.0" layoutY="310.0" prefHeight="25.0" prefWidth="50.0"
+                       text="0.5"/>
+            <Label layoutX="587.0" layoutY="351.0" text="Blue Hub:"/>
+            <TextField fx:id="tfLiftAimAngleBlue" layoutX="587.0" layoutY="368.0" prefHeight="25.0" prefWidth="43.0"
+                       text="0.65"/>
+        </AnchorPane>
+    </Tab>
+    <Tab closable="false" text="Dropper">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Label layoutX="45.0" layoutY="33.0" text="Positions">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Label layoutX="45.0" layoutY="74.0" text="Drop:"/>
+            <TextField fx:id="tfDropperPositionDrop" layoutX="104.0" layoutY="70.0" prefHeight="25.0" prefWidth="50.0"
+                       text="1.0"/>
+            <Label layoutX="45.0" layoutY="108.0" text="Transport:"/>
+            <TextField fx:id="tfDropperPositionTransport" layoutX="104.0" layoutY="104.0" prefHeight="25.0"
+                       prefWidth="50.0" text="0.3"/>
+            <Label layoutX="45.0" layoutY="144.0" text="Reset:"/>
+            <TextField fx:id="tfDropperPositionReset" layoutX="104.0" layoutY="140.0" prefHeight="25.0" prefWidth="50.0"
+                       text="0.0"/>
+        </AnchorPane>
+    </Tab>
+    <Tab closable="false" text="Intake">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Label layoutX="45.0" layoutY="33.0" text="Positions">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Label layoutX="45.0" layoutY="74.0" text="Up:"/>
+            <TextField fx:id="tfIntakePositionUp" layoutX="104.0" layoutY="70.0" prefHeight="25.0" prefWidth="50.0"
+                       text="1.0"/>
+            <Label layoutX="45.0" layoutY="108.0" text="Down:"/>
+            <TextField fx:id="tfIntakePositionDown" layoutX="104.0" layoutY="104.0" prefHeight="25.0" prefWidth="50.0"
+                       text="0.0"/>
+            <Label layoutX="45.0" layoutY="144.0" text="Safety:"/>
+            <TextField fx:id="tfIntakePositionSafety" layoutX="104.0" layoutY="140.0" prefHeight="25.0" prefWidth="50.0"
+                       text="0.6"/>
+
+            <Label layoutX="225.0" layoutY="33.0" text="Speed">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Label layoutX="225.0" layoutY="74.0" text="Intake"/>
+            <TextField fx:id="tfIntakeSpeedIn" layoutX="315.0" layoutY="70.0" prefHeight="25.0" prefWidth="50.0"
+                       text="-0.8"/>
+            <Label layoutX="225.0" layoutY="108.0" text="Outtake"/>
+            <TextField fx:id="tfIntakeSpeedOut" layoutX="315.0" layoutY="104.0" prefHeight="25.0" prefWidth="50.0"
+                       text="0.6"/>
+            <Label layoutX="225.0" layoutY="144.0" text="Slow Intake:"/>
+            <TextField fx:id="tfIntakeSpeedSlowIn" layoutX="315.0" layoutY="140.0" prefHeight="25.0" prefWidth="50.0"
+                       text="-0.15"/>
+        </AnchorPane>
+    </Tab>
+</TabPane>
