@@ -15,3 +15,6 @@
 
 ### Intake Related Configuration
 ![Intake Related Configuration](doc/Frenzy-Intake.png)
+
+## Bot Config JSON Fragment
+![JSON Fragment](doc/Frenzy-ConfigJson.png)
