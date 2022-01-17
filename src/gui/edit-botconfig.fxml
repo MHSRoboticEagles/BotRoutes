@@ -2,16 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.Tab?>
-
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.CheckBox?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.BotConfigController">
     <children>
@@ -28,38 +22,40 @@
                 <Insets right="30.0" />
             </padding>
         </HBox>
-        <TabPane fx:id="tabPane"  xmlns="http://javafx.com/javafx/8.0.111"
-                 xmlns:fx="http://www.w3.org/2001/XInclude">
+        <TabPane fx:id="tabPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://www.w3.org/2001/XInclude">
             <tabs>
-                <Tab  text="General">
-                    <fx:include fx:id="tabPageGeneral" source="tabPanelConfigGeneral.fxml"/>
+                <Tab closable="false" text="General">
+                    <fx:include fx:id="tabPageGeneral" source="tabPanelConfigGeneral.fxml" />
                 </Tab>
-                <Tab  text="Velocity">
-                    <fx:include fx:id="tabPageVelocity" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Freight Frenzy">
+                    <fx:include fx:id="tabPageFrenzyAttachments" source="tabPanelFrenzyAttachments.fxml" />
                 </Tab>
-                <Tab  text="Forward">
-                    <fx:include fx:id="tabPageMR" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Velocity">
+                    <fx:include fx:id="tabPageVelocity" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Backwards">
-                    <fx:include fx:id="tabPageMRBack" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Forward">
+                    <fx:include fx:id="tabPageMR" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Strafe Left">
-                    <fx:include fx:id="tabPageMRStrafeLeft" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Backwards">
+                    <fx:include fx:id="tabPageMRBack" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Strafe Right">
-                    <fx:include fx:id="tabPageMRStrafeRight" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Strafe Left">
+                    <fx:include fx:id="tabPageMRStrafeLeft" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Diag Left">
-                    <fx:include fx:id="tabPageMRDiagLeft" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Strafe Right">
+                    <fx:include fx:id="tabPageMRStrafeRight" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Diag Right">
-                    <fx:include fx:id="tabPageMRDiagRight" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Diag Left">
+                    <fx:include fx:id="tabPageMRDiagLeft" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Spin Left">
-                    <fx:include fx:id="tabPageMRSpinLeft" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Diag Right">
+                    <fx:include fx:id="tabPageMRDiagRight" source="tabPaneMR.fxml" />
                 </Tab>
-                <Tab  text="Spin Right">
-                    <fx:include fx:id="tabPageMRSpinRight" source="tabPaneMR.fxml"/>
+                <Tab closable="false" text="Spin Left">
+                    <fx:include fx:id="tabPageMRSpinLeft" source="tabPaneMR.fxml" />
+                </Tab>
+                <Tab closable="false" text="Spin Right">
+                    <fx:include fx:id="tabPageMRSpinRight" source="tabPaneMR.fxml" />
                 </Tab>
             </tabs>
         </TabPane>
