@@ -1,7 +1,7 @@
 # BotRoutes
 This program helps design and manage autonomous movement of odometry-enabled robots.
 
-![Main Application Screen](./mainview.png)
+![Main Application Screen](doc/mainview.png)
 
 
 ## Installation Mac
