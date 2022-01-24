@@ -202,21 +202,21 @@ public class RouteController {
         AutoRoute clone = route.clone();
         clone.setName(name);
         clone.setNameIndex(nextIndex);
-        clone.setStartX(getMirrorX(clone.getStartX()));
+        clone.setStartY(getMirrorY(clone.getStartY()));
+        clone.setInitRotation((int)getMirrorDegree(clone.getInitRotation()));
         for(AutoStep step : clone.getSteps()){
-            step.setTargetX(getMirrorY(step.getTargetY()));
-            if (step.getMoveStrategy().equals(MoveStrategy.Spin)){
-                step.setDesiredHead(getMirrorDegree(step.getDesiredHead()));
+            step.setTargetY(getMirrorY(step.getTargetY()));
+//            if (step.getMoveStrategy().equals(MoveStrategy.Spin)){
+//                step.setDesiredHead(getMirrorDegree(step.getDesiredHead()));
+//            }
+            if (step.getRobotDirection().equals(RobotDirection.Left)){
+                step.setRobotDirection(RobotDirection.Right);
+            }
+            if (step.getRobotDirection().equals(RobotDirection.Right)){
+                step.setRobotDirection(RobotDirection.Left);
             }
         }
         return clone;
-    }
-
-    protected int getMirrorX(int targetX){
-        int MIDDLE = 48;
-        int diffX = MIDDLE - targetX;
-        int mirrorX = MIDDLE + diffX;
-        return mirrorX;
     }
 
     protected int getMirrorY(int targetY){
@@ -226,9 +226,7 @@ public class RouteController {
     }
 
     protected double getMirrorDegree(double heading){
-        int MIDDLE = 180;
-        double diff = MIDDLE - heading;
-        double mirror = MIDDLE + diff;
+        double mirror = (heading + 180) % 360;
         return mirror;
     }
 

@@ -51,6 +51,9 @@ public class BotConfigController {
         try
         {
             botCalibConfig = FileLoader.loadBotConfig();
+            if (botCalibConfig == null){
+                botCalibConfig = new BotCalibConfig();
+            }
         }
         catch (Exception ex){
 
