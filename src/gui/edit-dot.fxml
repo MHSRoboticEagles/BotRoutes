@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ComboBox?>
+<?import java.net.URL?>
 
 <AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditDotController">
     <children>
@@ -59,4 +60,7 @@
             </children>
         </VBox>
     </children>
+    <stylesheets>
+        <URL value="@bot.css" />
+    </stylesheets>
 </AnchorPane>

@@ -119,7 +119,7 @@ public class FieldMap {
 
     protected void drawField(GraphicsContext gc) {
         gc.save();
-        Image original = new Image(getClass().getResourceAsStream("FreightFrenzyField.png"));
+        Image original = new Image(getClass().getResourceAsStream("PowerPlayField.png"));
         Rotate r = new Rotate(90, mapFlow.getWidth()/2, mapFlow.getHeight()/2);
         gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
         gc.drawImage(original, 0, 0, mapFlow.getWidth(), mapFlow.getHeight());

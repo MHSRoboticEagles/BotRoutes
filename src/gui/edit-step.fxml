@@ -7,9 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.CheckBox?>
+<?import java.net.URL?>
+
 <AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StepController">
     <children>
         <VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="500.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
@@ -108,4 +109,7 @@
             </children>
         </VBox>
     </children>
+    <stylesheets>
+        <URL value="@bot.css" />
+    </stylesheets>
 </AnchorPane>

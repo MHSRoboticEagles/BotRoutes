@@ -2,3 +2,7 @@
     -fx-border-width: 3;
     -fx-border-color: #E8E8E8;
 }
+
+* {
+   -fx-font-family: 'sans-serif'
+}
