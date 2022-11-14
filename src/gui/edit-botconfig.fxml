@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.BotConfigController">
     <children>
@@ -60,4 +61,7 @@
             </tabs>
         </TabPane>
     </children>
+    <stylesheets>
+        <URL value="@bot.css" />
+    </stylesheets>
 </VBox>
